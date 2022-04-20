@@ -1,0 +1,51 @@
+package com.shciri.rosapp.data;
+
+import src.com.jilk.ros.message.CmdVel;
+import src.com.jilk.ros.message.MapMetaData;
+import src.com.jilk.ros.message.MapMsg;
+import src.com.jilk.ros.message.TFTopic;
+import src.com.jilk.ros.message.TransformMsg;
+import src.com.jilk.ros.message.goal.MoveGoal;
+
+public class RosData {
+
+    public static CmdVel cmd_vel;
+    public static MapMsg map;
+    public static TFTopic tf;
+    public static MoveGoal moveGoal;
+
+    public static final String MAP = "com.shciri.rosapp.map";
+    public static final String TF = "com.shciri.rosapp.tf";
+    public static final String TOAST = "com.shciri.rosapp.toast";
+
+    public static class BaseLink {
+        public static TransformMsg transform;
+        public static int x;
+        public static int y;
+        public static int z;
+        public static float pitch;
+        public static float yaw;
+        public static float roll;
+
+        public static void fastConversion() {
+            x = (int)(transform.translation.x/0.05f);
+            y = (int)(transform.translation.y/0.05f);
+            z = (int)(transform.translation.z/0.05f);
+            Quaternion quaternion = new Quaternion((float)transform.rotation.w, (float)transform.rotation.x, (float)transform.rotation.y, (float)transform.rotation.z);
+            EulerAngles eulerAngles = quaternion.ToEulerAngles();
+            pitch = eulerAngles.pitch;
+            yaw = eulerAngles.yaw;
+            roll = eulerAngles.roll;
+        }
+    }
+
+    public static class MapData {
+        public static int poseX;  //经过像素点转换的原点坐标
+        public static int poseY;
+
+        public static void fastConversion() {
+            poseX = (int)(-map.info.origin.position.x/0.05f);
+            poseY = (int)(-map.info.origin.position.y/0.05f);
+        }
+    }
+}

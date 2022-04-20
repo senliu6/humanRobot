@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/lightcyan"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/connect_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="276dp"
+        android:layout_marginBottom="180dp"
+        android:text="Connect"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.shciri.rosapp.ControllerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/controller_view"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/led_switch"
+        app:layout_constraintTop_toTopOf="@+id/led_switch"
+        app:layout_constraintRight_toLeftOf="@+id/led_switch"
+        android:layout_marginRight="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="紫外消杀灯" />
+
+    <Switch
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/led_switch"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/switch_ios_thumb"
+        android:track="@drawable/switch_ios_track_selector" />
+
+    <com.github.chrisbanes.photoview.PhotoView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:scaleX="-1"
+        android:id="@+id/map_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
