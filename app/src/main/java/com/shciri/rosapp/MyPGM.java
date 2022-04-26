@@ -36,12 +36,12 @@ public class MyPGM {
             {
                 for (int i = 0; i < iw*ih; i++)
                 {
-                    int b = -data[i];
-                    if(b < 0) b = b + 256;
-
+                    int b = data[i];
+//                    if(b < 0) b = b + 256;
                     int a = b;
-                    if(b == 0) a = 15;
-
+                    if(b == -1) a = 0; //外层透明层  a值越小透明度越高
+                    if(b == 100) a = 255;
+                    if(b == 0) a = 255;
 
                     int current_y = i / iw;
                     int current_x = i - (current_y * iw);
@@ -54,8 +54,10 @@ public class MyPGM {
                             && current_y > (poseY)-RADIUS){  //坐标点附近5行
                         pixel = ((100)<<24)|(255<<16)|(0<<8)|0;
                     }
-                    else
-                        pixel = ((a)<<24)|(b<<16)|(b<<8)|b;
+                    else{
+                        if(b == 0) pixel = (255<<24)|(255<<16)|(255<<8)|255;
+                        else pixel = ((a)<<24)|(0<<16)|(0<<8)|0;
+                    }
 
                     pixels[i] = pixel;
                 }

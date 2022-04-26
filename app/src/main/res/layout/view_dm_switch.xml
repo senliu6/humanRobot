@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="67.5dp"
+    android:layout_height="29.5dp">
+
+    <ImageView
+        android:id="@+id/xiaceng_view"
+        android:background="@mipmap/xiaceng4_21"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <ImageView
+        android:id="@+id/shangceng_view"
+        android:layout_alignParentEnd="true"
+        android:background="@mipmap/shangceng4_21"
+        android:layout_width="38dp"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="11.5dp"
+        android:layout_marginTop="7dp"
+        android:layout_width="20dp"
+        android:layout_height="12dp"
+        android:textAlignment="center"
+        android:text="@string/switch_off"
+        android:textColor="#fffafbfc"
+        android:textSize="10sp" />
+
+    <TextView
+        android:layout_marginStart="40.5dp"
+        android:layout_marginEnd="12.5dp"
+        android:layout_marginTop="7dp"
+        android:layout_width="14.5dp"
+        android:layout_height="12dp"
+        android:text="@string/switch_on"
+        android:textColor="#fffafbfc"
+        android:gravity="center"
+        android:textSize="10sp" />
+
+
+</RelativeLayout>

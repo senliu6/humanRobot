@@ -23,7 +23,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.shciri.rosapp.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RosInit;
-import com.shciri.rosapp.RosMapView;
+import com.shciri.rosapp.myview.RosMapView;
 import com.shciri.rosapp.data.RosData;
 import com.shciri.rosapp.myview.MyControllerView;
 import com.shciri.rosapp.peripheral.Buzzer;

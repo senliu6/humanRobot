@@ -1,4 +1,4 @@
-package com.shciri.rosapp;
+package com.shciri.rosapp.myview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +12,8 @@ import com.github.chrisbanes.photoview.PhotoView;
 import android.view.View;
 import android.widget.ImageView;
 import com.rey.material.widget.RelativeLayout;
+import com.shciri.rosapp.R;
+import com.shciri.rosapp.RosInit;
 import com.shciri.rosapp.data.RosData;
 
 public class RosMapView extends RelativeLayout {
