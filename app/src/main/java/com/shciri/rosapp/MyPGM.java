@@ -52,14 +52,11 @@ public class MyPGM {
                             && current_x > (poseX)-RADIUS   //坐标点附近5列
                             && current_y < (poseY)+RADIUS
                             && current_y > (poseY)-RADIUS){  //坐标点附近5行
-
                         pixel = ((100)<<24)|(255<<16)|(0<<8)|0;
-//                        System.out.println("okok x=" + poseX/0.05 + "  y=" +poseY/0.05);
                     }
                     else
                         pixel = ((a)<<24)|(b<<16)|(b<<8)|b;
 
-                    //(iw*ih) - (1+i)
                     pixels[i] = pixel;
                 }
             }

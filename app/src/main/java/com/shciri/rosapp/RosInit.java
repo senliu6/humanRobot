@@ -12,6 +12,7 @@ import com.shciri.rosapp.myfragment.HomeFragment;
 
 import org.jetbrains.annotations.NotNull;
 
+import src.com.jilk.ros.ROSClient;
 import src.com.jilk.ros.Topic;
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.Header;
@@ -32,8 +33,27 @@ public class RosInit {
 
     public static boolean isConnect;
 
+    public class ConnectionStatus implements ROSClient.ConnectionStatusListener {
+
+        @Override
+        public void onConnect() {
+            System.out.println("Connected on on on!!!");
+        }
+
+        @Override
+        public void onDisconnect(boolean normal, String reason, int code) {
+            System.out.println("DisConnected !!!" + normal + "  reason:" + reason + "  code:" + code);
+        }
+
+        @Override
+        public void onError(Exception ex) {
+            System.out.println("Connect Error on on on!!!");
+        }
+    }
+
     public RosInit(@NotNull Context context) {
-        ROSBridgeClient client = new ROSBridgeClient("ws://192.168.1.108:9090");
+        ConnectionStatus connectionStatus = new ConnectionStatus();
+        ROSBridgeClient client = new ROSBridgeClient("ws://192.168.1.102:9090");
         isConnect = client.connect();
          if(isConnect){
              initTopic(client);
@@ -97,6 +117,23 @@ public class RosInit {
                             HomeFragment.localBroadcastManager.sendBroadcast(intent);
                         }
                     }
+                }
+            }
+        }).start();
+    }
+
+    public void getMap(){
+        new Thread(() -> {
+            while(true) {
+                if (isConnect) {
+                    try {
+                        Thread.sleep(200);
+                        RosData.map = mapTopic.take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(RosData.MAP);
+                    HomeFragment.localBroadcastManager.sendBroadcast(intent);
                 }
             }
         }).start();

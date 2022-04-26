@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RosApp</string>
+    <string name="business_btn">紫外消杀灯</string>
 </resources>

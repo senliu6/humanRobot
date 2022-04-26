@@ -31,11 +31,11 @@ public class RosData {
             x = (int)(transform.translation.x/0.05f);
             y = (int)(transform.translation.y/0.05f);
             z = (int)(transform.translation.z/0.05f);
-            Quaternion quaternion = new Quaternion((float)transform.rotation.w, (float)transform.rotation.x, (float)transform.rotation.y, (float)transform.rotation.z);
-            EulerAngles eulerAngles = quaternion.ToEulerAngles();
-            pitch = eulerAngles.pitch;
-            yaw = eulerAngles.yaw;
-            roll = eulerAngles.roll;
+//            Quaternion quaternion = new Quaternion((float)transform.rotation.w, (float)transform.rotation.x, (float)transform.rotation.y, (float)transform.rotation.z);
+//            EulerAngles eulerAngles = quaternion.ToEulerAngles();
+//            pitch = eulerAngles.pitch;
+//            yaw = eulerAngles.yaw;
+//            roll = eulerAngles.roll;
         }
     }
 

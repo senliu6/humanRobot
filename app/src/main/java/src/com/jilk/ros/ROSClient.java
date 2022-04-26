@@ -57,7 +57,11 @@ public abstract class ROSClient {
     
     public interface ConnectionStatusListener {
         public void onConnect();
-        public void onDisconnect(boolean normal, String reason, int code);
+
+        public default void onDisconnect(boolean normal, String reason, int code) {
+
+        }
+
         public void onError(Exception ex);
     }
 }
