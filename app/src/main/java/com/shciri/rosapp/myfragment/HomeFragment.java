@@ -23,6 +23,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.shciri.rosapp.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RosInit;
+import com.shciri.rosapp.myview.DmSwitchView;
 import com.shciri.rosapp.myview.RosMapView;
 import com.shciri.rosapp.data.RosData;
 import com.shciri.rosapp.myview.MyControllerView;
@@ -38,7 +39,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     public Button connectBtn;
 
-    public Switch ledSwitch;
+    public DmSwitchView ledSwitch;
 
     public MyControllerView controllerView;
 
@@ -79,22 +80,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         connectBtn.setOnClickListener(this);
         ledSwitch = root.findViewById(R.id.led_switch);
 
-        led = new Led();
-        if(led.LedOpen() == -1)
-            Toast.makeText(getContext(), "设备打开失败！ ", Toast.LENGTH_SHORT).show();
-        else
-            led.LedIoctl(1,1);
-
-        ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    led.LedIoctl(0,0);
-                }else {
-                    led.LedIoctl(1,1);
-                }
-            }
-        });
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RosData.MAP);

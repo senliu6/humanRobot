@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.peripheral.Led;
 
 public class DmSwitchView extends RelativeLayout {
 
     ImageView shangView;
     ImageView xiaView;
+    Led led;
 
     public DmSwitchView(Context context) {
         super(context);
@@ -34,13 +37,21 @@ public class DmSwitchView extends RelativeLayout {
         shangView = (ImageView) findViewById(R.id.shangceng_view);
         xiaView = (ImageView) findViewById(R.id.xiaceng_view);
 
-        shangView.setOnClickListener(new OnClickListener() {
+        led = new Led();
+        if(led.LedOpen() == -1)
+            Toast.makeText(getContext(), "设备打开失败！ ", Toast.LENGTH_SHORT).show();
+        else
+            led.LedIoctl(1,1);
+
+        xiaView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(shangView.getX() == 0) {
                     shangView.setX(50);
+                    led.LedIoctl(0,0);
                 }else{
                     shangView.setX(0);
+                    led.LedIoctl(1,1);
                 }
             }
         });
