@@ -2,39 +2,17 @@ package com.shciri.rosapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.tabs.TabLayout;
-import com.shciri.rosapp.myfragment.HomeFragment;
-import com.shciri.rosapp.peripheral.Buzzer;
-import com.shciri.rosapp.peripheral.Led;
-
-import java.util.ArrayList;
-
-import src.com.jilk.ros.Service;
-import src.com.jilk.ros.Topic;
-import src.com.jilk.ros.message.Clock;
-import src.com.jilk.ros.message.CmdVel;
-import src.com.jilk.ros.message.Log;
-import src.com.jilk.ros.rosapi.message.Empty;
-import src.com.jilk.ros.rosapi.message.GetTime;
-import src.com.jilk.ros.rosapi.message.MessageDetails;
-import src.com.jilk.ros.rosapi.message.Type;
-import src.com.jilk.ros.rosbridge.ROSBridgeClient;
+import com.shciri.rosapp.ui.TaskControlActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,33 +27,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_login);
+        findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2=new Intent(MainActivity.this, TaskControlActivity.class);
+                startActivity(intent2);
+            }
+        });
 
     //    requestPermission();
-
-        HomeFragment homeFragment = new HomeFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_home, homeFragment)
-                .commit();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        requestFullscreen();
-    }
-
-    protected void requestFullscreen() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LOW_PROFILE   /* 设置状态栏和导航栏中的图标变小，变模糊或者弱化其效果 */
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE  /* 稳定布局，主要是在全屏和非全屏切换时，布局不要有大的变化。 */
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  /* 粘性沉浸模式 */
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION /* content doesn't resize when the system bars hide and show. */
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     private void requestPermission() {
