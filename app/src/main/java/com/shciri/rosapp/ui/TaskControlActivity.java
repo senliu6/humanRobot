@@ -44,6 +44,13 @@ public class TaskControlActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(Gravity.LEFT);
             }
         });
+        findViewById(R.id.drawer_close_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {

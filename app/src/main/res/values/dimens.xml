@@ -18,7 +18,7 @@
     <dimen name="drawer_icon_margin_left">55dp</dimen>
     <dimen name="drawer_text_margin_left">27dp</dimen>
     <dimen name="drawer_layout_margin_top">40dp</dimen>
-    <dimen name="drawer_layout_margin_left">57dp</dimen>
+    <dimen name="drawer_layout_margin_left">30dp</dimen>
 
     <!-- choose task size -->
     <dimen name="choose_task_icon_size_width">28dp</dimen>

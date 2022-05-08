@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import com.shciri.rosapp.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RosInit;
 import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.ui.myview.MapView;
 import com.shciri.rosapp.ui.myview.MyControllerView;
 import com.shciri.rosapp.ui.myview.RosMapView;
 import com.shciri.rosapp.peripheral.Buzzer;
@@ -55,7 +59,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
 
     public static LocalBroadcastManager localBroadcastManager;
 
-    private RosMapView rosMapView;
+    private MapView mMapView;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,6 +71,10 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
             public void move(float dx, float dy) {
+                Log.v("ManuaControlFragment", "move " + dx + ", " + dy);
+                PointF robot = mMapView.getRobotPosition();
+                float direction = (float) Math.random();
+                mMapView.setRobotPosition(robot.x + dx, robot.y + dy, direction*100, true);
                 if (RosInit.isConnect) {
                     RosData.cmd_vel.linear.x = dy / 1.5f;
                     RosData.cmd_vel.angular.z = -dx / 1.5f;
@@ -76,7 +84,10 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         };
 
         controllerView.setMoveListener(moveListener);
-        rosMapView = root.findViewById(R.id.ros_map);
+        mMapView = root.findViewById(R.id.ros_map);
+        Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+        mMapView.setBitmap(map, 12);
+        mMapView.setRobotPosition(200, 300, (float) 0.3, true);
 
         connectBtn = root.findViewById(R.id.connect_btn);
         connectBtn.setOnClickListener(this);
@@ -150,7 +161,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         bitmap.setPixel(tX + 1, tY - 1, Color.argb(100, 0, 150, 0));
         bitmap.setPixel(tX, tY + 1, Color.argb(100, 0, 150, 0));
         bitmap.setPixel(tX + 1, tY + 1, Color.argb(100, 0, 150, 0));
-        rosMapView.moveLocalView(tX, tY);
+        mMapView.setRobotPosition(tX, tY, 1.0f, true);
     }
 
     private void plotMap() {
@@ -160,7 +171,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         pix = pgm.readData(RosData.map.info.width, RosData.map.info.height, 5, RosData.map.data, RosData.MapData.poseX, RosData.MapData.poseY);   //P5-Gray image
         bitmap = Bitmap.createBitmap(RosData.map.info.width, RosData.map.info.height, Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pix, 0, RosData.map.info.width, 0, 0, RosData.map.info.width, RosData.map.info.height);
-        rosMapView.setHeaderView(bitmap);
+//        rosMapView.setHeaderView(bitmap);
     }
 
     @Override

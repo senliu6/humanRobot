@@ -67,17 +67,22 @@
             app:layout_constraintStart_toStartOf="@+id/task_bt"
             app:layout_constraintTop_toTopOf="@+id/task_bt" />
 
-        <ImageView
+
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:scaleType="fitXY"
+            android:spinnerMode="dropdown"
+            android:popupBackground="@drawable/shape_for_rosapp_spinner"
+            android:entries="@array/spinner_string"
             app:layout_constraintBottom_toBottomOf="@+id/task_bt"
             app:layout_constraintEnd_toEndOf="@+id/task_bt"
             app:layout_constraintHorizontal_bias="0.638"
             app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="@+id/task_bt"
-            tools:srcCompat="@mipmap/choosetask_jiantouxia4_21" />
+            android:background="@mipmap/choosetask_jiantouxia4_21" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout >

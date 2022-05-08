@@ -3,6 +3,7 @@ package com.shciri.rosapp.ui.myview;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -99,16 +100,21 @@ public class MyControllerView extends RelativeLayout implements View.OnTouchList
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        Log.v("control", "onInterceptTouchEvent");
+        return true;
+    }
+
+    @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         float evx = motionEvent.getX(), evy = motionEvent.getY();
         float deltaX = evx - centerX, deltaY = evy - centerY;
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-//                System.out.println("extend: "+deltaX+" "+deltaY);
-//                System.out.println("back: "+backRadius+"inner: "+innerRadius);
-//                System.out.println("top: "+backView.getHeight());
+                Log.v("control", "ACTION_DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.v("control", "ACTION_MOVE");
                 //如果触摸点在圆外
                 if (Math.abs(deltaX) > radiusBorder || Math.abs(deltaY) > radiusBorder) {
                     float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -120,6 +126,7 @@ public class MyControllerView extends RelativeLayout implements View.OnTouchList
                 positionAnimator.cancel();
                 break;
             case MotionEvent.ACTION_UP:
+                Log.v("control", "ACTION_UP");
                 positionAnimator.setDuration(500);
                 positionAnimator.start();
                 break;
