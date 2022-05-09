@@ -37,6 +37,11 @@ public class TaskBtView extends RelativeLayout {
 
     }
 
+    @Override
+    public boolean isFocused() {
+        return super.isFocused();
+    }
+
     public void setTitle(String title){
         mTitleTv.setText(title);
     }
