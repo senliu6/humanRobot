@@ -23,10 +23,10 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.shciri.rosapp.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RosInit;
-import com.shciri.rosapp.myview.DmSwitchView;
-import com.shciri.rosapp.myview.RosMapView;
+import com.shciri.rosapp.ui.myview.DmSwitchView;
+import com.shciri.rosapp.ui.myview.RosMapView;
 import com.shciri.rosapp.data.RosData;
-import com.shciri.rosapp.myview.MyControllerView;
+import com.shciri.rosapp.ui.myview.MyControllerView;
 import com.shciri.rosapp.peripheral.Buzzer;
 import com.shciri.rosapp.peripheral.DisinfectLed;
 import com.shciri.rosapp.peripheral.Led;
@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_manua_control, container, false);
 
         controllerView = root.findViewById(R.id.controller_view);
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
@@ -76,6 +76,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         connectBtn = root.findViewById(R.id.connect_btn);
         connectBtn.setOnClickListener(this);
+
         ledSwitch = root.findViewById(R.id.led_switch);
 
 
@@ -95,15 +96,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-
-
-//        if (view.getId() == R.id.connect_btn) {
-//            new Thread(()-> {
-//                rosInit = new RosInit(getContext());
-//                rosInit.getTF();
-//                rosInit.getMap();
-//            }).start();
-//        }
+        if (view.getId() == R.id.connect_btn) {
+            new Thread(()-> {
+                rosInit = new RosInit(getContext());
+                rosInit.getTF();
+                rosInit.getMap();
+            }).start();
+            return;
+        }
     }
 
     private void plotRoute(int x, int y){

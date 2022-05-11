@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="397dp"
+        android:layout_height="331dp"
+        app:srcCompat="@mipmap/performmap_zuokuang4_21" />
+
+    <com.shciri.rosapp.ui.myview.RosMapView
+        android:background="@color/lightsteelblue"
+        android:id="@+id/imageView6"
+        android:layout_width="397dp"
+        android:layout_height="331dp"
+        android:layout_marginLeft="20dp" />
+</LinearLayout>

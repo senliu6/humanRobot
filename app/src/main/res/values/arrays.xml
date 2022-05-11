@@ -42,5 +42,21 @@
         <item>#dd6495</item>
         <item>#76afcf</item>
     </string-array>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
 
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+        <string-array name="spinner_string">
+            <item>空跑1</item>
+            <item>空跑2</item>
+            <item>空跑3</item>
+            <item>空跑4</item>
+        </string-array>
 </resources>
