@@ -9,13 +9,15 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.peripheral.DisinfectLed;
+import com.shciri.rosapp.peripheral.DisinfectLedStatus;
 import com.shciri.rosapp.peripheral.Led;
 
 public class DmSwitchView extends RelativeLayout {
 
     ImageView shangView;
     ImageView xiaView;
-    Led led;
+    int ledStatus;
 
     public DmSwitchView(Context context) {
         super(context);
@@ -32,12 +34,20 @@ public class DmSwitchView extends RelativeLayout {
         initView(context);
     }
 
-    private void initView(Context context){
+    private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_dm_switch, this, true);
         shangView = (ImageView) findViewById(R.id.shangceng_view);
         xiaView = (ImageView) findViewById(R.id.xiaceng_view);
+    }
 
-        led = new Led();
+    public void connectLed() {
+        Led led = new Led();
+        DisinfectLed disinfectLed = new DisinfectLed();
+        DisinfectLedStatus disinfectLedStatus = new DisinfectLedStatus();
+
+        disinfectLed.open();
+        disinfectLedStatus.open();
+
         if(led.LedOpen() == -1)
             Toast.makeText(getContext(), "设备打开失败！ ", Toast.LENGTH_SHORT).show();
         else
@@ -49,9 +59,13 @@ public class DmSwitchView extends RelativeLayout {
                 if(shangView.getX() == 0) {
                     shangView.setX(50);
                     led.LedIoctl(0,0);
+                    int level = disinfectLedStatus.ioctl(0, ledStatus);
+                    System.out.println("level = " + level + "  status = "+ ledStatus);
                 }else{
                     shangView.setX(0);
                     led.LedIoctl(1,1);
+                    int level = disinfectLedStatus.ioctl(0, ledStatus);
+                    System.out.println("level = " + level + "  status = "+ ledStatus);
                 }
             }
         });

@@ -28,14 +28,13 @@ import com.shciri.rosapp.myview.RosMapView;
 import com.shciri.rosapp.data.RosData;
 import com.shciri.rosapp.myview.MyControllerView;
 import com.shciri.rosapp.peripheral.Buzzer;
+import com.shciri.rosapp.peripheral.DisinfectLed;
 import com.shciri.rosapp.peripheral.Led;
+import com.shciri.rosapp.peripheral.Misc;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
 
     View root;
-
-    private Buzzer buzzer = new Buzzer();
-    private Led led;
 
     public Button connectBtn;
 
@@ -54,7 +53,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public static LocalBroadcastManager localBroadcastManager;
 
     private RosMapView rosMapView;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -89,18 +87,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
 
+        ledSwitch.connectLed();
+
         return root;
     }
 
+
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.connect_btn) {
-            new Thread(()-> {
-                rosInit = new RosInit(getContext());
-                rosInit.getTF();
-                rosInit.getMap();
-            }).start();
-        }
+
+
+//        if (view.getId() == R.id.connect_btn) {
+//            new Thread(()-> {
+//                rosInit = new RosInit(getContext());
+//                rosInit.getTF();
+//                rosInit.getMap();
+//            }).start();
+//        }
     }
 
     private void plotRoute(int x, int y){
