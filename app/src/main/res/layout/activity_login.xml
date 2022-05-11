@@ -150,172 +150,51 @@
 
                     <ImageView
                         android:id="@+id/imageView4"
-                        android:layout_width="369px"
+                        android:layout_width="379px"
                         android:layout_height="60px"
-                        android:layout_marginStart="105px"
+                        android:layout_marginStart="100px"
                         android:adjustViewBounds="false"
                         android:scaleType="fitXY"
                         app:srcCompat="@mipmap/login_kuang4_21" />
 
                     <EditText
-                        android:id="@+id/password"
-                        android:layout_width="101px"
+                        android:id="@+id/password_Edit"
+                        android:layout_width="335px"
                         android:layout_height="25px"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="120px"
                         android:background="@null"
-                        android:clickable="false"
                         android:hint="请输入密码"
                         android:textSize="20px"
-                        android:imeOptions="actionDone"
+                        android:maxLength="12"
+                        android:clickable="false"
                         android:includeFontPadding="false"
-                        android:inputType="numberPassword"
+                        android:inputType="number"
                         android:selectAllOnFocus="true"
-                        android:textColorHint="#ff02A496" />
+                        android:textColor="#02FDE8"
+                        android:textColorHint="#02A496" />
                 </com.rey.material.widget.RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/loginBt"
+                    android:layout_width="369px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="105px"
+                    android:layout_marginTop="34px"
+                    android:layout_marginBottom="44px"
+                    android:background="@mipmap/denglu" />
 
-                <com.rey.material.widget.RelativeLayout
-                    android:layout_marginTop="35px"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/loginBt"
-                        android:layout_width="369px"
-                        android:layout_height="60px"
-                        android:layout_marginLeft="105px"
-                        android:background="@drawable/ros_login_bg_selector"
-                        android:scaleType="fitXY" />
-
-                    <TextView
-                        android:layout_width="42px"
-                        android:layout_height="20px"
-                        android:layout_marginStart="269px"
-                        android:includeFontPadding="false"
-                        android:layout_centerVertical="true"
-                        android:text="登陆"
-                        android:textSize="20px"/>
-                </com.rey.material.widget.RelativeLayout>
             </LinearLayout>
 
-            <GridLayout
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/left_item"
+            <com.shciri.rosapp.ui.myview.LoginKeyboardView
+                android:id="@+id/loginKeyboard"
                 android:layout_marginStart="41px"
                 android:layout_marginTop="23px"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/left_item"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="255"
-                android:columnCount="3"
-                android:gravity="center"
-                android:rowCount="4">
+                android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/imageButton1"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="0"
-                    android:layout_column="0"
-                    app:srcCompat="@mipmap/login_1" />
-
-                <ImageView
-                    android:id="@+id/imageButton2"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="0"
-                    android:layout_column="1"
-                    app:srcCompat="@mipmap/login_2" />
-
-                <ImageView
-                    android:id="@+id/imageButton3"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="0"
-                    android:layout_column="2"
-                    app:srcCompat="@mipmap/login_3" />
-
-                <ImageView
-                    android:id="@+id/imageButton4"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="1"
-                    android:layout_column="0"
-                    app:srcCompat="@mipmap/login_4" />
-
-                <ImageView
-                    android:id="@+id/imageButton5"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="1"
-                    android:layout_column="1"
-                    app:srcCompat="@mipmap/login_5" />
-
-                <ImageView
-                    android:id="@+id/imageButton6"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="1"
-                    android:layout_column="2"
-                    app:srcCompat="@mipmap/login_6" />
-
-                <ImageView
-                    android:id="@+id/imageButton7"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="2"
-                    android:layout_column="0"
-                    app:srcCompat="@mipmap/login_7" />
-
-                <ImageView
-                    android:id="@+id/imageButton8"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="2"
-                    android:layout_column="1"
-                    app:srcCompat="@mipmap/login_8" />
-
-                <ImageView
-                    android:id="@+id/imageButton9"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="2"
-                    android:layout_column="2"
-                    app:srcCompat="@mipmap/login_9" />
-
-                <ImageView
-                    android:id="@+id/imageButton10"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="3"
-                    android:layout_column="0"
-                    app:srcCompat="@mipmap/login_ac" />
-
-                <ImageView
-                    android:id="@+id/imageButton11"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="3"
-                    android:layout_column="1"
-                    app:srcCompat="@mipmap/login_0" />
-
-                <ImageView
-                    android:id="@+id/imageButton12"
-                    style="@style/NumericStyle"
-                    android:layout_width="@dimen/numeric_key_width"
-                    android:layout_height="@dimen/numeric_key_height"
-                    android:layout_row="3"
-                    android:layout_column="2"
-                    app:srcCompat="@mipmap/login_shanchu4_21" />
-            </GridLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </LinearLayout>

@@ -10,24 +10,100 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shciri.rosapp.ui.TaskControlActivity;
+import com.shciri.rosapp.ui.myview.LoginKeyboardView;
+
+import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getSimpleName();
+
+    private EditText passwordEdit;
+
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+        password = new String("");
+        LoginKeyboardView loginKeyboardView = findViewById(R.id.loginKeyboard);
+        loginKeyboardView.setLoginKeyboardListener(new LoginKeyboardView.LoginKeyboardListener() {
+            @Override
+            public void KeyInput(int key) {
+                System.out.println("key = " + key);
+                if(password.length() >= 12){
+                    Toast.makeText(getApplicationContext(),"密码超出最大长度!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                passwordSet(key);
+            }
+        });
+
+        passwordEdit = findViewById(R.id.password_Edit);
+
         findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, TaskControlActivity.class);
-                startActivity(intent);
+                if(password.equals("123456")) {
+                    Intent intent=new Intent(MainActivity.this, TaskControlActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getApplicationContext(),"密码错误,请重试!", Toast.LENGTH_SHORT).show();
+                    password = "";
+                    passwordEdit.setText(password);
+                }
             }
         });
+    }
+
+    private void passwordSet(int key) {
+        switch (key) {
+            case 10:
+                password = "";
+                passwordEdit.setText(password);
+                passwordEdit.setSelection(password.length());
+                break;
+
+            case 11:
+                password += String.valueOf(0);
+                passwordEdit.setText(password);
+                passwordEdit.setSelection(password.length());
+                break;
+
+            case 12:
+                if(password.length() >= 1) {
+                    password = password.substring(0, password.length() - 1);
+                    passwordEdit.setText(password);
+                    passwordEdit.setSelection(password.length());
+                }
+                break;
+
+            default:
+                password += String.valueOf(key);
+                passwordEdit.setText(password);
+                passwordEdit.setSelection(password.length());
+                break;
+        }
+
+        if(password.length() > 0) {
+            findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.login_denglu4_21);
+        }else{
+            findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.denglu);
+        }
     }
 
     @Override

@@ -19,7 +19,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:windowSoftInputMode="stateHidden"
         android:theme="@style/Theme.RosApp.NoActionBar">
+
         <activity
             android:name=".ui.taskshistory.TasksHistoryReportActivity"
             android:exported="false" />
