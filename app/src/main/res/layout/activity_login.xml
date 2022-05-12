@@ -8,11 +8,15 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <com.shciri.rosapp.ui.myview.StatusBarView
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"/>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="1280dp"
         android:layout_height="51dp"
-        android:layout_marginTop="59dp"
         android:scaleType="fitXY"
         app:srcCompat="@mipmap/login_tou4_21" />
 

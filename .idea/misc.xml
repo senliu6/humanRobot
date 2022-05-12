@@ -39,13 +39,15 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_list.xml" value="0.40260416666666665" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_vp.xml" value="0.4171875" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_vp_list.xml" value="0.40260416666666665" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/status_bar.xml" value="0.12864583333333332" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/status_bar.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_control_main.xml" value="0.19296875" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_controller.xml" value="0.82421875" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_dm_switch.xml" value="1.5" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_login_keyboard.xml" value="0.2747395833333333" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_login_keybord.xml" value="0.67" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_map_ros.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_tab_layout.xml" value="0.12378472222222223" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_task_bt.xml" value="0.12378472222222223" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.41" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.41" />
       </map>
