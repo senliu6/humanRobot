@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/login_dabeijing4_21"
@@ -9,55 +10,57 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_marginTop="47px"
-        android:layout_width="match_parent"
-        android:layout_height="41px"
+        android:layout_width="1280dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="59dp"
         android:scaleType="fitXY"
         app:srcCompat="@mipmap/login_tou4_21" />
 
     <LinearLayout
-        android:layout_width="883px"
-        android:layout_height="484px"
+        android:layout_marginTop="3dp"
+        android:layout_width="1104dp"
+        android:layout_height="605dp"
         android:background="@mipmap/login_beijing4_21"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="116px"
-            android:layout_height="26px"
-            android:layout_marginLeft="28px"
-            android:layout_marginTop="40px"
+            android:layout_width="140dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="50dp"
             android:adjustViewBounds="false"
             android:scaleType="fitXY"
             app:srcCompat="@mipmap/login_logo4_21" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="145px"
-            android:layout_height="22px"
-            android:layout_marginLeft="112px"
-            android:layout_marginTop="37px"
+            android:layout_width="181dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="46dp"
+            android:includeFontPadding="false"
             android:letterSpacing="0.05"
             android:lineSpacingExtra="1dp"
-            android:includeFontPadding="false"
             android:text="登陆到机器人"
             android:textAlignment="center"
             android:textColor="#ff02fde8"
-            android:textSize="22px" />
+            android:textSize="28sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="37px"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="46dp"
             android:orientation="horizontal">
 
             <LinearLayout
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/left_item"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:id="@+id/linearLayout_username"
@@ -66,134 +69,148 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="112px"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:layout_width="15px"
-                        android:layout_height="17px"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="19dp"
+                        android:layout_height="21dp"
                         android:adjustViewBounds="false"
                         android:scaleType="fitXY"
                         app:srcCompat="@mipmap/login_yonghu_4_21" />
 
                     <TextView
-                        android:layout_width="30px"
-                        android:layout_height="16px"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="38dp"
+                        android:layout_height="18dp"
                         android:includeFontPadding="false"
                         android:text="用户"
                         android:textColor="#ff02a496"
-                        android:textSize="14.6px" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
 
                 <com.rey.material.widget.RelativeLayout
                     android:id="@+id/identity_select"
-                    android:layout_marginTop="4px"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="481dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
 
                     <ImageView
                         android:id="@+id/imageView_username"
-                        android:layout_width="379px"
-                        android:layout_height="60px"
-                        android:layout_marginStart="100px"
+                        android:layout_width="474dp"
+                        android:layout_height="75dp"
+                        android:layout_centerHorizontal="true"
                         android:adjustViewBounds="false"
                         android:scaleType="fitXY"
                         app:srcCompat="@mipmap/login_kuang4_21" />
 
+                    <ImageView
+                        android:layout_marginStart="416dp"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/jiantou_btn"
+                        android:layout_width="24dp"
+                        android:layout_height="15dp"
+                        app:srcCompat="@mipmap/login_jiantou4_21"/>
+
                     <TextView
                         android:id="@+id/username"
-                        android:layout_width="41px"
-                        android:layout_height="21px"
-                        android:layout_marginStart="118px"
-                        android:textColor="#ff02FDE8"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
                         android:layout_centerVertical="true"
-                        android:clickable="false"
-                        android:textSize="20px"
+                        android:layout_marginStart="26dp"
                         android:includeFontPadding="false"
-                        android:text="@string/user"
-                        android:selectAllOnFocus="true" />
+                        android:text="@string/admin"
+                        android:textColor="#ff02FDE8"
+                        android:textSize="25sp" />
                 </com.rey.material.widget.RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18px"
+                    android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="13px"
-                        android:layout_height="17px"
-                        android:layout_marginLeft="112px"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="16dp"
+                        android:layout_height="21dp"
                         android:adjustViewBounds="false"
                         android:scaleType="fitXY"
                         app:srcCompat="@mipmap/login_mima4_21" />
 
                     <TextView
-                        android:layout_width="30px"
-                        android:layout_height="16px"
-                        android:layout_marginLeft="15px"
-                        android:text="密码"
+                        android:layout_marginStart="15dp"
+                        android:layout_width="38dp"
+                        android:layout_height="18dp"
                         android:includeFontPadding="false"
+                        android:text="密码"
                         android:textColor="#ff02a496"
-                        android:textSize="14.6px" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
 
                 <com.rey.material.widget.RelativeLayout
-                    android:layout_marginTop="8px"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="481dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
 
                     <ImageView
+                        android:layout_centerHorizontal="true"
                         android:id="@+id/imageView4"
-                        android:layout_width="379px"
-                        android:layout_height="60px"
-                        android:layout_marginStart="100px"
+                        android:layout_width="474dp"
+                        android:layout_height="75dp"
                         android:adjustViewBounds="false"
                         android:scaleType="fitXY"
                         app:srcCompat="@mipmap/login_kuang4_21" />
 
                     <EditText
                         android:id="@+id/password_Edit"
-                        android:layout_width="335px"
-                        android:layout_height="25px"
+                        android:layout_width="126dp"
+                        android:layout_height="28dp"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="120px"
+                        android:layout_marginStart="26dp"
                         android:background="@null"
-                        android:hint="请输入密码"
-                        android:textSize="20px"
-                        android:maxLength="12"
                         android:clickable="false"
+                        android:hint="请输入密码"
                         android:includeFontPadding="false"
                         android:inputType="number"
+                        android:maxLength="12"
                         android:selectAllOnFocus="true"
                         android:textColor="#02FDE8"
-                        android:textColorHint="#02A496" />
+                        android:textColorHint="#02A496"
+                        android:textSize="25sp"
+                        tools:ignore="TextFields,TouchTargetSizeCheck,TouchTargetSizeCheck" />
                 </com.rey.material.widget.RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/loginBt"
-                    android:layout_width="369px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="105px"
-                    android:layout_marginTop="34px"
-                    android:layout_marginBottom="44px"
-                    android:background="@mipmap/denglu" />
+                <com.rey.material.widget.RelativeLayout
+                    android:layout_marginTop="34dp"
+                    android:layout_marginBottom="55dp"
+                    android:layout_width="481dp"
+                    android:layout_height="84dp">
+
+                    <ImageView
+                        android:id="@+id/loginBt"
+                        android:layout_width="461dp"
+                        android:layout_height="64dp"
+                        android:layout_centerInParent="true"
+                        android:background="@mipmap/denglu" />
+
+            </com.rey.material.widget.RelativeLayout>
+
 
             </LinearLayout>
 
             <com.shciri.rosapp.ui.myview.LoginKeyboardView
                 android:id="@+id/loginKeyboard"
-                android:layout_marginStart="41px"
-                android:layout_marginTop="23px"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/left_item"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="51dp"
+                android:layout_marginTop="31dp"
+                app:layout_constraintStart_toEndOf="@+id/left_item"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -3,8 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="numeric_key_width">78px</dimen>
-    <dimen name="numeric_key_height">52px</dimen>
+    <dimen name="numeric_key_width">98dp</dimen>
+    <dimen name="numeric_key_height">65dp</dimen>
     <dimen name="top_line">41dp</dimen>
     <!-- map control 参数 -->
     <dimen name="map_control_width">101dp</dimen>

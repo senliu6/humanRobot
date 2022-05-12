@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -101,9 +103,34 @@ public class MainActivity extends AppCompatActivity {
 
         if(password.length() > 0) {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.login_denglu4_21);
+            setViewLayoutParams(findViewById(R.id.loginBt), 481, 84);
         }else{
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.denglu);
+            setViewLayoutParams(findViewById(R.id.loginBt), 461, 64);
         }
+    }
+
+    /**
+     * 重设 view 的宽高
+     */
+    public static void setViewLayoutParams(View view, int nWidth, int nHeight) {
+        int theW = dip2px(view.getContext(), nWidth);
+        int theH = dip2px(view.getContext(), nHeight);
+
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp.height != theH || lp.width != theW) {
+            lp.width = theW;
+            lp.height = theH;
+            view.setLayoutParams(lp);
+        }
+    }
+
+    /**
+     * 将dip或dp值转换为px值，保证尺寸大小不变
+     */
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 
     @Override
