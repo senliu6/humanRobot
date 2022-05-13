@@ -33,6 +33,8 @@ public class RosInit {
 
     public static boolean isConnect;
 
+    public static LocalBroadcastManager localBroadcastManager;
+
     public class ConnectionStatus implements ROSClient.ConnectionStatusListener {
 
         @Override
@@ -52,16 +54,23 @@ public class RosInit {
     }
 
     public RosInit(@NotNull Context context) {
+        localBroadcastManager = LocalBroadcastManager.getInstance(context);
+    }
+
+    public void rosConnect() {
+        if(isConnect)
+            return;
+
         ConnectionStatus connectionStatus = new ConnectionStatus();
-        ROSBridgeClient client = new ROSBridgeClient("ws://192.168.1.102:9090");
+        ROSBridgeClient client = new ROSBridgeClient("ws://192.168.1.100:9090");
         isConnect = client.connect();
-         if(isConnect){
-             initTopic(client);
-         }else{
-             Intent intent = new Intent(RosData.TOAST);
-             intent.putExtra("Hint","请检查机器人底盘网络");
-             HomeFragment.localBroadcastManager.sendBroadcast(intent);
-         }
+        if(isConnect){
+            initTopic(client);
+        }else{
+            Intent intent = new Intent(RosData.TOAST);
+            intent.putExtra("Hint","请检查机器人底盘网络");
+            localBroadcastManager.sendBroadcast(intent);
+        }
     }
 
     public void initTopic(ROSBridgeClient client) {
@@ -95,7 +104,7 @@ public class RosInit {
         System.out.println("position.z =" + RosData.map.info.origin.position.z);
 
         Intent intent = new Intent(RosData.MAP);
-        HomeFragment.localBroadcastManager.sendBroadcast(intent);
+        localBroadcastManager.sendBroadcast(intent);
     }
 
     public void getTF(){
@@ -114,7 +123,7 @@ public class RosInit {
                             RosData.BaseLink.transform = trans.transform;
                             RosData.BaseLink.fastConversion();
                             Intent intent = new Intent(RosData.TF);
-                            HomeFragment.localBroadcastManager.sendBroadcast(intent);
+                            localBroadcastManager.sendBroadcast(intent);
                         }
                     }
                 }
@@ -133,7 +142,7 @@ public class RosInit {
                         e.printStackTrace();
                     }
                     Intent intent = new Intent(RosData.MAP);
-                    HomeFragment.localBroadcastManager.sendBroadcast(intent);
+                    localBroadcastManager.sendBroadcast(intent);
                 }
             }
         }).start();

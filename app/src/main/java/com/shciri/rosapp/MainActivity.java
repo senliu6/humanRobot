@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
@@ -16,6 +17,7 @@ import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        /* 防止软键盘自动弹出 */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
         password = new String("");
@@ -47,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void KeyInput(int key) {
                 System.out.println("key = " + key);
-                if(password.length() >= 12){
-                    Toast.makeText(getApplicationContext(),"密码超出最大长度!", Toast.LENGTH_SHORT).show();
+                if (password.length() >= 12) {
+                    Toast.makeText(getApplicationContext(), "密码超出最大长度!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 passwordSet(key);
@@ -60,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(password.equals("123456")) {
-                    Intent intent=new Intent(MainActivity.this, TaskControlActivity.class);
+                if (password.equals("123456")) {
+                    Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
                     startActivity(intent);
-                }else {
-                    Toast.makeText(getApplicationContext(),"密码错误,请重试!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "密码错误,请重试!", Toast.LENGTH_SHORT).show();
                     password = "";
                     passwordEdit.setText(password);
                 }
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case 12:
-                if(password.length() >= 1) {
+                if (password.length() >= 1) {
                     password = password.substring(0, password.length() - 1);
                     passwordEdit.setText(password);
                     passwordEdit.setSelection(password.length());
@@ -101,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        if(password.length() > 0) {
+        if (password.length() > 0) {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.login_denglu4_21);
             setViewLayoutParams(findViewById(R.id.loginBt), 481, 84);
-        }else{
+        } else {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.denglu);
             setViewLayoutParams(findViewById(R.id.loginBt), 461, 64);
         }
@@ -137,16 +140,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         requestFullscreen();
+//        setStatusBar();
+    }
+
+    protected void setStatusBar() {
+        Window window = getWindow();
+
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
+
+    private int getStatusBarHeight(Context baseContext) {
+        return 0;
     }
 
     protected void requestFullscreen() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LOW_PROFILE   /* 设置状态栏和导航栏中的图标变小，变模糊或者弱化其效果 */
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE  /* 稳定布局，主要是在全屏和非全屏切换时，布局不要有大的变化。 */
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE  /* 稳定布局，主要是在全屏和非全屏切换时，布局不要有大的变化。 */
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY  /* 粘性沉浸模式 */
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION /* content doesn't resize when the system bars hide and show. */
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
+
 }

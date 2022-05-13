@@ -2,8 +2,8 @@
 <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="250dp"
-    android:layout_height="180dp"
+    android:layout_width="238dp"
+    android:layout_height="196dp"
     android:background="@mipmap/choosetask_beijingkuang4_21"
     android:gravity="center"
     android:orientation="vertical">
@@ -13,12 +13,14 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:textAlignment="center"
+            android:includeFontPadding="false"
             android:id="@+id/task_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="178dp"
+            android:layout_height="21dp"
             android:text="execute_task_1"
-            android:textColor="#ff02fde8"
-            android:textSize="16sp"
+            android:textColor="#02fde8"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/task_bt"
             app:layout_constraintHorizontal_bias="0.444"
@@ -28,8 +30,8 @@
 
         <ImageView
             android:id="@+id/task_bt"
-            android:layout_width="100dp"
-            android:layout_height="36dp"
+            android:layout_width="129dp"
+            android:layout_height="45dp"
             android:background="@drawable/tasks_report_text_shape"
             android:gravity="center"
             android:orientation="horizontal"
@@ -40,8 +42,8 @@
             app:layout_constraintVertical_bias="0.491" />
 
         <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_weight="1"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@+id/task_bt"
@@ -54,14 +56,16 @@
 
         <TextView
             android:id="@+id/textView10"
+            android:includeFontPadding="false"
+            android:textAlignment="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoSizeMaxTextSize="112sp"
-            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMinTextSize="20sp"
             android:autoSizeStepGranularity="2sp"
             android:text="空跑"
             android:textColor="#ff02fde8"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/task_bt"
             app:layout_constraintEnd_toEndOf="@+id/task_bt"
             app:layout_constraintStart_toStartOf="@+id/task_bt"
@@ -70,19 +74,19 @@
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginEnd="14dp"
             android:layout_weight="1"
+            android:background="@mipmap/choosetask_jiantouxia4_21"
+            android:entries="@array/spinner_string"
+            android:popupBackground="@drawable/shape_for_rosapp_spinner"
             android:scaleType="fitXY"
             android:spinnerMode="dropdown"
-            android:popupBackground="@drawable/shape_for_rosapp_spinner"
-            android:entries="@array/spinner_string"
             app:layout_constraintBottom_toBottomOf="@+id/task_bt"
             app:layout_constraintEnd_toEndOf="@+id/task_bt"
             app:layout_constraintHorizontal_bias="0.638"
             app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="@+id/task_bt"
-            android:background="@mipmap/choosetask_jiantouxia4_21" />
+            app:layout_constraintTop_toTopOf="@+id/task_bt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout >

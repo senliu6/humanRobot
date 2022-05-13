@@ -6,6 +6,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ public class TaskControlActivity extends AppCompatActivity {
         });
 
         mBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
+            @SuppressLint("RestrictedApi")
             @Override
             public void handleOnBackPressed() {
                 NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
