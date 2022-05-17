@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/choosetask_beijingkuang4_21"
+    android:focusable="auto"
+    android:focusableInTouchMode="true">
+
+
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="更多"
+        android:textColor="#ff02fde8"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.455" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="12dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/task_title"
+        app:layout_constraintEnd_toStartOf="@+id/task_title"
+        app:layout_constraintTop_toTopOf="@+id/task_title"
+        tools:srcCompat="@mipmap/choosetask_gengduo4_21"
+        android:contentDescription="" />
+</androidx.constraintlayout.widget.ConstraintLayout>

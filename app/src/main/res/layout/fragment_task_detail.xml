@@ -44,7 +44,7 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/tab_background_shape"
                 app:tabBackground="@drawable/tab_background_selector"
                 app:tabInlineLabel="false"
@@ -52,8 +52,8 @@
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/task_detail_view_pager"
-                android:layout_width="871dp"
-                android:layout_height="300dp"
+                android:layout_width="971dp"
+                android:layout_height="414dp"
                 android:layout_marginTop="40dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </LinearLayout>

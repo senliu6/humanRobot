@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 
 import com.shciri.rosapp.ui.TaskControlActivity;
 
@@ -24,11 +27,13 @@ public class MainActivity extends AppCompatActivity {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE" };
 
+    EditText mUsernameEt;
+    EditText mPasswordEt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.login_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2=new Intent(MainActivity.this, TaskControlActivity.class);
@@ -36,6 +41,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//        mUsernameEt = findViewById(R.id.username_et);
+//        mUsernameEt.setOnTouchListener(new View.OnTouchListener() {
+//            public boolean onTouch(View v, MotionEvent event) {
+//                mUsernameEt.setInputType(InputType.TYPE_NULL); // 关闭软键盘
+//                return false;
+//            }
+//        });
+
+//        mPasswordEt = findViewById(R.id.password_et);
+//        mPasswordEt.setOnTouchListener(new View.OnTouchListener() {
+//            public boolean onTouch(View v, MotionEvent event) {
+//                mPasswordEt.setInputType(InputType.TYPE_NULL); // 关闭软键盘
+//                return false;
+//            }
+//        });
     //    requestPermission();
     }
 

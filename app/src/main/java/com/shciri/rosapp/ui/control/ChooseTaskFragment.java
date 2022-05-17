@@ -3,12 +3,15 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shciri.rosapp.R;
@@ -19,10 +22,11 @@ import com.shciri.rosapp.ui.TaskControlActivity;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class ChooseTaskFragment extends Fragment {
+public class ChooseTaskFragment extends Fragment implements View.OnClickListener {
 
     private View mOpenDrawer;
     private View mHealthDialog;
+    private TextView mCirculateTv1,mCirculateTv2,mCirculateTv3,mCirculateTv4;
     private FragmentChooseTaskBinding binding;
     private OnBackPressedCallback mBackPressedCallback;
 
@@ -31,10 +35,16 @@ public class ChooseTaskFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         binding = FragmentChooseTaskBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
+    }
+
+    void setNoBackgroundCirculateTv(){
+        mCirculateTv1.setBackgroundResource(0);
+        mCirculateTv2.setBackgroundResource(0);
+        mCirculateTv3.setBackgroundResource(0);
+        mCirculateTv4.setBackgroundResource(0);
     }
 
     @Override
@@ -50,6 +60,14 @@ public class ChooseTaskFragment extends Fragment {
                 ((TaskControlActivity)getActivity()).openFrawerLayout();
             }
         });
+        mCirculateTv1 = binding.circulateTv1;
+        mCirculateTv2 = binding.circulateTv2;
+        mCirculateTv3 = binding.circulateTv3;
+        mCirculateTv4 = binding.circulateTv4;
+        mCirculateTv1.setOnClickListener(this);
+        mCirculateTv2.setOnClickListener(this);
+        mCirculateTv3.setOnClickListener(this);
+        mCirculateTv4.setOnClickListener(this);
 
         mHealthDialog = binding.healthIv;
         mHealthDialog.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +77,6 @@ public class ChooseTaskFragment extends Fragment {
                 healthDialog.setCancelable(false);//是否可以点击DialogView外关闭Dialog
                 healthDialog.setCanceledOnTouchOutside(false);//是否可以按返回按钮关闭Dialog
                 healthDialog.show();
-            }
-        });
-        binding.taskReportIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"onClick task report",Toast.LENGTH_SHORT).show();
             }
         });
         binding.taskReportIv.setOnClickListener(new View.OnClickListener() {
@@ -86,19 +98,17 @@ public class ChooseTaskFragment extends Fragment {
             }
         });
 
-//        mBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                Navigation.findNavController(view).navigateUp();
-//            }
-//        };
-//        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), mBackPressedCallback);
+        binding.moreTaskLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_addTaskFragment);
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mBackPressedCallback.remove();
     }
 
 
@@ -106,5 +116,29 @@ public class ChooseTaskFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.circulateTv1:
+                setNoBackgroundCirculateTv();
+                mCirculateTv1.setBackgroundColor(R.color.red);
+                break;
+            case R.id.circulateTv2:
+                setNoBackgroundCirculateTv();
+                mCirculateTv2.setBackgroundColor(R.color.red);
+                break;
+            case R.id.circulateTv3:
+                setNoBackgroundCirculateTv();
+                mCirculateTv3.setBackgroundColor(R.color.red);
+                break;
+            case R.id.circulateTv4:
+                setNoBackgroundCirculateTv();
+                mCirculateTv4.setBackgroundColor(R.color.red);
+                break;
+            default:
+                break;
+        }
     }
 }

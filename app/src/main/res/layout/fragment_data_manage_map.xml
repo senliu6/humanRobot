@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,18 +7,111 @@
     android:gravity="center"
     android:orientation="horizontal">
 
+    <LinearLayout
+        android:id="@+id/return_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="13dp"
+            android:layout_height="21dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:text="数据管理"
+            android:textColor="#ff02fde8"
+            android:textSize="22sp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="325dp"
-        android:layout_height="473dp"
+        android:layout_width="443dp"
+        android:layout_height="595dp"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/ros_map"
+        app:layout_constraintEnd_toStartOf="@+id/ros_map"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ros_map"
+        app:layout_optimizationLevel="chains"
         app:srcCompat="@mipmap/performmap_zuokuang4_21" />
 
-    <com.shciri.rosapp.ui.myview.RosMapView
-        android:background="@color/lightsteelblue"
-        android:layout_marginLeft="20dp"
+    <TextView
+        android:id="@+id/add_new_map"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="+扫描新地图"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+    <com.shciri.rosapp.ui.myview.MapView
         android:id="@+id/ros_map"
-        android:layout_width="518dp"
-        android:layout_height="472dp"/>
-</LinearLayout>
+        android:layout_width="648dp"
+        android:layout_height="595dp"
+        android:background="@color/lightsteelblue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <ImageView
+        android:id="@+id/imageView13"
+        android:layout_width="0dp"
+        android:layout_height="73dp"
+        android:background="#72A4B7"
+        app:layout_constraintEnd_toEndOf="@+id/ros_map"
+        app:layout_constraintStart_toStartOf="@+id/ros_map"
+        app:layout_constraintTop_toTopOf="@+id/ros_map" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="地图名称：戴盟"
+        android:textColor="#ff024e53"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/map_create_time_tv"
+        app:layout_constraintStart_toStartOf="@+id/imageView13"
+        app:layout_constraintTop_toTopOf="@+id/ros_map" />
+
+    <TextView
+        android:id="@+id/map_create_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="创建时间：2022-4-14 15:53:23"
+        android:textColor="#ff024e53"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+        app:layout_constraintStart_toStartOf="@+id/textView26"
+        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+    <TextView
+        android:id="@+id/map_size_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="地图宽度：59.2m  地图高：62.4m"
+        android:textColor="#ff024e53"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/map_create_time_tv"
+        app:layout_constraintStart_toEndOf="@+id/map_create_time_tv"
+        app:layout_constraintTop_toTopOf="@+id/map_create_time_tv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

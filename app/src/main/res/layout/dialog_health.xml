@@ -47,19 +47,22 @@
             app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <ImageButton
+        <TextView
             android:id="@+id/exit_iv"
-            android:layout_width="106dp"
-            android:layout_height="66dp"
+            android:layout_width="90dp"
+            android:layout_height="46dp"
+            android:background="@drawable/button_background_selector"
+            android:gravity="center"
             android:scaleType="fitXY"
-            android:background="@mipmap/health_queren4_21"
+            android:text="确认"
+            android:textColor="#F4F1F1"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toEndOf="@+id/textView9"
             app:layout_constraintTop_toTopOf="@+id/textView2"
-            app:layout_constraintVertical_bias="1.0"
-            />
+            app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

@@ -26,6 +26,9 @@
             android:id="@+id/action_nav_home_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_nav_home_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
     </fragment>
 
     <activity
@@ -61,4 +64,16 @@
         android:id="@+id/taskDetailFragment"
         android:name="com.shciri.rosapp.ui.taskdetail.TaskDetailFragment"
         android:label="TaskDetailFragment" />
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.shciri.rosapp.ui.addtask.AddTaskFragment"
+        android:label="AddTaskFragment" >
+        <action
+            android:id="@+id/action_addTaskFragment_to_addNewTaskFragment"
+            app:destination="@id/addNewTaskFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addNewTaskFragment"
+        android:name="com.shciri.rosapp.ui.addtask.AddNewTaskFragment"
+        android:label="AddNewTaskFragment" />
 </navigation>

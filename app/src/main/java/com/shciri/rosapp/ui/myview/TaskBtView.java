@@ -3,6 +3,8 @@ package com.shciri.rosapp.ui.myview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -38,8 +40,17 @@ public class TaskBtView extends RelativeLayout {
     }
 
     @Override
-    public boolean isFocused() {
-        return super.isFocused();
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        if(hasWindowFocus){
+            ScaleAnimation animation =new ScaleAnimation(1.0f, 1.3f, 1.0f, 1.3f,
+                    Animation.RELATIVE_TO_SELF, 0.01f, Animation.RELATIVE_TO_SELF, 0.5f);
+            //持续时间
+            animation.setDuration(1);
+            //动画结束是否保持结束状态
+            animation.setFillAfter(true);
+            this.setAnimation(animation);
+        }
     }
 
     public void setTitle(String title){

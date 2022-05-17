@@ -3,14 +3,18 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="numeric_key_width">78px</dimen>
-    <dimen name="numeric_key_height">52px</dimen>
+    <dimen name="numeric_key_width">98dp</dimen>
+    <dimen name="numeric_key_height">65dp</dimen>
     <dimen name="top_line">41dp</dimen>
     <!-- map control 参数 -->
-    <dimen name="map_control_width">101dp</dimen>
+    <dimen name="map_control_width">126dp</dimen>
     <dimen name="map_control_height">117dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-
+    <!-- add new task 参数 -->
+    <dimen name="add_new_task_width">492dp</dimen>
+    <dimen name="add_new_task_height">67dp</dimen>
+    <dimen name="add_new_task_margin_left">63dp</dimen>
+    <dimen name="add_new_task_text_size">24sp</dimen>
     <!-- drawer icon size -->
     <dimen name="drawer_icon_size_width">20dp</dimen>
     <dimen name="drawer_icon_size_height">20dp</dimen>
@@ -18,12 +22,14 @@
     <dimen name="drawer_icon_margin_left">55dp</dimen>
     <dimen name="drawer_text_margin_left">27dp</dimen>
     <dimen name="drawer_layout_margin_top">40dp</dimen>
-    <dimen name="drawer_layout_margin_left">30dp</dimen>
-
+    <dimen name="drawer_layout_margin_left">35dp</dimen>
+    <!-- add new task -->
+    <dimen name="add_new_task_text_margin_left">16dp</dimen>
+    <dimen name="add_new_task_text_margin_bottom">10dp</dimen>
     <!-- choose task size -->
     <dimen name="choose_task_icon_size_width">28dp</dimen>
     <dimen name="choose_task_icon_size_height">28dp</dimen>
-    <dimen name="choose_task_icon_margin_top">43dp</dimen>
+    <dimen name="choose_task_icon_margin_top">53dp</dimen>
     <dimen name="choose_task_icon_margin_left">42dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>

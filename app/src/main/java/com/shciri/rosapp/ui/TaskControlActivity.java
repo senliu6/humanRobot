@@ -63,6 +63,16 @@ public class TaskControlActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
+
+
+        findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+                navController.navigate(R.id.manageDataFragment);
+                drawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        });
     }
 
     public void openFrawerLayout() {

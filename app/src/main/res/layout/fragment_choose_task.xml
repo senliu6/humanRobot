@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.control.ChooseTaskFragment">
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.control.ChooseTaskFragment">
 
         <LinearLayout
             android:id="@+id/nav_view"
@@ -63,94 +60,142 @@
             app:layout_constraintStart_toEndOf="@+id/nav_view"
             app:layout_constraintTop_toTopOf="@+id/nav_view" />
 
-        <HorizontalScrollView
-            android:id="@+id/tasks_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintBottom_toBottomOf="@+id/nav_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/divider"
-            app:layout_constraintTop_toTopOf="@+id/nav_view">
+    <HorizontalScrollView
+        android:id="@+id/tasks_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@+id/nav_view">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <com.shciri.rosapp.ui.myview.TaskBtView
-                    android:id="@+id/task_bt"
-                    android:layout_width="250dp"
-                    android:layout_height="200dp" />
-
-                <com.shciri.rosapp.ui.myview.TaskBtView
-                    android:id="@+id/imageView32"
-                    android:layout_width="250dp"
-                    android:layout_height="200dp"
-                    android:layout_marginLeft="20dp" />
-
-                <com.shciri.rosapp.ui.myview.TaskBtView
-                    android:id="@+id/imageView33"
-                    android:layout_width="250dp"
-                    android:layout_height="200dp"
-                    android:layout_marginLeft="20dp" />
-
-                <com.shciri.rosapp.ui.myview.TaskBtView
-                    android:id="@+id/imageView36"
-                    android:layout_width="250dp"
-                    android:layout_height="200dp"
-                    android:layout_marginLeft="20dp" />
-            </LinearLayout>
-        </HorizontalScrollView>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@+id/tasks_view"
-            app:layout_constraintTop_toBottomOf="@+id/tasks_view">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="循环次数："
-                android:textColor="#ff02fde8"
-                android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:layout_marginLeft="40dp"
-                android:textColor="#ff02fde8"
-                android:textSize="25sp" />
+            <com.shciri.rosapp.ui.myview.TaskBtView
+                android:id="@+id/task_bt"
+                android:layout_width="238dp"
+                android:layout_height="196dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:layout_marginLeft="40dp"
-                android:textColor="#ff02fde8"
-                android:textSize="25sp" />
+            <com.shciri.rosapp.ui.myview.TaskBtView
+                android:id="@+id/imageView32"
+                android:layout_width="238dp"
+                android:layout_height="196dp"
+                android:layout_marginLeft="24dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:layout_marginLeft="40dp"
-                android:textColor="#ff02fde8"
-                android:textSize="25sp" />
+            <com.shciri.rosapp.ui.myview.TaskBtView
+                android:id="@+id/imageView33"
+                android:layout_width="238dp"
+                android:layout_height="196dp"
+                android:layout_marginLeft="24dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="∞"
-                android:layout_marginLeft="40dp"
-                android:textColor="#ff02fde8"
-                android:textSize="30sp" />
+            <LinearLayout
+                android:id="@+id/more_task_ll"
+                android:layout_width="238dp"
+                android:layout_height="196dp"
+                android:layout_marginLeft="24dp"
+                android:background="@mipmap/choosetask_beijingkuang4_21"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="fitXY"
+                    tools:srcCompat="@mipmap/choosetask_gengduo4_21" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="更多"
+                    android:textColor="#ff02fde8"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </HorizontalScrollView>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="循环次数："
+        android:textColor="#ff02fde8"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_view"
+        app:layout_constraintStart_toStartOf="@+id/tasks_view"
+        app:layout_constraintTop_toBottomOf="@+id/tasks_view" />
+
+    <TextView
+        android:id="@+id/circulateTv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="1"
+        android:clickable="true"
+        android:textColor="#ff02fde8"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/circulateTv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:clickable="true"
+        android:text="2"
+        android:textColor="#ff02fde8"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintStart_toEndOf="@+id/circulateTv1"
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/circulateTv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="3"
+        android:clickable="true"
+        android:textColor="#ff02fde8"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintStart_toEndOf="@+id/circulateTv2"
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/circulateTv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="∞"
+        android:clickable="true"
+        android:textColor="#ff02fde8"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintStart_toEndOf="@+id/circulateTv3"
+        app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+    <TextView
+        android:id="@+id/start_task_bt"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="开始任务"
+        android:textColor="#F4F1F1"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
+        app:layout_constraintEnd_toEndOf="@+id/tasks_view"
+        app:layout_constraintTop_toTopOf="@+id/textView21"
+        app:layout_constraintVertical_bias="0.545" />
+</androidx.constraintlayout.widget.ConstraintLayout>
