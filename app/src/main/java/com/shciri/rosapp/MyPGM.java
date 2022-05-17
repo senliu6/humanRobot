@@ -40,8 +40,8 @@ public class MyPGM {
 //                    if(b < 0) b = b + 256;
                     int a = b;
                     if(b == -1) a = 0; //外层透明层  a值越小透明度越高
-                    if(b == 100) a = 255;
-                    if(b == 0) a = 255;
+                    if(b == 100) a = 255; //边界层
+                    if(b == 0) a = 255; //内层
 
                     int current_y = i / iw;
                     int current_x = i - (current_y * iw);

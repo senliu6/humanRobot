@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="830dp"
+        app:srcCompat="@mipmap/lianjie5_12"
+        android:layout_width="21dp"
+        android:layout_height="21dp"/>
+
+    <ImageView
+        android:layout_marginTop="26dp"
+        android:layout_marginStart="28dp"
+        app:srcCompat="@mipmap/wifi5_12"
+        android:layout_width="25dp"
+        android:layout_height="21dp"/>
+
+    <ImageView
+        android:layout_marginTop="21dp"
+        android:layout_marginStart="30dp"
+        app:srcCompat="@mipmap/liuliang5_12"
+        android:layout_width="68dp"
+        android:layout_height="30dp"/>
+
+    <ImageView
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="33dp"
+        app:srcCompat="@mipmap/dianliang5_12"
+        android:layout_width="100dp"
+        android:layout_height="19dp"/>
+
+    <ImageView
+        android:layout_marginTop="29dp"
+        android:layout_marginStart="26dp"
+        app:srcCompat="@mipmap/shijian5_12"
+        android:layout_width="85dp"
+        android:layout_height="16dp"/>
+
+</LinearLayout>

@@ -23,22 +23,22 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.shciri.rosapp.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RosInit;
+import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.RosMapView;
 import com.shciri.rosapp.data.RosData;
 import com.shciri.rosapp.ui.myview.MyControllerView;
 import com.shciri.rosapp.peripheral.Buzzer;
+import com.shciri.rosapp.peripheral.DisinfectLed;
 import com.shciri.rosapp.peripheral.Led;
+import com.shciri.rosapp.peripheral.Misc;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
 
     View root;
 
-    private Buzzer buzzer = new Buzzer();
-    private Led led;
-
     public Button connectBtn;
 
-    public Switch ledSwitch;
+    public DmSwitchView ledSwitch;
 
     public MyControllerView controllerView;
 
@@ -53,7 +53,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public static LocalBroadcastManager localBroadcastManager;
 
     private RosMapView rosMapView;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,22 +79,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         ledSwitch = root.findViewById(R.id.led_switch);
 
-        led = new Led();
-        if(led.LedOpen() == -1)
-            Toast.makeText(getContext(), "设备打开失败！ ", Toast.LENGTH_SHORT).show();
-        else
-            led.LedIoctl(1,1);
-
-        ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    led.LedIoctl(0,0);
-                }else {
-                    led.LedIoctl(1,1);
-                }
-            }
-        });
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RosData.MAP);
@@ -105,8 +88,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
 
+        ledSwitch.connectLed();
+
         return root;
     }
+
 
     @Override
     public void onClick(View view) {

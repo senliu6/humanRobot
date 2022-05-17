@@ -1,6 +1,7 @@
 package com.shciri.rosapp.ui.myview;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -59,7 +61,7 @@ public class MapView extends View {
         this.mBitmap = map;
         mCurrentMatrix = new Matrix();
         if (getWidth() != 0 && getHeight() != 0) {
-            mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), ((float) mMapHeight) / mBitmap.getHeight());
+            mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), (((float) mMapHeight) / mBitmap.getHeight()));
         }
         postInvalidate();
     }
@@ -127,12 +129,13 @@ public class MapView extends View {
             isShowRobotPath = isShowPath;
         }
         if (isShowPath) {
-            PointF point = new PointF();
-            point.set(mRobotPoint);
-            mRobotPath.add(point);
+            PointF pointf = new PointF();
+            pointf.set(mRobotPoint);
+            mRobotPath.add(pointf);
         }
         postInvalidate();
     }
+
     public PointF getRobotPosition(){
         PointF point = new PointF();
         point.set(mRobotPoint);
@@ -218,7 +221,7 @@ public class MapView extends View {
         }
         //set robot image
         if (mRobotImage == null) {
-            mRobotImage = BitmapFactory.decodeResource(getResources(), R.drawable.robot_image);
+            mRobotImage = BitmapFactory.decodeResource(getResources(), R.drawable.zhixiang);
         }
         scaleRobotImage();
     }
@@ -255,8 +258,8 @@ public class MapView extends View {
         Paint paint = new Paint();
         super.onDraw(canvas);
         if (mBitmap != null) {
-            //画布使用白色填充
-            canvas.drawColor(Color.BLACK);
+            //画布使用透明填充
+            canvas.drawColor(Color.TRANSPARENT);
             canvas.drawBitmap(mBitmap, mCurrentMatrix, null);
         }
         if (isAddPathState) {
@@ -321,9 +324,9 @@ public class MapView extends View {
                 Path path = new Path();
                 float[] transPoint = new float[2];
                 for(int i = 0; i < mRobotPath.size(); i++){
-                    PointF point = mRobotPath.get(i);
-                    transPoint[0] = point.x;
-                    transPoint[1] = point.y;
+                    PointF pointf = mRobotPath.get(i);
+                    transPoint[0] = pointf.x;
+                    transPoint[1] = pointf.y;
                     mCurrentMatrix.mapPoints(transPoint);
                     if(i == 0){
                         path.moveTo(transPoint[0], transPoint[1]);
@@ -332,10 +335,12 @@ public class MapView extends View {
                     }
                 }
                 Paint pathPaint = new Paint();
-                pathPaint.setColor(Color.YELLOW);
+                pathPaint.setColor(Color.BLUE);
                 pathPaint.setAntiAlias(true);
                 pathPaint.setStyle(Paint.Style.STROKE);
-                pathPaint.setStrokeWidth(2);
+                pathPaint.setStrokeCap(Paint.Cap.ROUND);
+                pathPaint.setStrokeJoin(Paint.Join.ROUND);
+                pathPaint.setStrokeWidth(5);
                 canvas.drawPath(path, pathPaint);
             }
             float[] point = new float[]{mRobotPoint.x, mRobotPoint.y};
