@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/return_margin_top"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

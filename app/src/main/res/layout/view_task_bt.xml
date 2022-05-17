@@ -70,7 +70,7 @@
             app:layout_constraintEnd_toEndOf="@+id/task_bt"
             app:layout_constraintStart_toStartOf="@+id/task_bt"
             app:layout_constraintTop_toTopOf="@+id/task_bt" />
-        
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="15dp"

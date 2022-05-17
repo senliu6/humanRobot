@@ -32,4 +32,6 @@
     <dimen name="choose_task_icon_margin_top">53dp</dimen>
     <dimen name="choose_task_icon_margin_left">42dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="return_margin_top">48dp</dimen>
 </resources>
