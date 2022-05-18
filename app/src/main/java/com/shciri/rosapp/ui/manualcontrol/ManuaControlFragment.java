@@ -146,8 +146,8 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
 //        bitmap.setPixel(tX, tY + 1, Color.argb(100, 0, 150, 0));
 //        bitmap.setPixel(tX + 1, tY + 1, Color.argb(100, 0, 150, 0));
 
-        //System.out.println("RosData.BaseLink.yaw = " + RosData.BaseLink.yaw);
-        mMapView.setRobotPosition(tX, tY, RosData.BaseLink.yaw * 100, true);
+        //System.out.println("RosData.BaseLink.yaw = " + RosData.BaseLink.yaw*100);
+        mMapView.setRobotPosition(tX, RosData.map.info.height-tY, (RosData.BaseLink.yaw * 100)-120, true);
     }
 
     private void plotMap() {

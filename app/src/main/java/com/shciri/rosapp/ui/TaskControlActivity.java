@@ -1,5 +1,7 @@
 package com.shciri.rosapp.ui;
 
+import static com.shciri.rosapp.R.id.tasks_view;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,11 +31,13 @@ public class TaskControlActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
+
         drawerLayout = findViewById(R.id.drawer_layout);
         findViewById(R.id.drawer_close_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.closeDrawer(Gravity.LEFT);
+                finish();
             }
         });
 
@@ -45,12 +49,25 @@ public class TaskControlActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(Gravity.LEFT);
             }
         });
-        findViewById(R.id.drawer_close_ll).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.location_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+                navController.navigate(R.id.nav_home);
+                drawerLayout.closeDrawer(Gravity.LEFT);
             }
         });
+
+        findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+                navController.navigate(R.id.manageDataFragment);
+                drawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        });
+
 
         mBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
             @SuppressLint("RestrictedApi")
@@ -65,16 +82,6 @@ public class TaskControlActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
-
-
-        findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-                navController.navigate(R.id.manageDataFragment);
-                drawerLayout.closeDrawer(Gravity.LEFT);
-            }
-        });
     }
 
     public void openFrawerLayout() {

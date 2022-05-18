@@ -31,6 +31,7 @@
             app:destination="@id/addTaskFragment" />
     </fragment>
 
+
     <activity
         android:id="@+id/taskReportActivity"
         android:name="com.shciri.rosapp.ui.taskshistory.TasksHistoryReportActivity"
@@ -48,6 +49,7 @@
             app:destination="@id/managePathInfoFragment"
             app:launchSingleTop="true" />
     </fragment>
+
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.shciri.rosapp.ui.datamanagement.DataManageMapFragment"
@@ -72,6 +74,7 @@
             android:id="@+id/action_addTaskFragment_to_addNewTaskFragment"
             app:destination="@id/addNewTaskFragment"/>
     </fragment>
+
     <fragment
         android:id="@+id/addNewTaskFragment"
         android:name="com.shciri.rosapp.ui.addtask.AddNewTaskFragment"

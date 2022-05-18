@@ -119,7 +119,8 @@ public class MapView extends View {
         postInvalidate();
     }
 
-    public void setRobotPosition(float x, float y, float direction, boolean isShowPath) {
+    public void
+    setRobotPosition(float x, float y, float direction, boolean isShowPath) {
         isShowRobotState = true;
         mRobotDirection = direction;
         mRobotPoint.x = x;
@@ -335,12 +336,12 @@ public class MapView extends View {
                     }
                 }
                 Paint pathPaint = new Paint();
-                pathPaint.setColor(Color.BLUE);
+                pathPaint.setColor(Color.GREEN);
                 pathPaint.setAntiAlias(true);
                 pathPaint.setStyle(Paint.Style.STROKE);
                 pathPaint.setStrokeCap(Paint.Cap.ROUND);
                 pathPaint.setStrokeJoin(Paint.Join.ROUND);
-                pathPaint.setStrokeWidth(5);
+                pathPaint.setStrokeWidth(8);
                 canvas.drawPath(path, pathPaint);
             }
             float[] point = new float[]{mRobotPoint.x, mRobotPoint.y};

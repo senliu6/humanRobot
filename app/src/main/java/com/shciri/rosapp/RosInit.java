@@ -62,7 +62,7 @@ public class RosInit {
             return;
 
         ConnectionStatus connectionStatus = new ConnectionStatus();
-        ROSBridgeClient client = new ROSBridgeClient("ws://192.168.1.100:9090");
+        ROSBridgeClient client = new ROSBridgeClient("ws://192.168.1.104:9090");
         isConnect = client.connect();
         if(isConnect){
             initTopic(client);
