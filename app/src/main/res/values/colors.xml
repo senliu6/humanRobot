@@ -6,6 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="dm_color">#02fde8</color>
 
     <color name="ros_bt_line">#06B9D0</color>
     <color name="ros_bt_bg">#324348</color>

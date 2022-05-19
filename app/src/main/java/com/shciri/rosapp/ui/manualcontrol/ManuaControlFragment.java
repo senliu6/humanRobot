@@ -52,8 +52,6 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
 
     private Bitmap bitmap;
 
-    private RosInit rosInit;
-
     private LocalReceiver localReceiver;
 
     public static LocalBroadcastManager localBroadcastManager;
@@ -101,7 +99,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
 
-        rosInit = new RosInit(getContext());
+
 
         return root;
     }
@@ -123,11 +121,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.connect_btn) {
-            new Thread(() -> {
-                rosInit.rosConnect();
-                rosInit.getTF();
-                rosInit.getMap();
-            }).start();
+
             return;
         }
     }

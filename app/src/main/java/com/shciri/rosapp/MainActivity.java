@@ -4,14 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.view.MotionEvent;
@@ -24,7 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shciri.rosapp.data.RosData;
 import com.shciri.rosapp.ui.TaskControlActivity;
+import com.shciri.rosapp.ui.manualcontrol.ManuaControlFragment;
 import com.shciri.rosapp.ui.myview.LoginKeyboardView;
 
 import java.nio.charset.StandardCharsets;
@@ -36,10 +46,21 @@ public class MainActivity extends AppCompatActivity {
 
     private String password;
 
+    private ContentLoadingProgressBar connectingProgressBar;
+
+    private RosInit rosInit;
+
+    private Handler handler;
+
+    private AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        connectingProgressBar = findViewById(R.id.connecting_progress_bar);
+        connectingProgressBar.setVisibility(View.VISIBLE);
 
         /* 防止软键盘自动弹出 */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -49,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         loginKeyboardView.setLoginKeyboardListener(new LoginKeyboardView.LoginKeyboardListener() {
             @Override
             public void KeyInput(int key) {
-                System.out.println("key = " + key);
                 if (password.length() >= 12) {
                     Toast.makeText(getApplicationContext(), "密码超出最大长度!", Toast.LENGTH_SHORT).show();
                     return;
@@ -73,6 +93,61 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        handler = new myHandler();
+
+        alertDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT)
+                .setTitle("Warning")
+                .setMessage("请检查机器人底盘网络，或者进入离线模式？")
+                .setIcon(R.mipmap.choosetask_duankailianjie4_21)
+                .setCancelable(false)
+                .setPositiveButton("进入离线模式", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getBaseContext(), "进入离线模式", Toast.LENGTH_SHORT).show();
+                        RosInit.offLineMode = true;
+                    }
+                })
+
+                .setNegativeButton("重试", new DialogInterface.OnClickListener() {//添加取消
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getBaseContext(), "重试中", Toast.LENGTH_SHORT).show();
+                    }
+                }).create();
+
+        rosInit = new RosInit(getBaseContext());
+        rosConnectAndInit();
+    }
+
+    private class myHandler extends Handler{
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if(!alertDialog.isShowing()){
+                alertDialog.show();
+            }
+        }
+    }
+    private void rosConnectAndInit() {
+        new Thread(() -> {
+            while (true) {
+                rosInit.rosConnect();
+                if(RosInit.isConnect || RosInit.offLineMode){
+                    return;
+                }else{
+                    Message message = Message.obtain();
+                    handler.sendMessage(message);
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            //rosInit.getTF();
+            //rosInit.getMap();
+        }).start();
     }
 
     private void passwordSet(int key) {

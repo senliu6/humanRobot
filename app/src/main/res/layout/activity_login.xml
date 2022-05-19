@@ -20,6 +20,16 @@
         android:scaleType="fitXY"
         app:srcCompat="@mipmap/tou4_21" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/connecting_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="#02fde8"
+        android:visibility="invisible"
+        tools:ignore="UnusedAttribute" />
+
     <LinearLayout
         android:layout_marginTop="3dp"
         android:layout_width="1104dp"
@@ -48,7 +58,7 @@
             android:lineSpacingExtra="1dp"
             android:text="登陆到机器人"
             android:textAlignment="center"
-            android:textColor="#ff02fde8"
+            android:textColor="#02fde8"
             android:textSize="28sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

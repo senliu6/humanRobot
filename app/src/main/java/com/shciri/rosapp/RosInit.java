@@ -3,6 +3,8 @@ package com.shciri.rosapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -32,8 +34,11 @@ public class RosInit {
     public static src.com.jilk.ros.Topic<MoveGoal> goalTopic;
 
     public static boolean isConnect;
+    public static boolean offLineMode;
 
     public static LocalBroadcastManager localBroadcastManager;
+
+    private Context context;
 
     public class ConnectionStatus implements ROSClient.ConnectionStatusListener {
 
@@ -54,6 +59,7 @@ public class RosInit {
     }
 
     public RosInit(@NotNull Context context) {
+        this.context = context;
         localBroadcastManager = LocalBroadcastManager.getInstance(context);
     }
 
@@ -66,10 +72,6 @@ public class RosInit {
         isConnect = client.connect();
         if(isConnect){
             initTopic(client);
-        }else{
-            Intent intent = new Intent(RosData.TOAST);
-            intent.putExtra("Hint","请检查机器人底盘网络");
-            localBroadcastManager.sendBroadcast(intent);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.shciri.rosapp.data;
 
+import android.graphics.Bitmap;
+
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.MapMetaData;
 import src.com.jilk.ros.message.MapMsg;
@@ -13,6 +15,7 @@ public class RosData {
     public static MapMsg map;
     public static TFTopic tf;
     public static MoveGoal moveGoal;
+    public static Bitmap rosBitmap;
 
     public static final String MAP = "com.shciri.rosapp.map";
     public static final String TF = "com.shciri.rosapp.tf";
