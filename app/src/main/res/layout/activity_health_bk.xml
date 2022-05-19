@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_line"
         android:scaleType="fitXY"
-        app:srcCompat="@mipmap/login_tou4_21" />
+        app:srcCompat="@mipmap/tou4_21" />
 
     <LinearLayout
         android:layout_width="776dp"

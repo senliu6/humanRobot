@@ -18,7 +18,7 @@
         android:layout_width="1280dp"
         android:layout_height="51dp"
         android:scaleType="fitXY"
-        app:srcCompat="@mipmap/login_tou4_21" />
+        app:srcCompat="@mipmap/tou4_21" />
 
     <LinearLayout
         android:layout_marginTop="3dp"
@@ -35,7 +35,7 @@
             android:layout_marginTop="50dp"
             android:adjustViewBounds="false"
             android:scaleType="fitXY"
-            app:srcCompat="@mipmap/login_logo4_21" />
+            app:srcCompat="@mipmap/logo4_21" />
 
         <TextView
             android:id="@+id/textView"
@@ -197,8 +197,8 @@
 
                     <ImageView
                         android:id="@+id/loginBt"
-                        android:layout_width="461dp"
-                        android:layout_height="64dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:background="@mipmap/denglu" />
 

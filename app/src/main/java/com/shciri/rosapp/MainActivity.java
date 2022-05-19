@@ -106,10 +106,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (password.length() > 0) {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.login_denglu4_21);
-            setViewLayoutParams(findViewById(R.id.loginBt), 481, 84);
+//            setViewLayoutParams(findViewById(R.id.loginBt), 481, 84);
         } else {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.denglu);
-            setViewLayoutParams(findViewById(R.id.loginBt), 461, 64);
+//            setViewLayoutParams(findViewById(R.id.loginBt), 461, 64);
         }
     }
 

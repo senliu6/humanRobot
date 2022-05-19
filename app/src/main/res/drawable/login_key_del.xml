@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true"
-        android:drawable="@mipmap/shanchu" /> <!-- pressed -->
+        android:drawable="@mipmap/press_shanchu" /> <!-- pressed -->
     <item android:state_focused="true"
-        android:drawable="@mipmap/shanchu" /> <!-- focused -->
+        android:drawable="@mipmap/press_shanchu" /> <!-- focused -->
     <item android:state_hovered="true"
-        android:drawable="@mipmap/shanchu" /> <!-- hovered -->
+        android:drawable="@mipmap/press_shanchu" /> <!-- hovered -->
     <item android:drawable="@mipmap/login_shanchu4_21" /> <!-- default -->
 </selector>
