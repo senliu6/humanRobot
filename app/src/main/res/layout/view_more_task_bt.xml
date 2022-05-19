@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/choosetask_beijingkuang4_21"
-    android:focusable="auto"
-    android:focusableInTouchMode="true">
-
+    android:background="@mipmap/choosetask_beijingkuang4_21">
 
     <TextView
         android:id="@+id/task_title"

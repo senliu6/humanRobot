@@ -43,7 +43,7 @@ public class TaskDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager = view.findViewById(R.id.task_detail_view_pager);
-        TasksDetailPagerAdapter tasksDetailAdapter = new TasksDetailPagerAdapter( getParentFragmentManager());
+        TasksDetailPagerAdapter tasksDetailAdapter = new TasksDetailPagerAdapter( getChildFragmentManager());
         viewPager.setAdapter(tasksDetailAdapter);
         tabs = view.findViewById(R.id.tabs);;
         tabs.setupWithViewPager(viewPager);
@@ -53,53 +53,21 @@ public class TaskDetailFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-//        setupTabIcons();
-//        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                if (tab.getCustomView() != null) {
-//                    tab.pagerAdapter.getPageTitle(i);
-//                    ImageView tab_iv = tab.getCustomView().findViewById(R.id.title_bg);
-//                    tab_iv.setVisibility(VISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                if (tab.getCustomView() != null) {
-//                    ImageView tab_iv = tab.getCustomView().findViewById(R.id.title_bg);
-//                    tab_iv.setVisibility(INVISIBLE);
-//                }
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
-
-//    public View getTabView(int position) {
-//        View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_tab, null);
-//        TextView title_tv = (TextView) view.findViewById(R.id.title_tv);
-//        title_tv.setText(titles.get(position));
-//        ImageView img_title = (ImageView) view.findViewById(R.id.img_title);
-//        img_title.setImageResource(tabIcons[position]);
-//
-//        if (position == 0) {
-//            title_tv.setTextColor(Color.YELLOW);
-//            img_title.setImageResource(tabIconsPressed[position]);
-//        } else {
-//            title_tv.setTextColor(Color.WHITE);
-//            img_title.setImageResource(tabIcons[position]);
-//        }
-//        return view;
-//    }
-//
-//    private void setupTabIcons() {
-//        tabs.getTabAt(0).setCustomView(getTabView(0));
-//        tabs.getTabAt(1).setCustomView(getTabView(1));
-//        tabs.getTabAt(2).setCustomView(getTabView(2));
-//    }
 }

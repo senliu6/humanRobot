@@ -3,20 +3,29 @@ package com.shciri.rosapp.ui.myview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shciri.rosapp.R;
 
-public class TaskBtView extends RelativeLayout {
+import java.util.ArrayList;
+
+public class TaskBtView extends RelativeLayout implements View.OnClickListener {
 
     TextView mTitleTv;
     Spinner mSpinner;
+    View mMoreInfo;
+    ImageView mEditIv;
+    ArrayList<MoreInfoClickListener> mClickListeners = new ArrayList<>();
+
     public TaskBtView(Context context) {
         super(context);
         initView(context);
@@ -32,28 +41,45 @@ public class TaskBtView extends RelativeLayout {
         initView(context);
     }
 
-    private void initView(Context context){
+    private void initView(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_task_bt, this, true);
         mTitleTv = (TextView) findViewById(R.id.task_title);
-        mSpinner = (Spinner)findViewById(R.id.spinner);
+        mEditIv = (ImageView) findViewById(R.id.editIv);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        mMoreInfo = findViewById(R.id.moreInfo);
+        mMoreInfo.setOnClickListener(this);
+        mEditIv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "click Edit ImageView!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    public void setMoreInfoVisibility(int isVisibility) {
+        mMoreInfo.setVisibility(isVisibility);
+    }
+
+    public void setTitle(String title) {
+        mTitleTv.setText(title);
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-        if(hasWindowFocus){
-            ScaleAnimation animation =new ScaleAnimation(1.0f, 1.3f, 1.0f, 1.3f,
-                    Animation.RELATIVE_TO_SELF, 0.01f, Animation.RELATIVE_TO_SELF, 0.5f);
-            //持续时间
-            animation.setDuration(1);
-            //动画结束是否保持结束状态
-            animation.setFillAfter(true);
-            this.setAnimation(animation);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.moreInfo:
+                for (MoreInfoClickListener listener : mClickListeners) {
+                    listener.onClick();
+                }
+                break;
         }
     }
 
-    public void setTitle(String title){
-        mTitleTv.setText(title);
+    public void setMoreInfoClickListener(MoreInfoClickListener listener){
+        mClickListeners.add(listener);
+    }
+
+    public interface MoreInfoClickListener {
+        void onClick();
     }
 }
