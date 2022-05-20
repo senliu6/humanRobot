@@ -46,6 +46,8 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_manua_control_LOCAL_2090.xml" value="0.2747395833333333" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_network.xml" value="0.321875" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_task_detail.xml" value="0.17" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_task_detail_map_view.xml" value="0.12065972222222222" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_task_detail_work_view.xml" value="0.12065972222222222" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_task_history_report_list.xml" value="0.12309027777777778" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_list.xml" value="0.40260416666666665" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_task_report_list.xml" value="0.12309027777777778" />
@@ -59,8 +61,9 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_login_keyboard.xml" value="0.2747395833333333" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_login_keybord.xml" value="0.67" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_map_ros.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_more_task_bt.xml" value="0.12065972222222222" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_tab_layout.xml" value="0.12378472222222223" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_task_bt.xml" value="0.9" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_task_bt.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.41" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.41" />
         <entry key="..\:/Works/RosApp/ros-app/app/src/main/res/layout/activity_login.xml" value="0.2683333333333333" />

@@ -15,7 +15,7 @@
         <TextView
             android:textAlignment="center"
             android:includeFontPadding="false"
-            android:id="@+id/task_title"
+            android:id="@+id/task_bt_title"
             android:layout_width="178dp"
             android:layout_height="21dp"
             android:text="execute_task_1"
@@ -38,10 +38,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_title"
+            app:layout_constraintTop_toBottomOf="@+id/task_bt_title"
             app:layout_constraintVertical_bias="0.491" />
 
         <ImageView
+            android:id="@+id/task_bt_pen_icon"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_weight="1"
@@ -72,7 +73,7 @@
             app:layout_constraintTop_toTopOf="@+id/task_bt" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/task_bt_spinner"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_marginEnd="14dp"

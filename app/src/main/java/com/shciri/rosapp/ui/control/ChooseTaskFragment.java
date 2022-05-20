@@ -79,6 +79,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 healthDialog.show();
             }
         });
+
         binding.taskReportIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,12 +92,12 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 Navigation.findNavController(view).navigate(R.id.action_nav_home_to_manuaControlFragment);
             }
         });
-        binding.taskBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
-            }
-        });
+//        binding.taskBt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
+//            }
+//        });
 
         binding.moreTaskLl.setOnClickListener(new View.OnClickListener() {
             @Override
