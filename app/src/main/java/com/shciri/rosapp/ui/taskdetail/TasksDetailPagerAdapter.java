@@ -29,7 +29,6 @@ public class TasksDetailPagerAdapter extends FragmentPagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-//        return mContext.getResources().getString(TAB_TITLES[position]);
         return TAB_TITLES[position];
     }
 
