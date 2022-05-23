@@ -28,14 +28,15 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/drawable/switch_ios_track_selector.xml" value="0.27" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_health_bk.xml" value="0.11354166666666667" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_horizontal_top_ntb.xml" value="0.33" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_login.xml" value="0.5" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_login_bk.xml" value="0.11354166666666667" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_main.xml" value="0.14" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_task_control.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_task_histroy_report.xml" value="0.11354166666666667" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_vertical_ntb.xml" value="0.3338541666666667" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_add_new_task.xml" value="0.12065972222222222" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_add_task.xml" value="0.11354166666666667" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_choose_task.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_choose_task.xml" value="0.22" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_data_manage.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_data_manage_map.xml" value="0.5" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_data_manage_path_info.xml" value="0.5" />
@@ -54,6 +55,8 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_vp.xml" value="0.4171875" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/item_vp_list.xml" value="0.40260416666666665" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/status_bar.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_bt_spinner_item_drapdown.xml" value="0.67" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_bt_spinner_item_select.xml" value="0.75" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_control_main.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_control_main_bk.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_controller.xml" value="0.25" />
@@ -63,7 +66,7 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_map_ros.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_more_task_bt.xml" value="0.12065972222222222" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_tab_layout.xml" value="0.12378472222222223" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_task_bt.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_task_bt.xml" value="0.75" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.41" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.41" />
         <entry key="..\:/Works/RosApp/ros-app/app/src/main/res/layout/activity_login.xml" value="0.2683333333333333" />

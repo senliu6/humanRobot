@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             if(!alertDialog.isShowing()){
-                alertDialog.show();
+               // alertDialog.show();
             }
         }
     }

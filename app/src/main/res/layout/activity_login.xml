@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/login_dabeijing4_21"
+    android:background="@mipmap/dabeijing"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 

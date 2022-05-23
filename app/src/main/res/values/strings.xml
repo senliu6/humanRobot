@@ -110,4 +110,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="user">user</string>
     <string name="admin">admin</string>
+    <string name="task_bt_default_run_state">空跑</string>
 </resources>

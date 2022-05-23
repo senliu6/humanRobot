@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="#093747"
+    android:includeFontPadding="false"
+    android:text="@string/task_bt_default_run_state"
+    android:textColor="#ff02fde8"
+    android:textSize="22sp"
+    android:gravity="center"/>

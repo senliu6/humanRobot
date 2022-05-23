@@ -53,10 +53,8 @@
         <item>reply_all</item>
     </string-array>
 
-        <string-array name="spinner_string">
-            <item>空跑1</item>
-            <item>空跑2</item>
-            <item>空跑3</item>
-            <item>空跑4</item>
-        </string-array>
+    <string-array name="spinner_string">
+        <item>空跑</item>
+        <item>消杀</item>
+    </string-array>
 </resources>

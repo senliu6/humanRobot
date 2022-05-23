@@ -113,20 +113,20 @@
             <com.shciri.rosapp.ui.myview.TaskBtView
                 android:layout_marginStart="@dimen/task_bt_margin"
                 android:focusableInTouchMode="true"
-                android:id="@+id/imageView31"
+                android:id="@+id/task_bt1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <com.shciri.rosapp.ui.myview.TaskBtView
                 android:focusableInTouchMode="true"
-                android:id="@+id/imageView32"
+                android:id="@+id/task_bt2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/task_bt_margin" />
 
             <com.shciri.rosapp.ui.myview.TaskBtView
                 android:focusableInTouchMode="true"
-                android:id="@+id/imageView33"
+                android:id="@+id/task_bt3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/task_bt_margin" />
