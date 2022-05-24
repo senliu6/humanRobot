@@ -12,6 +12,7 @@
     <color name="ros_bt_bg">#324348</color>
     <color name="ros_input_bg">#324449</color>
 
+    <color name="rot_map_color">#9FB7CF</color>
     <color name="ros_input_line_unselect">#06B9D0</color>
     <color name="ros_input_bg_unselect">#324348</color>
     <color name="ros_input_line_selected">#FF03DAC5</color>

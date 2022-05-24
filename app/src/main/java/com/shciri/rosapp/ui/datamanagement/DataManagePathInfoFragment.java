@@ -40,10 +40,10 @@ public class DataManagePathInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if(RosInit.isConnect){
-            mMapView = view.findViewById(R.id.ros_map);
+            mMapView = view.findViewById(R.id.mapView);
             mMapView.setBitmap(RosData.rosBitmap, 12);
         }else {
-            mMapView = view.findViewById(R.id.ros_map);
+            mMapView = view.findViewById(R.id.mapView);
             Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
             mMapView.setBitmap(map, 12);
         }
@@ -65,7 +65,7 @@ public class DataManagePathInfoFragment extends Fragment {
         view.findViewById(R.id.add_rect_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.startRect();
+                mMapView.startRectState();
             }
         });
 

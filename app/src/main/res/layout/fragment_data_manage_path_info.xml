@@ -149,13 +149,13 @@
         <com.shciri.rosapp.ui.myview.MapView
             app:layout_constraintTop_toBottomOf="@+id/map_manager_map_info_view"
             app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/ros_map"
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="560dp"
             android:background="@color/powderblue" />
 
         <TextView
-            app:layout_constraintStart_toStartOf="@+id/ros_map"
+            app:layout_constraintStart_toStartOf="@+id/mapView"
             app:layout_constraintEnd_toStartOf="@id/exit_bt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

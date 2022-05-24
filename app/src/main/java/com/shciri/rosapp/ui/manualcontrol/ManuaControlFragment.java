@@ -74,7 +74,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         };
 
         controllerView.setMoveListener(moveListener);
-        mMapView = root.findViewById(R.id.ros_map);
+        mMapView = root.findViewById(R.id.mapView);
 //        Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
 //        mMapView.setBitmap(map, 12);
 //        mMapView.setRobotPosition(200, 300, (float) 0.3, true);

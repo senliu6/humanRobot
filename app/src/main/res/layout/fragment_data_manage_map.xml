@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:gravity="center_vertical"
         android:layout_marginTop="@dimen/return_margin_top"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,11 +38,12 @@
         android:layout_width="443dp"
         android:layout_height="595dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/ros_map"
-        app:layout_constraintEnd_toStartOf="@+id/ros_map"
+        app:layout_constraintBottom_toBottomOf="@+id/mapView"
+        app:layout_constraintEnd_toStartOf="@+id/mapView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ros_map"
+        app:layout_constraintTop_toTopOf="@+id/mapView"
+        app:layout_constraintVertical_bias="0.0"
         app:layout_optimizationLevel="chains"
         app:srcCompat="@mipmap/performmap_zuokuang4_21" />
 
@@ -61,7 +62,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
     <com.shciri.rosapp.ui.myview.MapView
-        android:id="@+id/ros_map"
+        android:id="@+id/mapView"
         android:layout_width="648dp"
         android:layout_height="595dp"
         android:background="@color/lightsteelblue"
@@ -72,14 +73,128 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8" />
 
+    <TextView
+        android:id="@+id/startEraseMapTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="开始修图"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/startVirtualWallTv"
+        app:layout_constraintEnd_toStartOf="@+id/undoEraseMapTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/startVirtualWallTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="开始虚拟墙"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/add_new_map"
+        app:layout_constraintEnd_toStartOf="@+id/saveVirtualWallTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/saveVirtualWallTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="保存虚拟墙"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/startVirtualWallTv"
+        app:layout_constraintEnd_toStartOf="@+id/addVirtualWallTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/startVirtualWallTv" />
+
+    <TextView
+        android:id="@+id/addVirtualWallTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="添加虚拟点"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/startVirtualWallTv"
+        app:layout_constraintEnd_toStartOf="@+id/exitVirtualWallTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/saveVirtualWallTv" />
+
+    <TextView
+        android:id="@+id/exitVirtualWallTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="退出虚拟墙"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/startVirtualWallTv"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addVirtualWallTv" />
+
+    <TextView
+        android:id="@+id/undoEraseMapTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="撤销操作"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/saveEraseMapTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/startEraseMapTv"
+        app:layout_constraintTop_toTopOf="@+id/startEraseMapTv" />
+
+    <TextView
+        android:id="@+id/endEraseMapTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="退出修图"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/saveEraseMapTv"
+        app:layout_constraintTop_toTopOf="@+id/startEraseMapTv" />
+
+    <TextView
+        android:id="@+id/saveEraseMapTv"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="保存修图"
+        android:textColor="#F4F1F1"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/endEraseMapTv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/undoEraseMapTv"
+        app:layout_constraintTop_toTopOf="@+id/startEraseMapTv" />
+
     <ImageView
         android:id="@+id/imageView13"
         android:layout_width="0dp"
         android:layout_height="73dp"
         android:background="#72A4B7"
-        app:layout_constraintEnd_toEndOf="@+id/ros_map"
-        app:layout_constraintStart_toStartOf="@+id/ros_map"
-        app:layout_constraintTop_toTopOf="@+id/ros_map" />
+        app:layout_constraintEnd_toEndOf="@+id/mapView"
+        app:layout_constraintStart_toStartOf="@+id/mapView"
+        app:layout_constraintTop_toTopOf="@+id/mapView" />
 
     <TextView
         android:id="@+id/textView26"
@@ -91,7 +206,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/map_create_time_tv"
         app:layout_constraintStart_toStartOf="@+id/imageView13"
-        app:layout_constraintTop_toTopOf="@+id/ros_map" />
+        app:layout_constraintTop_toTopOf="@+id/mapView" />
 
     <TextView
         android:id="@+id/map_create_time_tv"

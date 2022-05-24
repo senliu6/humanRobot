@@ -1,19 +1,21 @@
 package com.shciri.rosapp.ui.myview;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 public class MapView extends View {
 
     private Bitmap mBitmap = null;
+    private Bitmap mOriginBitmap = null;
     private int mMapWidth, mMapHeight;
     private Matrix mCurrentMatrix = new Matrix();
 
@@ -47,18 +50,120 @@ public class MapView extends View {
 
     public MapView(Context context) {
         super(context);
+        initPaints();
     }
 
     public MapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        initPaints();
     }
 
     public MapView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initPaints();
     }
 
+    Paint mErasePaint;
+    Paint mErasePointPaint;
+
+    Paint mAddPathPaint;
+    Paint mAddPathPointPaint;
+    Paint mAddPathStartPointPaint;
+
+    Paint mVirtualWallPathPaint;
+    Paint mVirtualWallPathPointPaint;
+    Paint mVirtualWallPathStartPointPaint;
+    Paint mVirtualWallUnsavePath;
+
+    Paint mShowRectPaint;
+    Paint mShowOldRectPaint;
+    Paint mShowRectPointPaint;
+
+    Paint mRobotPathPaint;
+
+    private void initPaints() {
+        //擦除功能
+        mErasePaint = new Paint();
+        mErasePaint.setAntiAlias(true);
+        mErasePaint.setStrokeJoin(Paint.Join.ROUND);
+        mErasePaint.setStrokeCap(Paint.Cap.ROUND);
+        mErasePaint.setStyle(Paint.Style.STROKE);
+        mErasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mErasePaint.setStrokeWidth(mEraseRadius * 2);
+
+        mErasePointPaint = new Paint();
+        mErasePointPaint.setColor(Color.RED);
+        mErasePointPaint.setAntiAlias(true);
+        mErasePointPaint.setPathEffect(new DashPathEffect(new float[]{4, 4}, 1));
+        mErasePointPaint.setStyle(Paint.Style.STROKE);
+        mErasePointPaint.setStrokeCap(Paint.Cap.ROUND);
+        mErasePointPaint.setStrokeWidth(3);
+
+        //添加路径功能
+        mAddPathPointPaint = new Paint();
+        mAddPathPointPaint.setColor(Color.BLUE);
+        mAddPathStartPointPaint = new Paint();
+        mAddPathStartPointPaint.setColor(Color.RED);
+
+        mAddPathPaint = new Paint();
+        mAddPathPaint.setColor(Color.YELLOW);
+        mAddPathPaint.setAntiAlias(true);
+        mAddPathPaint.setStyle(Paint.Style.STROKE);
+        mAddPathPaint.setStrokeWidth(2);
+
+        //选择区域功能
+        mShowRectPaint = new Paint();
+        mShowRectPaint.setAntiAlias(true);
+        mShowRectPaint.setStrokeWidth(2);
+        mShowRectPaint.setStyle(Paint.Style.STROKE);
+        mShowRectPaint.setColor(Color.RED);
+
+        mShowOldRectPaint = new Paint();
+        mShowOldRectPaint.setAntiAlias(true);
+        mShowOldRectPaint.setStrokeWidth(2);
+        mShowOldRectPaint.setStyle(Paint.Style.STROKE);
+        mShowOldRectPaint.setColor(Color.YELLOW);
+
+        mShowRectPointPaint = new Paint();
+        mShowRectPointPaint.setAntiAlias(true);
+        mShowRectPointPaint.setStrokeWidth(2);
+        mShowRectPointPaint.setStyle(Paint.Style.STROKE);
+        mShowRectPointPaint.setColor(Color.RED);
+        mShowRectPointPaint.setStyle(Paint.Style.FILL);
+
+        //机器人路径
+        mRobotPathPaint = new Paint();
+        mRobotPathPaint.setColor(Color.GREEN);
+        mRobotPathPaint.setAntiAlias(true);
+        mRobotPathPaint.setStyle(Paint.Style.STROKE);
+        mRobotPathPaint.setStrokeCap(Paint.Cap.ROUND);
+        mRobotPathPaint.setStrokeJoin(Paint.Join.ROUND);
+        mRobotPathPaint.setStrokeWidth(8);
+
+        //添加虚拟墙
+        mVirtualWallPathPaint = new Paint();
+        mVirtualWallPathPaint.setPathEffect(new DashPathEffect(new float[]{5, 3}, 1));
+        mVirtualWallPathPaint.setColor(Color.BLACK);
+        mVirtualWallPathPaint.setAntiAlias(true);
+        mVirtualWallPathPaint.setStyle(Paint.Style.STROKE);
+        mVirtualWallPathPaint.setStrokeWidth(10);
+
+        mVirtualWallPathPointPaint = new Paint();
+        mVirtualWallPathPointPaint.setColor(Color.BLUE);
+        mVirtualWallPathStartPointPaint = new Paint();
+        mVirtualWallPathStartPointPaint.setColor(Color.RED);
+
+        mVirtualWallUnsavePath = new Paint();
+        mVirtualWallUnsavePath.setColor(Color.GRAY);
+        mVirtualWallUnsavePath.setStrokeWidth(10);
+        mVirtualWallUnsavePath.setPathEffect(new DashPathEffect(new float[]{5, 3}, 1));
+    }
+
+    /**
+     * 通用接口
+     **/
     public void setBitmap(Bitmap map, int mapId) {
-        this.mBitmap = map;
+        this.mBitmap = map.copy(Bitmap.Config.ARGB_8888, true);
         mCurrentMatrix = new Matrix();
         if (getWidth() != 0 && getHeight() != 0) {
             mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), (((float) mMapHeight) / mBitmap.getHeight()));
@@ -68,6 +173,7 @@ public class MapView extends View {
 
     public void reset() {
         mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), ((float) mMapHeight) / mBitmap.getHeight());
+        exitWithoutSaveEraseState();
         postInvalidate();
     }
 
@@ -77,17 +183,24 @@ public class MapView extends View {
         postInvalidate();
     }
 
+    public void exitAllState() {
+        isShowRectState = false;
+        isShowRobotState = false;
+        isAddPathState = false;
+        exitWithoutSaveEraseState();
+        postInvalidate();
+    }
+
     /**
      * 添加路径
      **/
-    ArrayList<PointF> pathPoints = new ArrayList<>();
+    ArrayList<PointF> mAddPathPoints = new ArrayList<>();
 
     public void startPathState() {
         exitAllState();
         isAddPathState = true;
         postInvalidate();
     }
-
 
     public boolean isAddPathState() {
         return isAddPathState;
@@ -96,12 +209,12 @@ public class MapView extends View {
     public void addPathPoint() {
         float[] transPoints = new float[]{mCentorX, mCentorY};
         transPoints = getInvertPoints(transPoints);
-        pathPoints.add(new PointF(transPoints[0], transPoints[1]));
+        mAddPathPoints.add(new PointF(transPoints[0], transPoints[1]));
         postInvalidate();
     }
 
     public ArrayList<PointF> savePath() {
-        return pathPoints;
+        return mAddPathPoints;
     }
 
     public void exitAddPathState() {
@@ -109,6 +222,58 @@ public class MapView extends View {
         postInvalidate();
     }
 
+    /**
+     * 添加虚拟墙
+     **/
+    boolean isVirtualWallState = false;
+    Path mVirtualWallPath = null;
+    PointF mVirtualWallEndPoint = null;
+    ArrayList<Path> mVirtualWallPaths = new ArrayList<>();
+
+    public void startVirtualWallState(ArrayList<Path> oldPaths) {
+        exitAllState();
+        if (oldPaths != null) {
+            mVirtualWallPaths.addAll(oldPaths);
+        }
+        isVirtualWallState = true;
+        postInvalidate();
+    }
+
+    public boolean isVirtualWallState() {
+        return isAddPathState;
+    }
+
+    public void addVirtualWallPathPoint() {
+        float[] transPoints = new float[]{mCentorX, mCentorY};
+        transPoints = getInvertPoints(transPoints);
+        mVirtualWallEndPoint = new PointF(transPoints[0], transPoints[1]);
+        if (mVirtualWallPath == null) {
+            mVirtualWallPath = new Path();
+            mVirtualWallPath.moveTo(transPoints[0], transPoints[1]);
+        } else {
+            mVirtualWallPath.lineTo(transPoints[0], transPoints[1]);
+        }
+        postInvalidate();
+    }
+
+    public void saveVirtualWallPathPoints() {
+        if (mVirtualWallPath != null) {
+            mVirtualWallPaths.add(mVirtualWallPath);
+            mVirtualWallPath = null;
+            mVirtualWallEndPoint = null;
+        }
+    }
+
+    public ArrayList<Path> getVirtualWallPaths() {
+        return mVirtualWallPaths;
+    }
+
+    public void exitVirtualWallState() {
+        mVirtualWallPath = null;
+        mVirtualWallEndPoint = null;
+        isVirtualWallState = false;
+        postInvalidate();
+    }
 
     /**
      * 添加机器人
@@ -137,7 +302,7 @@ public class MapView extends View {
         postInvalidate();
     }
 
-    public PointF getRobotPosition(){
+    public PointF getRobotPosition() {
         PointF point = new PointF();
         point.set(mRobotPoint);
         return point;
@@ -161,7 +326,7 @@ public class MapView extends View {
     private RectF mRect = null;
     private ArrayList<float[]> mRecordRectPoints = new ArrayList<>();
 
-    public void startRect() {
+    public void startRectState() {
         exitAllState();
         isShowRectState = true;
         postInvalidate();
@@ -186,10 +351,84 @@ public class MapView extends View {
         return mRecordRectPoints;
     }
 
-    public void exitAllState() {
-        isShowRectState = false;
-        isShowRobotState = false;
-        isAddPathState = false;
+    /**
+     * 擦除功能
+     */
+    private PorterDuffXfermode mPorterDuffXfermode;
+    boolean isEraseState = false;
+    Path mErasePath = null;
+    PointF mErasePoint = null;
+    float mEraseRadius = 24.0f;
+    ArrayList<Path> mErasePaths = new ArrayList<>();
+
+    public void startEraseState() {
+        mOriginBitmap = mBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        exitAllState();
+        isEraseState = true;
+        postInvalidate();
+    }
+
+    public boolean isEraseState() {
+        return isEraseState;
+    }
+
+    public Bitmap saveErasedMap() {
+        if (!isEraseState) {
+            return null;
+        }
+        Bitmap erasedMap = mBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Matrix invert = new Matrix();
+        mCurrentMatrix.invert(invert);
+        Canvas canvas = new Canvas(erasedMap);
+        canvas.setMatrix(invert);
+        if (!mErasePaths.isEmpty()) {
+            for (Path path : mErasePaths) {
+                canvas.drawPath(path, mErasePaint);
+            }
+        }
+        if (mErasePath != null) {
+            canvas.drawPath(mErasePath, mErasePaint);
+        }
+        mErasePaths.clear();
+        //当前显示擦除的页面
+        mBitmap = erasedMap;
+        postInvalidate();
+        return erasedMap;
+    }
+
+    public void undoErase() {
+        if (!isEraseState) {
+            return;
+        }
+        if (mErasePaths.size() > 0) {
+            mErasePaths.remove(mErasePaths.size() - 1);
+        }
+        postInvalidate();
+    }
+
+    // 退出擦除模式化后，显示擦除的界面
+    public void exitWithSaveEraseState() {
+        if (!isEraseState) {
+            return;
+        }
+        saveErasedMap();
+        isEraseState = false;
+        mOriginBitmap = null;
+        mErasePaths.clear();
+        mErasePath = null;
+        postInvalidate();
+    }
+
+    public void exitWithoutSaveEraseState() {
+        if (!isEraseState) {
+            return;
+        }
+        mBitmap = mOriginBitmap;
+        mOriginBitmap = null;
+        mErasePaths.clear();
+        isEraseState = false;
+        mErasePath = null;
+        postInvalidate();
     }
 
     @NonNull
@@ -256,20 +495,38 @@ public class MapView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
+        Log.v("MapView", "onDraw");
         super.onDraw(canvas);
         if (mBitmap != null) {
             //画布使用透明填充
             canvas.drawColor(Color.TRANSPARENT);
             canvas.drawBitmap(mBitmap, mCurrentMatrix, null);
         }
+
+        if (isEraseState) {
+            // 每次在canvas上画线，方便撤销步骤
+            if (!mErasePaths.isEmpty()) {
+                for (Path path : mErasePaths) {
+                    canvas.drawPath(path, mErasePaint);
+                }
+            }
+            if (mErasePath != null) {
+                canvas.drawPath(mErasePath, mErasePaint);
+            }
+
+            if (mErasePoint == null) {
+                canvas.drawCircle(mCentorX, mCentorY, mEraseRadius, mErasePointPaint);
+            } else {
+                canvas.drawCircle(mErasePoint.x, mErasePoint.y, mEraseRadius, mErasePointPaint);
+            }
+        }
+
         if (isAddPathState) {
             // draw record paths
-            paint.setColor(Color.BLUE);
             float[] transPoint = new float[]{0, 0};
             Path path = new Path();
-            for (int i = 0; i < pathPoints.size(); i++) {
-                PointF point = pathPoints.get(i);
+            for (int i = 0; i < mAddPathPoints.size(); i++) {
+                PointF point = mAddPathPoints.get(i);
                 transPoint[0] = point.x;
                 transPoint[1] = point.y;
                 mCurrentMatrix.mapPoints(transPoint);
@@ -278,28 +535,39 @@ public class MapView extends View {
                 } else {
                     path.lineTo(transPoint[0], transPoint[1]);
                 }
-                canvas.drawCircle(transPoint[0], transPoint[1], 5, paint);
+                canvas.drawCircle(transPoint[0], transPoint[1], 5, mAddPathPointPaint);
             }
-            Paint pathPaint = new Paint();
-            pathPaint.setColor(Color.YELLOW);
-            pathPaint.setAntiAlias(true);
-            pathPaint.setStyle(Paint.Style.STROKE);
-            pathPaint.setStrokeWidth(2);
-            if (pathPoints.size() > 0) {
+            if (mAddPathPoints.size() > 0) {
                 path.lineTo(mCentorX, mCentorY);
             }
-            canvas.drawPath(path, pathPaint);
-            paint.setColor(Color.RED);
-            canvas.drawCircle(mCentorX, mCentorY, 8, paint);
+            canvas.drawPath(path, mAddPathPaint);
+            canvas.drawCircle(mCentorX, mCentorY, 8, mAddPathStartPointPaint);
+        }
+
+        if (isVirtualWallState) {
+            // 画已保存段
+            for (int i = 0; i < mVirtualWallPaths.size(); i++) {
+                Path path = new Path(mVirtualWallPaths.get(i));
+                path.transform(mCurrentMatrix);
+                canvas.drawPath(path, mVirtualWallPathPaint);
+            }
+
+            if (mVirtualWallPath != null) {
+                Path path = new Path(mVirtualWallPath);
+                path.transform(mCurrentMatrix);
+                canvas.drawPath(path, mVirtualWallPathPaint);
+
+                //画未保存的线段
+                float[] transPoint = new float[]{0, 0};
+                transPoint[0] = mVirtualWallEndPoint.x;
+                transPoint[1] = mVirtualWallEndPoint.y;
+                mCurrentMatrix.mapPoints(transPoint);
+                canvas.drawLine(transPoint[0], transPoint[1], mCentorX, mCentorY, mVirtualWallUnsavePath);
+            }
+            canvas.drawCircle(mCentorX, mCentorY, 8, mVirtualWallPathStartPointPaint);
         }
 
         if (isShowRectState) {
-            Paint rectPaint = new Paint();
-            rectPaint.setAntiAlias(true);
-            rectPaint.setStrokeWidth(2);
-            rectPaint.setStyle(Paint.Style.STROKE);
-            rectPaint.setColor(Color.YELLOW);
-
             // draw record rect
             Path path = new Path();
             for (float[] transPoints : mRecordRectPoints) {
@@ -310,56 +578,47 @@ public class MapView extends View {
                 path.lineTo(points[6], points[7]);
                 path.lineTo(points[4], points[5]);
                 path.lineTo(points[0], points[1]);
-                canvas.drawPath(path, rectPaint);
+                canvas.drawPath(path, mShowOldRectPaint);
             }
 
             // draw current rect
-            rectPaint.setColor(Color.RED);
-            canvas.drawRect(mRect, rectPaint);
-            rectPaint.setStyle(Paint.Style.FILL);
-            canvas.drawCircle(mRect.right, mRect.bottom, 12, rectPaint);
+            canvas.drawRect(mRect, mShowRectPaint);
+            canvas.drawCircle(mRect.right, mRect.bottom, 12, mShowRectPointPaint);
         }
 
         if (isShowRobotPath) {
-            if(isShowRobotPath){
+            if (isShowRobotPath) {
                 Path path = new Path();
                 float[] transPoint = new float[2];
-                for(int i = 0; i < mRobotPath.size(); i++){
+                for (int i = 0; i < mRobotPath.size(); i++) {
                     PointF pointf = mRobotPath.get(i);
                     transPoint[0] = pointf.x;
                     transPoint[1] = pointf.y;
                     mCurrentMatrix.mapPoints(transPoint);
-                    if(i == 0){
+                    if (i == 0) {
                         path.moveTo(transPoint[0], transPoint[1]);
-                    }else{
+                    } else {
                         path.lineTo(transPoint[0], transPoint[1]);
                     }
                 }
-                Paint pathPaint = new Paint();
-                pathPaint.setColor(Color.GREEN);
-                pathPaint.setAntiAlias(true);
-                pathPaint.setStyle(Paint.Style.STROKE);
-                pathPaint.setStrokeCap(Paint.Cap.ROUND);
-                pathPaint.setStrokeJoin(Paint.Join.ROUND);
-                pathPaint.setStrokeWidth(8);
-                canvas.drawPath(path, pathPaint);
+                canvas.drawPath(path, mRobotPathPaint);
             }
             float[] point = new float[]{mRobotPoint.x, mRobotPoint.y};
             Matrix rotationMatrix = new Matrix();
             rotationMatrix.setRotate(mRobotDirection);
             mCurrentMatrix.mapPoints(point);
-            Bitmap robotImage = Bitmap.createBitmap(mRobotImage, 0, 0, mRobotImage.getWidth(), mRobotImage.getHeight(),rotationMatrix,true);
-            canvas.drawBitmap(robotImage, point[0] - mRobotImage.getWidth()/2, point[1] - mRobotImage.getHeight()/2, null);
+            Bitmap robotImage = Bitmap.createBitmap(mRobotImage, 0, 0, mRobotImage.getWidth(), mRobotImage.getHeight(), rotationMatrix, true);
+            canvas.drawBitmap(robotImage, point[0] - mRobotImage.getWidth() / 2, point[1] - mRobotImage.getHeight() / 2, null);
         }
     }
 
-    private int mode = NOTHING_MODE;
+    private int mTouchMode = NOTHING_MODE;
     private static final int NOTHING_MODE = 0;//啥也不干
-    private static final int DRAG_MODE = 1;//拖动
-    private static final int ZOOM_MODE = 2;//放大
+    private static final int MOVE_MODE = 1;//拖动
+    private static final int SCALE_MODE = 2;//放大
     private static final int RECT_MODE = 3;//移动矩形
+    private static final int ERASE_MODE = 4;//擦除模式
     private PointF moveFromPoint = new PointF();
-
     private PointF scaleFromPoint0 = new PointF();
     private PointF scaleFromPoint1 = new PointF();
 
@@ -369,44 +628,57 @@ public class MapView extends View {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
+        Log.v("MapView", "onTouchEvent");
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 if (isShowRectState && 30 > getDistance(event.getX(), event.getY(), mRect.right, mRect.bottom)) {
-                    mode = RECT_MODE;
+                    mTouchMode = RECT_MODE;
+                } else if (isEraseState) {
+                    mTouchMode = ERASE_MODE;
+                    mErasePath = new Path();
+                    mErasePath.moveTo(event.getX(), event.getY());
+                    mErasePoint = new PointF(event.getX(), event.getY());
                 } else {
-                    mode = DRAG_MODE;
+                    mTouchMode = MOVE_MODE;
                     moveFromPoint.set(event.getX(), event.getY());
                 }
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                if (mode == DRAG_MODE) {
+                if (mTouchMode == MOVE_MODE) {
                     float dx = event.getX() - moveFromPoint.x;
                     float dy = event.getY() - moveFromPoint.y;
                     moveFromPoint.set(event.getX(), event.getY());
                     mCurrentMatrix.postTranslate(dx, dy);
 
-                } else if (mode == ZOOM_MODE) {
+                } else if (mTouchMode == SCALE_MODE) {
                     Matrix scaleMatrix = new Matrix();
                     float[] pointSrc = {scaleFromPoint0.x, scaleFromPoint0.y, scaleFromPoint1.x, scaleFromPoint1.y};
                     float[] pointDest = {event.getX(0), event.getY(0), event.getX(1), event.getY(1)};
                     scaleMatrix.setPolyToPoly(pointSrc, 0, pointDest, 0, 2);
                     mCurrentMatrix.postConcat(scaleMatrix);
                     setScaleFromPoint(event);
-                } else if (mode == RECT_MODE) {
+                } else if (mTouchMode == RECT_MODE) {
                     mRect.right = event.getX();
                     mRect.bottom = event.getY();
+                } else if (mTouchMode == ERASE_MODE) {
+                    mErasePath.lineTo(event.getX(), event.getY());
+                    mErasePoint = new PointF(event.getX(), event.getY());
                 }
                 break;
 
             case MotionEvent.ACTION_UP:
-                mode = NOTHING_MODE;
+                mTouchMode = NOTHING_MODE;
+                if (isEraseState) {
+                    mErasePaths.add(mErasePath);
+                    mErasePath = null;
+                }
                 break;
             case MotionEvent.ACTION_POINTER_UP:
-                mode = NOTHING_MODE;
+                mTouchMode = NOTHING_MODE;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
-                mode = ZOOM_MODE;
+                mTouchMode = SCALE_MODE;
                 setScaleFromPoint(event);
                 break;
         }
