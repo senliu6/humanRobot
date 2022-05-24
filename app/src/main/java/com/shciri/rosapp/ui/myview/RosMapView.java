@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.ImageView;
 import com.rey.material.widget.RelativeLayout;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.RosInit;
-import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.data.RosData;
 
 public class RosMapView extends RelativeLayout {
 
@@ -63,7 +64,7 @@ public class RosMapView extends RelativeLayout {
                 RosData.moveGoal.pose.position.y = y;
                 RosData.moveGoal.pose.orientation.z = 0.98f;
                 RosData.moveGoal.pose.orientation.w = -0.019f;
-                RosInit.goalTopic.publish(RosData.moveGoal);
+                RosTopic.goalTopic.publish(RosData.moveGoal);
             }
         });
     }

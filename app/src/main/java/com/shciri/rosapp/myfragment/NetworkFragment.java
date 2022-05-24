@@ -3,7 +3,6 @@ package com.shciri.rosapp.myfragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.dmros.data.RosData;
 
 import src.com.jilk.ros.Topic;
 import src.com.jilk.ros.message.CmdVel;
@@ -26,8 +25,6 @@ import src.com.jilk.ros.message.Pose;
 import src.com.jilk.ros.message.QuaternionMsg;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformsMsg;
-import src.com.jilk.ros.message.Vector3;
-import src.com.jilk.ros.message.clicked_point.ClickedPoint;
 import src.com.jilk.ros.message.goal.MoveGoal;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 

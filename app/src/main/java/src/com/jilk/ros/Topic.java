@@ -47,9 +47,9 @@ public class Topic<T extends Message> extends LinkedBlockingQueue<T> implements 
     }
     
     
-    // warning: there is a delay between the completion of this method and 
-    //          the completion of the subscription; it takes longer than
-    //          publishing multiple other messages, for example.    
+//     warning: there is a delay between the completion of this method and
+//              the completion of the subscription; it takes longer than
+//              publishing multiple other messages, for example.
     public void subscribe(MessageHandler<T> handler) {
         startRunner(handler);
         subscribe();

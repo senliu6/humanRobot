@@ -5,18 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -27,16 +22,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.shciri.rosapp.MyPGM;
+import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.RosInit;
-import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.MapView;
 import com.shciri.rosapp.ui.myview.MyControllerView;
-import com.shciri.rosapp.ui.myview.RosMapView;
-import com.shciri.rosapp.peripheral.Buzzer;
-import com.shciri.rosapp.peripheral.Led;
 
 public class ManuaControlFragment extends Fragment implements View.OnClickListener {
 
@@ -75,7 +68,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
                 if (RosInit.isConnect) {
                     RosData.cmd_vel.linear.x = dy / 1.5f;
                     RosData.cmd_vel.angular.z = -dx / 2f;
-                    RosInit.cmd_velTopic.publish(RosData.cmd_vel);
+                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
                 }
             }
         };

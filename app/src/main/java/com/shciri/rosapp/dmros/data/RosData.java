@@ -1,16 +1,18 @@
-package com.shciri.rosapp.data;
+package com.shciri.rosapp.dmros.data;
 
 import android.graphics.Bitmap;
 
 import src.com.jilk.ros.message.CmdVel;
-import src.com.jilk.ros.message.MapMetaData;
+import src.com.jilk.ros.message.Header;
 import src.com.jilk.ros.message.MapMsg;
+import src.com.jilk.ros.message.Point;
+import src.com.jilk.ros.message.Pose;
+import src.com.jilk.ros.message.QuaternionMsg;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformMsg;
 import src.com.jilk.ros.message.goal.MoveGoal;
 
 public class RosData {
-
     public static CmdVel cmd_vel;
     public static MapMsg map;
     public static TFTopic tf;
@@ -20,6 +22,14 @@ public class RosData {
     public static final String MAP = "com.shciri.rosapp.map";
     public static final String TF = "com.shciri.rosapp.tf";
     public static final String TOAST = "com.shciri.rosapp.toast";
+
+    public static void RosDataInit() {
+        moveGoal = new MoveGoal();
+        moveGoal.pose = new Pose();
+        moveGoal.pose.position = new Point();
+        moveGoal.pose.orientation = new QuaternionMsg();
+        moveGoal.header = new Header();
+    }
 
     public static class BaseLink {
         public static TransformMsg transform;

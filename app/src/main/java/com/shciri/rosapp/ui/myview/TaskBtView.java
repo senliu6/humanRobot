@@ -96,7 +96,6 @@ public class TaskBtView extends ConstraintLayout{
         view.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                System.out.println("xxxxx");
                 if (hasFocus) {
                     ScaleAnimation animation = new ScaleAnimation(1.0f, 1.3f, 1.0f, 1.3f,
                             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

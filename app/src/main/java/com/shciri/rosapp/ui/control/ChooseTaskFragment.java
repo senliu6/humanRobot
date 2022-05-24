@@ -75,7 +75,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         mOpenDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((TaskControlActivity) getActivity()).openFrawerLayout();
+                ((TaskControlActivity) getActivity()).openDrawerLayout();
             }
         });
         InitialCirculationTimeView();

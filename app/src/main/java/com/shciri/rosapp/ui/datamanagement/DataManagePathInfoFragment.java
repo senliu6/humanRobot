@@ -2,7 +2,6 @@ package com.shciri.rosapp.ui.datamanagement;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.shciri.rosapp.MyPGM;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.RosInit;
-import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.ui.myview.MapView;
 
 /**

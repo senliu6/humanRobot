@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,19 +18,16 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.shciri.rosapp.MyPGM;
+import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.RosInit;
+import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.RosMapView;
-import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.ui.myview.MyControllerView;
-import com.shciri.rosapp.peripheral.Buzzer;
-import com.shciri.rosapp.peripheral.DisinfectLed;
-import com.shciri.rosapp.peripheral.Led;
-import com.shciri.rosapp.peripheral.Misc;
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment{
 
     View root;
 
@@ -66,17 +61,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 if(RosInit.isConnect) {
                     RosData.cmd_vel.linear.x = dy / 1.5f;
                     RosData.cmd_vel.angular.z = -dx / 1.5f;
-                    RosInit.cmd_velTopic.publish(RosData.cmd_vel);
+                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
                 }
             }
         };
 
         controllerView.setMoveListener(moveListener);
         rosMapView = root.findViewById(R.id.ros_map);
-
-        connectBtn = root.findViewById(R.id.connect_btn);
-        connectBtn.setOnClickListener(this);
-
         ledSwitch = root.findViewById(R.id.led_switch);
 
 
@@ -93,18 +84,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         return root;
     }
 
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.connect_btn) {
-            new Thread(()-> {
-                rosInit = new RosInit(getContext());
-                rosInit.getTF();
-                rosInit.getMap();
-            }).start();
-            return;
-        }
-    }
 
     private void plotRoute(int x, int y){
         int tX = RosData.MapData.poseX + x;

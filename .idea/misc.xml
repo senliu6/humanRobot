@@ -31,9 +31,10 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_login_bk.xml" value="0.11354166666666667" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_main.xml" value="0.14" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_task_control.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_task_control.xml" value="0.22" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_task_histroy_report.xml" value="0.11354166666666667" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/activity_vertical_ntb.xml" value="0.3338541666666667" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/dialog_health.xml" value="0.1328125" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_add_new_task.xml" value="0.12065972222222222" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_add_task.xml" value="0.11354166666666667" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/fragment_choose_task.xml" value="0.22" />
@@ -57,7 +58,7 @@
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/status_bar.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_bt_spinner_item_drapdown.xml" value="0.67" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_bt_spinner_item_select.xml" value="0.75" />
-        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_control_main.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_control_main.xml" value="0.16" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/task_control_main_bk.xml" value="0.33" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_controller.xml" value="0.25" />
         <entry key="..\:/AndroidProject/RosApp/app/src/main/res/layout/view_dm_switch.xml" value="0.75" />

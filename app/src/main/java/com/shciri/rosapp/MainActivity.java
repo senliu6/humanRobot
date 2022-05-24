@@ -2,42 +2,29 @@ package com.shciri.rosapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.renderscript.ScriptGroup;
-import android.text.InputType;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.shciri.rosapp.data.RosData;
+import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.ui.TaskControlActivity;
-import com.shciri.rosapp.ui.manualcontrol.ManuaControlFragment;
 import com.shciri.rosapp.ui.myview.LoginKeyboardView;
 
-import java.nio.charset.StandardCharsets;
+import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getSimpleName();
@@ -84,8 +71,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (password.equals("123456")) {
-                    Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
-                    startActivity(intent);
+                    if(!RosInit.isConnect) {
+                        if(!alertDialog.isShowing()){
+                            alertDialog.show();
+                        }
+                    }else{
+                        Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
+                        startActivity(intent);
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "密码错误,请重试!", Toast.LENGTH_SHORT).show();
                     password = "";
@@ -106,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(getBaseContext(), "进入离线模式", Toast.LENGTH_SHORT).show();
                         RosInit.offLineMode = true;
+                        Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
+                        startActivity(intent);
                     }
                 })
 
@@ -116,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).create();
 
-        rosInit = new RosInit(getBaseContext());
+        rosInit = new RosInit();
         rosConnectAndInit();
     }
 
@@ -124,15 +119,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if(!alertDialog.isShowing()){
-               // alertDialog.show();
-            }
         }
     }
+
     private void rosConnectAndInit() {
         new Thread(() -> {
             while (true) {
-                rosInit.rosConnect();
+                ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
+                ((RCApplication)getApplication()).setRosClient(client);
                 if(RosInit.isConnect || RosInit.offLineMode){
                     return;
                 }else{
