@@ -55,7 +55,7 @@ public class RosMapView extends RelativeLayout {
                 System.out.println("x:= " + x + "  y:= " + y);
                 x -= RosData.MapData.poseX;
                 y -= RosData.MapData.poseY;
-                //System.out.println("x:= " + x + "  y:= " + y);
+                System.out.println("x:= " + x + "  y:= " + y);
                 x *= 0.05F;
                 y *= 0.05F;
                 System.out.println("dstX =" + x + "  dstY =" + y);

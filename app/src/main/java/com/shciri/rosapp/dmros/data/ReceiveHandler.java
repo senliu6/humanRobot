@@ -8,6 +8,7 @@ import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 
 import src.com.jilk.ros.MessageHandler;
+import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.Message;
 
@@ -16,6 +17,7 @@ public class ReceiveHandler {
     MapTopicHandler mapTopicHandler;
     CmdValTopicHandler cmdValTopicHandler;
     TFTopicHandler tfTopicHandler;
+    GoalTopicHandler goalTopicHandler;
 
     private class MapTopicHandler extends Handler implements MessageHandler {
         @Override
@@ -37,17 +39,25 @@ public class ReceiveHandler {
             Matrix invert = new Matrix();
             invert.setScale(1, -1); //镜像翻转以与真实地图对应
             RosData.rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert ,true);
+            System.out.println("MapOK");
         }
     }
 
     private class CmdValTopicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            System.out.println("CmdValTopicHandler");
+//            System.out.println("CmdValTopicHandler");
+            RosData.cmd_vel = (CmdVel) message;
         }
     }
 
     private class TFTopicHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+        }
+    }
+
+    private class GoalTopicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
         }
@@ -65,6 +75,11 @@ public class ReceiveHandler {
 
     public MessageHandler getTFTopicHandler() {
         tfTopicHandler = new TFTopicHandler();
+        return tfTopicHandler;
+    }
+
+    public MessageHandler getGoalTopicHandler() {
+        goalTopicHandler = new GoalTopicHandler();
         return tfTopicHandler;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,11 +75,15 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         };
 
         controllerView.setMoveListener(moveListener);
-        mMapView = root.findViewById(R.id.mapView);
-//        Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
-//        mMapView.setBitmap(map, 12);
-//        mMapView.setRobotPosition(200, 300, (float) 0.3, true);
+        mMapView = root.findViewById(R.id.ros_map);
+        if(RosInit.isConnect){
+            mMapView.setBitmap(RosData.rosBitmap, 12);
+        }else {
+            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+            mMapView.setBitmap(map, 12);
+        }
 
+        mMapView.isSetGoal = true;
         connectBtn = root.findViewById(R.id.connect_btn);
         connectBtn.setOnClickListener(this);
 

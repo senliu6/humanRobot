@@ -39,11 +39,10 @@ public class DataManagePathInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mMapView = view.findViewById(R.id.mapView);
         if(RosInit.isConnect){
-            mMapView = view.findViewById(R.id.mapView);
             mMapView.setBitmap(RosData.rosBitmap, 12);
         }else {
-            mMapView = view.findViewById(R.id.mapView);
             Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
             mMapView.setBitmap(map, 12);
         }

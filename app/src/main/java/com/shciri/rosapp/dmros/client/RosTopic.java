@@ -32,5 +32,7 @@ public class RosTopic {
 
     public void initGoalTopic(MessageHandler handler, ROSBridgeClient client) {
         goalTopic  = new Topic<MoveGoal>("/move_base_simple/goal", MoveGoal.class, client);
+        goalTopic.subscribe(handler);
+        goalTopic.advertise();
     }
 }
