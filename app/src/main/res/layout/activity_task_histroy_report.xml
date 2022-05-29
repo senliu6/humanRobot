@@ -1,89 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@mipmap/login_dabeijing4_21"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/login_dabeijing4_21"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_line"
         android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/tou4_21" />
 
     <LinearLayout
         android:id="@+id/return_ll"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <ImageView
             android:layout_width="13dp"
             android:layout_height="21dp"
-            android:layout_marginLeft="120dp"
             android:scaleType="fitXY"
             android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:text="任务报告列表"
             android:textColor="#ff02fde8"
             android:textSize="22sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginLeft="77dp"
-        android:layout_marginTop="55dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tasks_report_text_shape"
-            android:gravity="center"
-            android:text="2022-04-20"
-            android:textColor="#ff02fde8"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_marginLeft="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tasks_report_text_shape"
-            android:gravity="center"
-            android:text="2022-04-20"
-            android:textColor="#ff02fde8"
-            android:textSize="18sp" />
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_marginLeft="200dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.appbar.AppBarLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/tasks_report_text_shape"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:text="2022-04-20"
+        android:textColor="#ff02fde8"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView27"
+        app:layout_constraintStart_toEndOf="@+id/textView27" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="54dp"
+        android:background="@drawable/tasks_report_text_shape"
+        android:gravity="center"
+        android:text="2022-04-20"
+        android:textColor="#ff02fde8"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintStart_toStartOf="@+id/report_view_pager_ac" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textView27"
+        app:layout_constraintEnd_toEndOf="@+id/report_view_pager_ac">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/report_view_pager_ac"
+        app:layout_constraintEnd_toEndOf="@+id/report_view_pager_ac"
+        app:layout_constraintStart_toStartOf="@+id/report_view_pager_ac">
 
         <TextView
             android:layout_width="wrap_content"
@@ -125,11 +129,15 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/report_view_pager_ac"
-            android:layout_width="871dp"
-            android:layout_height="300dp"
-            android:background="@drawable/tasks_report_text_shape"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-</LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/report_view_pager_ac"
+        android:layout_width="1089dp"
+        android:layout_height="350dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/tasks_report_text_shape"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
