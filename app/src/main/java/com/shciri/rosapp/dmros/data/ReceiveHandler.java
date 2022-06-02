@@ -9,6 +9,7 @@ import com.shciri.rosapp.dmros.tool.MyPGM;
 
 import src.com.jilk.ros.MessageHandler;
 import src.com.jilk.ros.message.CmdVel;
+import src.com.jilk.ros.message.CoverageMap;
 import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.Message;
 
@@ -18,6 +19,7 @@ public class ReceiveHandler {
     CmdValTopicHandler cmdValTopicHandler;
     TFTopicHandler tfTopicHandler;
     GoalTopicHandler goalTopicHandler;
+    CoverageMapHandler coverageMapHandler;
 
     private class MapTopicHandler extends Handler implements MessageHandler {
         @Override
@@ -46,7 +48,6 @@ public class ReceiveHandler {
     private class CmdValTopicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-//            System.out.println("CmdValTopicHandler");
             RosData.cmd_vel = (CmdVel) message;
         }
     }
@@ -60,6 +61,13 @@ public class ReceiveHandler {
     private class GoalTopicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
+        }
+    }
+
+    private class CoverageMapHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            RosData.coverageMap = (CoverageMap) message;
         }
     }
 
@@ -81,5 +89,10 @@ public class ReceiveHandler {
     public MessageHandler getGoalTopicHandler() {
         goalTopicHandler = new GoalTopicHandler();
         return tfTopicHandler;
+    }
+
+    public MessageHandler getCoverageMapTopicHandler() {
+        coverageMapHandler = new CoverageMapHandler();
+        return coverageMapHandler;
     }
 }

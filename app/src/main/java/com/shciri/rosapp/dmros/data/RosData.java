@@ -3,12 +3,15 @@ package com.shciri.rosapp.dmros.data;
 import android.graphics.Bitmap;
 
 import src.com.jilk.ros.message.CmdVel;
+import src.com.jilk.ros.message.CoverageMap;
 import src.com.jilk.ros.message.Header;
+import src.com.jilk.ros.message.MapMetaData;
 import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.Point;
 import src.com.jilk.ros.message.Pose;
 import src.com.jilk.ros.message.QuaternionMsg;
 import src.com.jilk.ros.message.TFTopic;
+import src.com.jilk.ros.message.TimePrimitive;
 import src.com.jilk.ros.message.TransformMsg;
 import src.com.jilk.ros.message.goal.MoveGoal;
 
@@ -18,6 +21,7 @@ public class RosData {
     public static TFTopic tf;
     public static MoveGoal moveGoal;
     public static Bitmap rosBitmap;
+    public static CoverageMap coverageMap;
 
     public static final String MAP = "com.shciri.rosapp.map";
     public static final String TF = "com.shciri.rosapp.tf";
@@ -29,6 +33,13 @@ public class RosData {
         moveGoal.pose.position = new Point();
         moveGoal.pose.orientation = new QuaternionMsg();
         moveGoal.header = new Header();
+
+        coverageMap = new CoverageMap();
+        coverageMap.header = new Header();
+        coverageMap.header.stamp = new TimePrimitive();
+        coverageMap.info = new MapMetaData();
+        coverageMap.info.origin = new Pose();
+        coverageMap.info.map_load_time = new TimePrimitive();
     }
 
     public static class BaseLink {

@@ -81,6 +81,37 @@ public class MyPGM {
         return pixels;
     }
 
+    public byte[] coverageMapProcess(int width, int height, byte[] data, int top, int bottom, int left, int right) {
+        byte[] coverage = data.clone();
+        int index;
+        if(top > bottom) {
+            int tmp;
+            tmp = top;
+            top = bottom;
+            bottom = tmp;
+        }
+        if(left > right) {
+            int tmp;
+            tmp = left;
+            left = right;
+            right = tmp;
+        }
+
+        for (int y=0; y < height; y++) {
+            for (int x=0; x < width; x++) {
+                index = x + y * width;
+                if(coverage[index] == -1)
+                    coverage[index] = 100;
+                if(x < left || x > right)
+                    coverage[index] = 100;
+                if(y < top || y > bottom)
+                    coverage[index] = 100;
+            }
+        }
+
+        return coverage;
+    }
+
     /**
      * 将图片内容解析成字节数组
      * @param inStream

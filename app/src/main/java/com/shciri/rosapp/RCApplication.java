@@ -6,7 +6,7 @@ import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class RCApplication extends Application {
     ROSBridgeClient client;
-    public String rosIP = "192.168.42.30";
+    public String rosIP = "192.168.1.110";
     public String rosPort = "9090";
 
     @Override

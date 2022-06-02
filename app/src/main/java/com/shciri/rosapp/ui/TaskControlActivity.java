@@ -67,6 +67,7 @@ public class TaskControlActivity extends AppCompatActivity {
             rosTopic.subscribeCmdVelTopic(receiveHandler.getCmdValTopicHandler(), ((RCApplication) getApplication()).getRosClient());
             rosTopic.subscribeTFTopic(receiveHandler.getTFTopicHandler(), ((RCApplication) getApplication()).getRosClient());
             rosTopic.initGoalTopic(receiveHandler.getGoalTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+            rosTopic.initCoverageMapTopic(receiveHandler.getCoverageMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
         }
     }
 

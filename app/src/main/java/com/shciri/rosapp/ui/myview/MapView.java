@@ -25,7 +25,9 @@ import androidx.annotation.Nullable;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.data.DataProcess;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.MyPGM;
 
 import java.util.ArrayList;
 
@@ -52,6 +54,8 @@ public class MapView extends View {
     ArrayList<PointF> mRobotPath = new ArrayList<>();
 
     public boolean isSetGoal = false;
+
+    DataProcess dataProcess = new DataProcess();
 
     public MapView(Context context) {
         super(context);
@@ -586,6 +590,12 @@ public class MapView extends View {
                 canvas.drawPath(path, mShowOldRectPaint);
             }
 
+            float[] xy = {mRect.left, mRect.top, mRect.right, mRect.top, mRect.right, mRect.bottom, mRect.left, mRect.bottom};
+            Matrix matrixInvert = new Matrix();
+            mCurrentMatrix.invert(matrixInvert);
+            matrixInvert.mapPoints(xy);
+            dataProcess.coverageMapProcess((int)xy[1], (int)xy[5], (int)xy[0], (int)xy[2]);
+
             // draw current rect
             canvas.drawRect(mRect, mShowRectPaint);
             canvas.drawCircle(mRect.right, mRect.bottom, 12, mShowRectPointPaint);
@@ -637,32 +647,11 @@ public class MapView extends View {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 if(isSetGoal) {
-
-                    System.out.println("x:= " + event.getX() + "  y:= " + event.getY());
-                    float x = event.getX();
-                    float y = event.getY();
-                    float[] xy = {x, y};
+                    float[] xy = {event.getX(), event.getY()};
                     Matrix matrixInvert = new Matrix();
                     mCurrentMatrix.invert(matrixInvert);
                     matrixInvert.mapPoints(xy);
-                    System.out.println("xy[0]:= " + xy[0] + "  xy[1]:= " + xy[1]);
-                    x = xy[0];
-                    y = xy[1];
-                    y = RosData.map.info.height - y;
-                    x -= RosData.MapData.poseX;
-                    y -= RosData.MapData.poseY;
-                    System.out.println("poseX:= " + RosData.MapData.poseX*0.05 + "  poseY:= " + RosData.MapData.poseY*0.05);
-                    System.out.println("x:= " + x*0.05 + "  y:= " + y*0.05);
-                    x *= 0.05F;
-                    y *= 0.05F;
-                    System.out.println("dstX =" + x + "  dstY =" + y);
-                    RosData.moveGoal.header.frame_id = "map";
-                    RosData.moveGoal.pose.position.x = x;
-                    RosData.moveGoal.pose.position.y = y;
-                    RosData.moveGoal.pose.orientation.z = 0.98f;
-                    RosData.moveGoal.pose.orientation.w = -0.019f;
-                    if(!RosInit.offLineMode)
-                        RosTopic.goalTopic.publish(RosData.moveGoal);
+                    dataProcess.moveGoalSend(xy[0], xy[1]);
                 }
                 if (isShowRectState && 30 > getDistance(event.getX(), event.getY(), mRect.right, mRect.bottom)) {
                     mTouchMode = RECT_MODE;

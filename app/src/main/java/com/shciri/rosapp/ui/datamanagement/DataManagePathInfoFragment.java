@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.ui.myview.MapView;
 
@@ -75,6 +76,7 @@ public class DataManagePathInfoFragment extends Fragment {
                     mMapView.addPathPoint();
                 }else if(mMapView.isRectState()){
                     mMapView.addRect();
+                    RosTopic.coverageMapTopic.publish(RosData.coverageMap);
                 }
             }
         });

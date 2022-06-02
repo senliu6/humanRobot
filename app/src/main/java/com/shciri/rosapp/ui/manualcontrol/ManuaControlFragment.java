@@ -158,6 +158,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mMapView.isSetGoal = false;
         mBackPressedCallback.remove();
         localBroadcastManager.unregisterReceiver(localReceiver);
     }
