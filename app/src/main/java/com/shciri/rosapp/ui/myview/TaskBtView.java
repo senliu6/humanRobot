@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.ContentLoadingProgressBar;
 
 import com.shciri.rosapp.R;
 
@@ -39,6 +40,7 @@ public class TaskBtView extends ConstraintLayout{
     View mMoreInfo;
     ImageView mEditIv;
     ImageView pullIv;
+    ContentLoadingProgressBar contentLoadingProgressBar;
     private String[] starArray = {"空跑", "消杀"};
     ArrayAdapter<String> starAdapter;
 
@@ -66,6 +68,7 @@ public class TaskBtView extends ConstraintLayout{
         taskBtView = findViewById(R.id.task_bt_run_status_view);
         currFunStatusTv = findViewById(R.id.task_bt_status_tv);
         pullIv = findViewById(R.id.task_bt_pull_iv);
+        contentLoadingProgressBar = findViewById(R.id.focus_progress_bar);
 
         initSpinner(context);
 
@@ -104,14 +107,16 @@ public class TaskBtView extends ConstraintLayout{
                     //动画结束是否保持结束状态
                     animation.setFillAfter(true);
                     view.startAnimation(animation);
-                    mMoreInfo.setVisibility(view.VISIBLE);
-                    mEditIv.setVisibility(view.VISIBLE);
-                    pullIv.setVisibility(view.VISIBLE);
+                    mMoreInfo.setVisibility(VISIBLE);
+                    mEditIv.setVisibility(VISIBLE);
+                    pullIv.setVisibility(VISIBLE);
+                    contentLoadingProgressBar.setVisibility(VISIBLE);
                 } else {
                     view.clearAnimation();
-                    mMoreInfo.setVisibility(view.INVISIBLE);
-                    mEditIv.setVisibility(view.INVISIBLE);
-                    pullIv.setVisibility(view.INVISIBLE);
+                    mMoreInfo.setVisibility(INVISIBLE);
+                    mEditIv.setVisibility(INVISIBLE);
+                    pullIv.setVisibility(INVISIBLE);
+                    contentLoadingProgressBar.setVisibility(INVISIBLE);
                 }
             }
         });

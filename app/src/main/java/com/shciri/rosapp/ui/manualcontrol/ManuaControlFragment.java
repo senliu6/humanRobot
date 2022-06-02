@@ -76,7 +76,7 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
 
         controllerView.setMoveListener(moveListener);
         mMapView = root.findViewById(R.id.ros_map);
-        if(RosInit.isConnect){
+        if(RosData.rosBitmap != null){
             mMapView.setBitmap(RosData.rosBitmap, 12);
         }else {
             Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);

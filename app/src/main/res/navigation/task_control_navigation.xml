@@ -36,6 +36,7 @@
         android:id="@+id/taskReportActivity"
         android:name="com.shciri.rosapp.ui.taskshistory.TasksHistoryReportActivity"
         android:label="TaskReportActivity" />
+
     <fragment
         android:id="@+id/manageDataFragment"
         android:name="com.shciri.rosapp.ui.datamanagement.DataManageFragment"
