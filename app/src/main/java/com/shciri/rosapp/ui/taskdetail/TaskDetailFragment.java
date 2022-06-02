@@ -27,7 +27,8 @@ import com.shciri.rosapp.R;
 public class TaskDetailFragment extends Fragment {
 
     private ViewPager viewPager;
-    TabLayout tabs;
+    TextView tabLeftIv;
+    TextView tabRightIv;
 
     @Nullable
     @Override
@@ -42,17 +43,34 @@ public class TaskDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewPager = view.findViewById(R.id.task_detail_view_pager);
-        TasksDetailPagerAdapter tasksDetailAdapter = new TasksDetailPagerAdapter( getChildFragmentManager());
-        viewPager.setAdapter(tasksDetailAdapter);
-        tabs = view.findViewById(R.id.tabs);;
-        tabs.setupWithViewPager(viewPager);
+
         view.findViewById(R.id.return_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigateUp();
             }
         });
+        viewPager = view.findViewById(R.id.task_detail_view_pager);
+        TasksDetailPagerAdapter tasksDetailAdapter = new TasksDetailPagerAdapter( getChildFragmentManager());
+        viewPager.setAdapter(tasksDetailAdapter);
+        tabLeftIv = view.findViewById(R.id.tabLeftIv);
+        tabLeftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTabLeft();
+                viewPager.setCurrentItem(0);
+            }
+        });
+        tabRightIv = view.findViewById(R.id.tabRightIv);
+        tabRightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTabRight();
+                viewPager.setCurrentItem(1);
+            }
+        });
+
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -61,7 +79,11 @@ public class TaskDetailFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-
+                if(position == 0){
+                    selectTabLeft();
+                }else{
+                    selectTabRight();
+                }
             }
 
             @Override
@@ -69,5 +91,16 @@ public class TaskDetailFragment extends Fragment {
 
             }
         });
+        selectTabLeft();
+    }
+
+    private void selectTabLeft(){
+        tabRightIv.setBackgroundResource(0);
+        tabLeftIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
+    }
+
+    private void selectTabRight(){
+        tabLeftIv.setBackgroundResource(0);
+        tabRightIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
     }
 }
