@@ -35,7 +35,18 @@
     <dimen name="task_bt_margin">70dp</dimen>
 
     <dimen name="return_margin_top">79dp</dimen>
-    <dimen name="return_arrows_width">23dp</dimen>
-    <dimen name="return_arrows_height">26dp</dimen>
+    <dimen name="return_arrows_width">30dp</dimen>
+    <dimen name="return_arrows_height">30dp</dimen>
+    <dimen name="tou_view_margin_top">100dp</dimen>
+    <dimen name="task_his_last_time_btn_width">188dp</dimen>
+    <dimen name="task_his_last_time_btn_height">84dp</dimen>
+    <dimen name="return_text_size">28sp</dimen>
+    <dimen name="return_arrow_text_margin">12dp</dimen>
+    <dimen name="health_title_textsize">20sp</dimen>
+    <dimen name="health_item_width">145dp</dimen>
+    <dimen name="health_item_height">180dp</dimen>
+    <dimen name="health_text_status_height">40dp</dimen>
+    <dimen name="air_status_view_width">130dp</dimen>
+    <dimen name="air_status_view_height">165dp</dimen>
 
 </resources>

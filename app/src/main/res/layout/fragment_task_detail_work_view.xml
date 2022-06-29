@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:layout_marginStart="130dp"
-    android:layout_marginTop="114dp"
-    android:layout_marginEnd="130dp"
-    android:layout_marginBottom="63dp"
     android:background="@mipmap/health_8beijing4_21"
     android:orientation="vertical"
     android:scaleType="fitXY">
@@ -17,47 +12,26 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="-10dp"
         android:text="任务进度"
         android:textColor="#ff02fde8"
-        android:textSize="29sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4" />
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/task_detail_percent"
+        app:layout_constraintStart_toStartOf="@+id/task_detail_percent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/task_detail_percent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
         android:textColor="#ff02fde8"
-        android:textSize="160sp"
+        android:textSize="200sp"
+        android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.263"
+        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.526" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
-        android:text="execute_task_1"
-        android:textColor="#ff02fde8"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="作业中_1 "
-        android:textColor="#ff02fde8"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView13"
@@ -65,60 +39,81 @@
         android:layout_height="wrap_content"
         android:text="%"
         android:textColor="#ff02fde8"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageCleanIv"
-        app:layout_constraintStart_toEndOf="@+id/textView4" />
-
-    <ImageView
-        android:id="@+id/imageCleanIv"
-        android:layout_width="119dp"
-        android:layout_height="119dp"
-        android:layout_marginStart="150dp"
-        android:background="@drawable/start_and_pause_selector"
-        android:clickable="true"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.654" />
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="@+id/task_detail_percent"
+        app:layout_constraintStart_toEndOf="@+id/task_detail_percent" />
 
     <TextView
-        android:id="@+id/textView25"
-        android:layout_width="113dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="清洁设置"
-        android:textColor="#fff8fafd"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageCleanIv"
-        app:layout_constraintStart_toStartOf="@+id/imageCleanIv"
-        app:layout_constraintTop_toBottomOf="@+id/imageCleanIv" />
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="execute_task_1"
+        android:textColor="#ff02fde8"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/task_detail_percent"
+        app:layout_constraintTop_toBottomOf="@+id/task_detail_percent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="作业中..."
+        android:textColor="#ff02fde8"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <ImageView
+        android:id="@+id/task_detail_stop_view"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:background="@mipmap/hongseanniu"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintBottom_toBottomOf="@+id/task_detail_percent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/task_detail_percent" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView25"-->
+<!--        android:layout_width="113dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:background="@drawable/button_background_selector"-->
+<!--        android:gravity="center"-->
+<!--        android:text="清洁设置"-->
+<!--        android:textColor="#fff8fafd"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/imageCleanIv"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/imageCleanIv"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/imageCleanIv" />-->
 
 
     <ImageView
-        android:id="@+id/imageLocationV"
-        android:layout_width="119dp"
-        android:layout_height="119dp"
-        android:layout_marginStart="41dp"
+        android:id="@+id/task_detail_exe_view"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:background="@drawable/start_and_pause_selector"
+        android:focusable="true"
         android:clickable="true"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/imageCleanIv"
-        app:layout_constraintStart_toEndOf="@+id/imageCleanIv"
-        app:layout_constraintTop_toTopOf="@+id/imageCleanIv" />
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintBottom_toBottomOf="@+id/task_detail_percent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/task_detail_percent" />
 
-    <TextView
-        android:layout_width="113dp"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="定位"
-        android:textColor="#fff8fafd"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView25"
-        app:layout_constraintEnd_toEndOf="@+id/imageLocationV"
-        app:layout_constraintStart_toStartOf="@+id/imageLocationV"
-        app:layout_constraintTop_toTopOf="@+id/textView25" />
+<!--    <TextView-->
+<!--        android:layout_width="113dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:background="@drawable/button_background_selector"-->
+<!--        android:gravity="center"-->
+<!--        android:text="定位"-->
+<!--        android:textColor="#fff8fafd"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/task_detail_exe_view"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/task_detail_exe_view"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/task_detail_exe_view" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

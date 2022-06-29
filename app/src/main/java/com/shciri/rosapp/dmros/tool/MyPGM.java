@@ -109,6 +109,18 @@ public class MyPGM {
             }
         }
 
+        byte temp;
+        int y_index;
+        for (int y=0; y < (height/2); y++) {
+            for (int x=0; x < width; x++) {
+                index = x + y * width;
+                y_index = x + (height-y-1)*width;
+                temp = coverage[index];
+                coverage[index] = coverage[y_index];
+                coverage[y_index] = temp;
+            }
+        }
+
         return coverage;
     }
 

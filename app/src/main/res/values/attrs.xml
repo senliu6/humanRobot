@@ -3,4 +3,7 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <attr name="titleText" format="string" />
+    <attr name="unitText" format="string" />
 </resources>

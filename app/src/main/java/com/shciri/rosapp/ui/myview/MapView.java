@@ -47,12 +47,16 @@ public class MapView extends View {
     float mCentorX = 0.0F;
     float mCentorY = 0.0F;
 
+    /* 是否显示自动规划的路径 */
+    public boolean isShowCoveragePath = false;
+
     boolean isShowRobotState = false;
     boolean isShowRobotPath = false;
     float mRobotDirection = 0F;
     PointF mRobotPoint = new PointF();
     ArrayList<PointF> mRobotPath = new ArrayList<>();
-
+    /* 自动规划的路径点数组 */
+    ArrayList<PointF> coveragePath = new ArrayList<>();
     public boolean isSetGoal = false;
 
     DataProcess dataProcess = new DataProcess();
@@ -293,8 +297,7 @@ public class MapView extends View {
         postInvalidate();
     }
 
-    public void
-    setRobotPosition(float x, float y, float direction, boolean isShowPath) {
+    public void setRobotPosition(float x, float y, float direction, boolean isShowPath) {
         isShowRobotState = true;
         mRobotDirection = direction;
         mRobotPoint.x = x;
@@ -307,6 +310,18 @@ public class MapView extends View {
             PointF pointf = new PointF();
             pointf.set(mRobotPoint);
             mRobotPath.add(pointf);
+        }
+        postInvalidate();
+    }
+
+    public void setCoveragePath(float x, float y, boolean isShowPath) {
+        isShowCoveragePath = isShowPath;
+
+        if (isShowPath) {
+            PointF pointf = new PointF();
+            pointf.x = x;
+            pointf.y = y;
+            coveragePath.add(pointf);
         }
         postInvalidate();
     }
@@ -504,7 +519,7 @@ public class MapView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.v("MapView", "onDraw");
+        //Log.v("MapView", "onDraw");
         super.onDraw(canvas);
         if (mBitmap != null) {
             //画布使用透明填充
@@ -625,6 +640,24 @@ public class MapView extends View {
             Bitmap robotImage = Bitmap.createBitmap(mRobotImage, 0, 0, mRobotImage.getWidth(), mRobotImage.getHeight(), rotationMatrix, true);
             canvas.drawBitmap(robotImage, point[0] - mRobotImage.getWidth() / 2, point[1] - mRobotImage.getHeight() / 2, null);
         }
+
+        if(isShowCoveragePath) {
+            Path path = new Path();
+            float[] transPoint = new float[2];
+            for (int i = 0; i < coveragePath.size(); i++) {
+                PointF pointf = coveragePath.get(i);
+                transPoint[0] = pointf.x;
+                transPoint[1] = pointf.y;
+                mCurrentMatrix.mapPoints(transPoint);
+                if (i == 0) {
+                    path.moveTo(transPoint[0], transPoint[1]);
+                } else {
+                    path.lineTo(transPoint[0], transPoint[1]);
+                }
+            }
+            canvas.drawPath(path, mRobotPathPaint);
+//            isShowCoveragePath = false;
+        }
     }
 
     private int mTouchMode = NOTHING_MODE;
@@ -643,7 +676,7 @@ public class MapView extends View {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        Log.v("MapView", "onTouchEvent");
+        //Log.v("MapView", "onTouchEvent");
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 if(isSetGoal) {

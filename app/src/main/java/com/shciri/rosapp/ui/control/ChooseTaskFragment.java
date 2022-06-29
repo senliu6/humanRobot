@@ -37,6 +37,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
 
     public static int currentTaskID;
     public static int taskCycleTimes;
+    public static String currentTaskName;
 
     @Nullable
     @Override
@@ -45,12 +46,10 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentChooseTaskBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
     public void onResume() {
-        Log.v("ChooseTaskFragment", "onResume");
         if(currentTaskID == 0){
             mTaskBt1.requestFocus();
         }
@@ -70,7 +69,6 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         });
 
         mOpenDrawer = binding.openDrawerIv;
-
         // Set up the user interaction to manually show or hide the system UI.
         mOpenDrawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,15 +177,21 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.task_bt1:
                 currentTaskID = 1;
+                currentTaskName = mTaskBt1.mTitleTv.getText().toString();
                 break;
             case R.id.task_bt2:
                 currentTaskID = 2;
+                currentTaskName = mTaskBt2.mTitleTv.getText().toString();
                 break;
             case R.id.task_bt3:
                 currentTaskID = 3;
+                currentTaskName = mTaskBt3.mTitleTv.getText().toString();
                 break;
             default:
                 break;
         }
+        System.out.println("taskname = " + currentTaskName);
     }
+
+
 }

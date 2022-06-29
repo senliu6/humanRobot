@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 public class TaskBtView extends ConstraintLayout{
 
-    TextView mTitleTv;
+    public TextView mTitleTv;
     TextView currFunStatusTv;
     Spinner mSpinner;
     View view;

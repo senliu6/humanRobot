@@ -7,6 +7,12 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/tou4_21"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -108,15 +114,15 @@
             android:id="@+id/return_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/return_margin_top"
+            android:layout_marginBottom="@dimen/return_margin_top"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@+id/image_map_control"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toTopOf="@+id/image_map_control"
+            app:layout_constraintStart_toStartOf="@+id/image_map_control">
 
             <ImageView
-                android:layout_width="13dp"
-                android:layout_height="21dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:scaleType="fitXY"
                 android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
@@ -126,7 +132,7 @@
                 android:layout_marginLeft="12dp"
                 android:text="数据管理"
                 android:textColor="#ff02fde8"
-                android:textSize="22sp" />
+                android:textSize="28sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

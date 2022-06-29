@@ -43,17 +43,20 @@ public class RosInit {
 
         @Override
         public void onConnect() {
+            isConnect = true;
             System.out.println("Connected on on on!!!");
         }
 
         @Override
         public void onDisconnect(boolean normal, String reason, int code) {
-            System.out.println("DisConnected !!!" + normal + "  reason:" + reason + "  code:" + code);
+            isConnect = false;
+            //System.out.println("DisConnected !!!" + normal + "  reason:" + reason + "  code:" + code);
         }
 
         @Override
         public void onError(Exception ex) {
-            System.out.println("Connect Error on on on!!!");
+           // ex.printStackTrace();
+           // System.out.println("Connect Error on on on!!!");
         }
     }
 }

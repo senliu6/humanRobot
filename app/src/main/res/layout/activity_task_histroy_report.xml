@@ -11,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_line"
         android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/tou_view_margin_top"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/tou4_21" />
 
     <LinearLayout
@@ -26,8 +27,8 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="21dp"
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
             android:scaleType="fitXY"
             android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
@@ -37,13 +38,13 @@
             android:layout_marginStart="12dp"
             android:text="任务报告列表"
             android:textColor="#ff02fde8"
-            android:textSize="22sp" />
+            android:textSize="28sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView28"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="194dp"
+        android:layout_height="63dp"
         android:layout_marginStart="24dp"
         android:background="@drawable/tasks_report_text_shape"
         android:gravity="center"
@@ -55,8 +56,8 @@
 
     <TextView
         android:id="@+id/textView27"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="194dp"
+        android:layout_height="63dp"
         android:layout_marginBottom="54dp"
         android:background="@drawable/tasks_report_text_shape"
         android:gravity="center"
@@ -68,8 +69,8 @@
 
     <ImageView
         android:id="@+id/imageView19"
-        android:layout_width="450dp"
-        android:layout_height="68dp"
+        android:layout_width="512dp"
+        android:layout_height="84dp"
         android:background="@mipmap/performmap_xiacengkuang4_21"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/textView27"
@@ -79,8 +80,8 @@
 
     <TextView
         android:id="@+id/tabLeftIv"
-        android:layout_width="166dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/task_his_last_time_btn_width"
+        android:layout_height="@dimen/task_his_last_time_btn_height"
         android:background="@mipmap/choosetask_kaishianniu4_21"
         android:gravity="center"
         android:text="最近24小时"
@@ -92,8 +93,8 @@
 
     <TextView
         android:id="@+id/tabMidIv"
-        android:layout_width="166dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/task_his_last_time_btn_width"
+        android:layout_height="@dimen/task_his_last_time_btn_height"
         android:background="@mipmap/choosetask_kaishianniu4_21"
         android:gravity="center"
         android:text="最近一周"
@@ -106,8 +107,8 @@
 
     <TextView
         android:id="@+id/tabRightIv"
-        android:layout_width="166dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/task_his_last_time_btn_width"
+        android:layout_height="@dimen/task_his_last_time_btn_height"
         android:gravity="center"
         android:scaleType="fitXY"
         android:text="最近一月"
@@ -123,50 +124,50 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/report_view_pager_ac"
         app:layout_constraintEnd_toEndOf="@+id/report_view_pager_ac"
         app:layout_constraintStart_toStartOf="@+id/report_view_pager_ac">
 
         <TextView
+            android:layout_marginStart="140dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="创建时间"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp"  />
 
         <TextView
+            android:layout_marginLeft="190dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="226dp"
             android:text="任务名称"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
+            android:layout_marginLeft="113dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="131dp"
             android:text="任务类型"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
+            android:layout_marginLeft="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="52dp"
             android:text="操作员"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
+            android:layout_marginLeft="68dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="52dp"
             android:text="操作"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -178,6 +179,5 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,16 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.AirQualityEvent;
+import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.ui.myview.AirStatusView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import src.com.jilk.ros.message.PoseStamped;
 
 public class HealthDialog extends Dialog {
 
@@ -25,9 +35,16 @@ public class HealthDialog extends Dialog {
     //Dialog弹出位置
     private LocationView locationView = LocationView.CENTER;
 
+    private AirStatusView CO2View;
+    private AirStatusView FormaldehydeView;
+    private AirStatusView TVOCView;
+    private AirStatusView PM2_5View;
+    private AirStatusView PM10View;
+    private AirStatusView TemperatureView;
+    private AirStatusView HumidityView;
+
     /**
      * @param context 上下文
-     * @param view    Dialog View
      */
     public HealthDialog(Context context) {
         super(context);
@@ -39,7 +56,35 @@ public class HealthDialog extends Dialog {
             }
         });
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        CO2View = findViewById(R.id.co2_view);
+        FormaldehydeView = findViewById(R.id.formaldehyde_status_view);
+        TVOCView = findViewById(R.id.TVOC_status_view);
+        PM2_5View = findViewById(R.id.PM2_5_status_view);
+        PM10View = findViewById(R.id.PM10_status_view);
+        TemperatureView = findViewById(R.id.T_status_view);
+        HumidityView = findViewById(R.id.humidity_status_view);
+
+        EventBus.getDefault().register(this);
+        AirQualityEvent.readyPublish = true;
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(AirQualityEvent event) {
+        String value = Integer.toString(event.getCO2());
+        CO2View.setValueView(value);
+        value = Integer.toString(event.getFormaldehyde()/1000);
+        FormaldehydeView.setValueView(value);
+        value = Integer.toString(event.getTVOC());
+        TVOCView.setValueView(value);
+        value = Integer.toString(event.getPM2_5());
+        PM2_5View.setValueView(value);
+        value = Integer.toString(event.getPM10());
+        PM10View.setValueView(value);
+        value = Float.toString(event.getTemperature());
+        TemperatureView.setValueView(value);
+        value = Float.toString(event.getHumidity());
+        HumidityView.setValueView(value);
+    };
 
     /**
      * 设置是否可以点击 Dialog View 外部关闭 Dialog

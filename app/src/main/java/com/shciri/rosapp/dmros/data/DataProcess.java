@@ -1,6 +1,9 @@
 package com.shciri.rosapp.dmros.data;
 
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosTopic;
@@ -19,7 +22,7 @@ public class DataProcess {
         RosData.moveGoal.pose.position.y = y * 0.05f;
         RosData.moveGoal.pose.orientation.z = 0.98f;
         RosData.moveGoal.pose.orientation.w = -0.019f;
-        if(!RosInit.offLineMode)
+        if (!RosInit.offLineMode)
             RosTopic.goalTopic.publish(RosData.moveGoal);
     }
 
@@ -27,6 +30,6 @@ public class DataProcess {
         RosData.coverageMap.header = RosData.map.header;
         RosData.coverageMap.info = RosData.map.info;
         RosData.coverageMap.data = myPGM.coverageMapProcess(RosData.map.info.width, RosData.map.info.height, RosData.map.data,
-                (RosData.map.info.height - top), (RosData.map.info.height - bottom), left, right);
+                RosData.map.info.height-top, RosData.map.info.height-bottom, left, right);
     }
 }

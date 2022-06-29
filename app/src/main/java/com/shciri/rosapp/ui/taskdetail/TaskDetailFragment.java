@@ -19,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.dmros.data.RosData;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -37,12 +38,13 @@ public class TaskDetailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_task_detail, container, false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RosData.taskPercent = 0;
 
         view.findViewById(R.id.return_ll).setOnClickListener(new View.OnClickListener() {
             @Override

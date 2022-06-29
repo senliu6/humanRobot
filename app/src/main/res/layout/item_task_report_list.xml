@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:weightSum="6">
 
@@ -9,59 +9,59 @@
         android:id="@+id/create_time_tv"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="2022-04-21  １9:03:00"
+        android:layout_height="45dp"
+        android:layout_weight="1.3"
+        android:text="2022-04-21  19:03:00"
         android:textColor="#ff02fde8"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/task_name_tv"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="45dp"
+        android:layout_weight="1.3"
         android:text="execute_task_2"
         android:textColor="#ff02fde8"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/task_type_tv"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="45dp"
+        android:layout_weight="0.9"
         android:text="组合任务"
         android:textColor="#ff02fde8"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/username_tv"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="45dp"
+        android:layout_weight="0.9"
         android:text="admin"
         android:textColor="#ff02fde8"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/operator_detail_tv"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="45dp"
+        android:layout_weight="0.8"
         android:text="详情"
-        android:textColor="#ff01337f"
-        android:textSize="18sp" />
+        android:textColor="#ff01ff7f"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/operator_send_tv"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="45dp"
+        android:layout_weight="0.8"
         android:text="发送"
-        android:textColor="#ff01337f"
-        android:textSize="18sp" />
+        android:textColor="#ff01ff7f"
+        android:textSize="20sp" />
 </LinearLayout>

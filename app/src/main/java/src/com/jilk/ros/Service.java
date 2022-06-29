@@ -19,6 +19,8 @@
  */
 package src.com.jilk.ros;
 
+import com.shciri.rosapp.dmros.client.RosInit;
+
 import src.com.jilk.ros.message.Message;
 import src.com.jilk.ros.rosbridge.operation.CallService;
 import src.com.jilk.ros.rosbridge.operation.ServiceResponse;
@@ -65,7 +67,10 @@ public class Service<CallType extends Message, ResponseType extends Message> imp
     }
     
     public String call(CallType args) {
-        return callImpl(args, null);
+        if(RosInit.isConnect)
+            return callImpl(args, null);
+        else
+            return null;
     }
     
     public void callWithHandler(CallType args, MessageHandler<ResponseType> responseHandler) {

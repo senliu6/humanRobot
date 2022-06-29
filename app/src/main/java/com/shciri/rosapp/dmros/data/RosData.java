@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.CoverageMap;
+import src.com.jilk.ros.message.CoveragePath;
 import src.com.jilk.ros.message.Header;
 import src.com.jilk.ros.message.MapMetaData;
 import src.com.jilk.ros.message.MapMsg;
@@ -22,6 +23,8 @@ public class RosData {
     public static MoveGoal moveGoal;
     public static Bitmap rosBitmap;
     public static CoverageMap coverageMap;
+    public static CoveragePath coveragePath;
+    public static byte taskPercent;
 
     public static final String MAP = "com.shciri.rosapp.map";
     public static final String TF = "com.shciri.rosapp.tf";

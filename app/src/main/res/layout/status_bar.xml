@@ -6,13 +6,15 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/connect_status"
         android:layout_marginTop="25dp"
         android:layout_marginStart="830dp"
-        app:srcCompat="@mipmap/lianjie5_12"
+        android:background="@mipmap/choosetask_duankailianjie4_21"
         android:layout_width="21dp"
         android:layout_height="21dp"/>
 
     <ImageView
+        android:id="@+id/wifi_status"
         android:layout_marginTop="26dp"
         android:layout_marginStart="28dp"
         app:srcCompat="@mipmap/wifi5_12"
@@ -20,24 +22,42 @@
         android:layout_height="21dp"/>
 
     <ImageView
+        android:id="@+id/network_status"
         android:layout_marginTop="21dp"
         android:layout_marginStart="30dp"
         app:srcCompat="@mipmap/liuliang5_12"
         android:layout_width="68dp"
         android:layout_height="30dp"/>
 
-    <ImageView
+    <TextView
+        android:textAlignment="textEnd"
+        android:includeFontPadding="false"
+        android:text="100%"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:id="@+id/battery_percent_status"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="25dp"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"/>
+
+    <com.shciri.rosapp.ui.myview.BatteryView
+        android:id="@+id/battery_status"
         android:layout_marginTop="28dp"
-        android:layout_marginStart="33dp"
-        app:srcCompat="@mipmap/dianliang5_12"
-        android:layout_width="100dp"
+        android:layout_width="40dp"
         android:layout_height="19dp"/>
 
-    <ImageView
-        android:layout_marginTop="29dp"
+    <TextView
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:text="9:41 AM"
+        android:includeFontPadding="false"
+        android:id="@+id/time_status"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="26dp"
-        app:srcCompat="@mipmap/shijian5_12"
-        android:layout_width="85dp"
-        android:layout_height="16dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>

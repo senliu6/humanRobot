@@ -19,9 +19,12 @@
  */
 package src.com.jilk.ros.rosbridge.implementation;
 
+import com.shciri.rosapp.dmros.tool.PublishEvent;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.greenrobot.eventbus.EventBus;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -32,6 +35,10 @@ import src.com.jilk.ros.rosbridge.operation.Publish;
 import src.com.jilk.ros.rosbridge.operation.ServiceResponse;
 import src.com.jilk.ros.ROSClient;
 import org.java_websocket.framing.CloseFrame;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.lang.reflect.Field;
 import java.nio.channels.SocketChannel;
@@ -99,16 +106,46 @@ public class ROSBridgeWebSocketClient extends WebSocketClient {
         // need to handle "result: null" possibility for ROSBridge service responses
         // this is probably some sort of call to the operation for "validation." Do it
         // as part of error handling.
-        
-        
+
+//        if (handler != null && message.contains("\"id\":"))
+//            handler.onMessage(operation.id, msg);
+//        else {
+//            if (debug)
+//                System.out.print("No handler: id# " + operation.id + ", op:" + operation.op);
+//            if (operation instanceof Publish) {
+//                Publish publish = ((Publish) operation);
+//                JSONParser jsonParser = new JSONParser();
+//                try {
+//                    JSONObject jsonObject = (JSONObject)jsonParser.parse(message);
+//                    String content = jsonObject.get("msg").toString();
+//                    EventBus.getDefault().post(new PublishEvent(operation,publish.topic,content));
+//                } catch (ParseException | JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                System.out.println("Publish " + publish.topic);
+//            } else if (operation instanceof ServiceResponse) {
+//                ServiceResponse serviceResponse = ((ServiceResponse) operation);
+//                JSONParser jsonParser = new JSONParser();
+//                try {
+//                    JSONObject jsonObject = (JSONObject)jsonParser.parse(message);
+//                    String content = jsonObject.get("values").toString();
+//                    EventBus.getDefault().post(new PublishEvent(operation,serviceResponse.service,content));
+//                } catch (ParseException | JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                System.out.println("Service Response " + serviceResponse.service);
+//            }
+//        }
         if (handler != null)
             handler.onMessage(operation.id, msg);
         else if (debug) {
             System.out.print("No handler: id# " + operation.id + ", ");
             if (operation instanceof Publish)
-                System.out.println("Publish " + ((Publish) operation).topic); 
+                System.out.println("Publish " + ((Publish) operation).topic);
             else if (operation instanceof ServiceResponse)
-                System.out.println("Service Response " + ((ServiceResponse) operation).service); 
+                System.out.println("Service Response " + ((ServiceResponse) operation).service);
             //operation.print();
         }
     }

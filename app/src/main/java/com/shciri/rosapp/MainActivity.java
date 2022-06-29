@@ -5,10 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,15 +24,32 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.BatteryPercentChangeEvent;
+import com.shciri.rosapp.mydata.CH34xAction;
+import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.myview.LoginKeyboardView;
+import com.shciri.rosapp.ui.myview.StatusBarView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import cn.wch.ch34xuartdriver.CH34xUARTDriver;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String ACTION_USB_PERMISSION ="cn.wch.wchusbdriver.USB_PERMISSION";
     private String TAG = MainActivity.class.getSimpleName();
 
     private EditText passwordEdit;
@@ -41,13 +64,63 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog alertDialog;
 
+    private LinearLayout layConnectingLoading;
+
+    private ImageView maskView;
+
+    private CH34xAction ch34xAction;
+
+    private StatusBarView statusBarView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        RCApplication.driver = new CH34xUARTDriver((UsbManager) getSystemService(Context.USB_SERVICE), this,
+                ACTION_USB_PERMISSION);
+        InitUI();
+
+        ch34xAction.queryBatteryInfo();
+
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        registerReceiver(timeReceiver,filter);
+    }
+
+    private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_TIME_TICK)) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+                Date date = new Date(System.currentTimeMillis());
+                statusBarView.setTimeView(simpleDateFormat.format(date));
+                ch34xAction.queryBatteryInfo();
+            }
+        }
+    };
+
+    private void InitUI() {
+        statusBarView = findViewById(R.id.login_statusBar);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+        Date date = new Date(System.currentTimeMillis());
+        statusBarView.setTimeView(simpleDateFormat.format(date));
+
+        ch34xAction = new CH34xAction(this, statusBarView);
+        ch34xAction.queryBatteryInfo();
+
         connectingProgressBar = findViewById(R.id.connecting_progress_bar);
         connectingProgressBar.setVisibility(View.VISIBLE);
+
+        layConnectingLoading = findViewById(R.id.lay_connecting_loading);
+        maskView = findViewById(R.id.login_mask);
+        maskView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* 拦截点击事件 */
+            }
+        });
 
         /* 防止软键盘自动弹出 */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
@@ -70,12 +143,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (password.equals("123456")) {
+                if (password.equals("1")) {
                     if(!RosInit.isConnect) {
                         if(!alertDialog.isShowing()){
                             alertDialog.show();
                         }
                     }else{
+                        layConnectingLoading.setVisibility(View.VISIBLE);
+                        maskView.setVisibility(View.VISIBLE);
                         Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
                         startActivity(intent);
                     }
@@ -97,8 +172,11 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("进入离线模式", new DialogInterface.OnClickListener() {//添加"Yes"按钮
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getBaseContext(), "进入离线模式", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getBaseContext(), "进入离线模式", Toast.LENGTH_SHORT).show();
+                        RCApplication.driver.CloseDevice();
                         RosInit.offLineMode = true;
+                        layConnectingLoading.setVisibility(View.VISIBLE);
+                        maskView.setVisibility(View.VISIBLE);
                         Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
                         startActivity(intent);
                     }
@@ -112,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 }).create();
 
         rosInit = new RosInit();
-        rosConnectAndInit();
     }
 
     private class myHandler extends Handler{
@@ -125,9 +202,13 @@ public class MainActivity extends AppCompatActivity {
     private void rosConnectAndInit() {
         new Thread(() -> {
             while (true) {
+                if(RosInit.isConnect || RosInit.offLineMode)
+                    return;
                 ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
                 ((RCApplication)getApplication()).setRosClient(client);
+
                 if(RosInit.isConnect || RosInit.offLineMode){
+                    statusBarView.setConnectStatus(true);
                     return;
                 }else{
                     Message message = Message.obtain();
@@ -139,8 +220,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            //rosInit.getTF();
-            //rosInit.getMap();
         }).start();
     }
 
@@ -175,10 +254,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (password.length() > 0) {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.login_denglu4_21);
-//            setViewLayoutParams(findViewById(R.id.loginBt), 481, 84);
         } else {
             findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.denglu);
-//            setViewLayoutParams(findViewById(R.id.loginBt), 461, 64);
         }
     }
 
@@ -209,7 +286,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         requestFullscreen();
+        if(RosInit.isConnect) {
+            RCApplication.client.disconnect();
+            RosInit.offLineMode = false;
+            RosInit.isConnect = false;
+            System.out.println("onDestroy onDestroy onDestroyonDestroyonDestroy onDestroy ");
+        }
+        layConnectingLoading.setVisibility(View.INVISIBLE);
+        maskView.setVisibility(View.INVISIBLE);
+        rosConnectAndInit();
+        System.out.println("onResume onResume onResume onResume onResume ");
 //        setStatusBar();
+        passwordEdit.setText("");
+        password = "";
+    }
+
+    @Override
+    protected void onDestroy() {
+        RCApplication.driver.CloseDevice();
+        super.onDestroy();
     }
 
     protected void setStatusBar() {
@@ -234,5 +329,4 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
-
 }
