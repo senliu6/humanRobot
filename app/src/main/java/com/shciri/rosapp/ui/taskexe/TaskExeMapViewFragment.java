@@ -1,4 +1,4 @@
-package com.shciri.rosapp.ui.taskdetail;
+package com.shciri.rosapp.ui.taskexe;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -6,31 +6,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.dmros.client.RosTopic;
-import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.ui.control.ManageTaskDB;
 import com.shciri.rosapp.ui.myview.MapView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import src.com.jilk.ros.message.CoveragePath;
 import src.com.jilk.ros.message.PoseStamped;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class TaskDetailMapViewFragment extends Fragment {
+public class TaskExeMapViewFragment extends Fragment {
 
     private MapView mapView;
 //    private RosTopic rosTopic = new RosTopic();
@@ -43,25 +41,29 @@ public class TaskDetailMapViewFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         PublishEvent.readyPublish = true;
-        return inflater.inflate(R.layout.fragment_task_detail_map_view, container, false);
+        return inflater.inflate(R.layout.fragment_task_exe_map_view, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapView = view.findViewById(R.id.task_detail_map_view);
-        if(RosData.rosBitmap != null){
-            mapView.setBitmap(RosData.rosBitmap, 12);
+        if(RosData.rosBitmap != null) {
+            mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
         }else {
             Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
-            mapView.setBitmap(map, 12);
+            mapView.setBitmap(map, MapView.updateMapID.RUNNING);
         }
 
-        if(!mapView.isShowCoveragePath) {
+        if(!mapView.isShowCoveragePath && RosData.coveragePath != null) {
             for(PoseStamped point : RosData.coveragePath.poses) {
                 plotPath((int)(point.pose.position.x/0.05f), (int)(point.pose.position.y/0.05f));
             }
         }
+
+        TextView taskName = view.findViewById(R.id.task_exe_name);
+        taskName.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).taskName);
     }
 
 
@@ -82,7 +84,6 @@ public class TaskDetailMapViewFragment extends Fragment {
 
     ThreadMode.AYSNC：使用这个模式的订阅函数，那么无论事件在哪个线程发布，都会创建新的子线程来执行订阅函数。
     ***/
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PublishEvent event) {
         if("/tf".equals(event.getMessage())) {

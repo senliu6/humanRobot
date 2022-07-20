@@ -10,7 +10,9 @@ public class RCApplication extends Application {
     public static ROSBridgeClient client;
     public String rosIP = "192.168.1.210";
     public String rosPort = "9090";
-    public SQLiteDatabase db;
+    public static SQLiteDatabase db;
+    public static String Operator;
+
 
     @Override
     public void onCreate() {

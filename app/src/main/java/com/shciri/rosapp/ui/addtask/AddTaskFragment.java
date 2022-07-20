@@ -13,7 +13,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.ui.taskdetail.TasksDetailPagerAdapter;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -37,10 +36,10 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.new_task_bt).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.new_time_task_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_addTaskFragment_to_addNewTaskFragment);
+                Navigation.findNavController(view).navigate(R.id.action_addTaskFragment_to_addNewTimeTaskFragment);
             }
         });
 
@@ -50,7 +49,12 @@ public class AddTaskFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
+
+        view.findViewById(R.id.new_task_bt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_addTaskFragment_to_addNewTaskFragment);
+            }
+        });
     }
-
-
 }

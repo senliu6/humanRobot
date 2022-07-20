@@ -7,9 +7,13 @@ import src.com.jilk.ros.Topic;
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.CoverageMap;
 import src.com.jilk.ros.message.CoveragePath;
+import src.com.jilk.ros.message.CoveragePoints;
 import src.com.jilk.ros.message.MapMsg;
+import src.com.jilk.ros.message.StartMapping;
 import src.com.jilk.ros.message.TFTopic;
+import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.goal.MoveGoal;
+import src.com.jilk.ros.message.sensor_msgs.Range;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class RosTopic {
@@ -19,13 +23,30 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<MoveGoal> goalTopic;
     public static src.com.jilk.ros.Topic<CoverageMap> coverageMapTopic;
     public static src.com.jilk.ros.Topic<CoveragePath> coveragePathTopic;
+    public static src.com.jilk.ros.Topic<StartMapping> startMappingsTopic;
+    public static src.com.jilk.ros.Topic<CoveragePoints> coveragePointsTopic;
+    public static src.com.jilk.ros.Topic<Ultrasonic> ultrasonicTopic;
+    public static src.com.jilk.ros.Topic<Range> ultrasonicTopic0;
+    public static src.com.jilk.ros.Topic<Range> ultrasonicTopic1;
+    public static src.com.jilk.ros.Topic<Range> ultrasonicTopic2;
+    public static src.com.jilk.ros.Topic<Range> ultrasonicTopic3;
 
-    public final String[] TopicName = {"/map","/cmd_vel","/tf","/move_base_simple/goal","/coverage_map","/coverage_path"};
+    public final String[] TopicName = {"/map","/cmd_vel","/tf","/move_base_simple/goal","/coverage/points","/coverage/path","/start_mapping", "/ultrasonic/data", "/ultrasonic/sensor0",
+        "/ultrasonic/sensor1",
+        "/ultrasonic/sensor2",
+        "/ultrasonic/sensor3",
+    };
+
     public boolean[] TopicMatch = new boolean[TopicName.length];
 
     public void subscribeMapTopic(MessageHandler handler, ROSBridgeClient client) {
         mapTopic = new Topic<MapMsg>("/map", MapMsg.class, client);
         mapTopic.subscribe(handler);
+    }
+
+    public void subscribeStartMappingTopic(ROSBridgeClient client) {
+        startMappingsTopic = new Topic<StartMapping>("/start_mapping", StartMapping.class, client);
+        startMappingsTopic.advertise();
     }
 
     public void subscribeCmdVelTopic(MessageHandler handler, ROSBridgeClient client) {
@@ -51,9 +72,36 @@ public class RosTopic {
         coverageMapTopic.advertise();
     }
 
+    public void initCoveragePointsTopic(ROSBridgeClient client) {
+        coveragePointsTopic  = new Topic<CoveragePoints>("/coverage/points", CoveragePoints.class, client);
+        coveragePointsTopic.advertise();
+    }
+
     public void initCoveragePathTopic(MessageHandler handler, ROSBridgeClient client) {
-        coveragePathTopic  = new Topic<CoveragePath>("/coverage_path", CoveragePath.class, client);
+        coveragePathTopic  = new Topic<CoveragePath>("/coverage/path", CoveragePath.class, client);
         coveragePathTopic.subscribe(handler);
+    }
+
+    public void subscribeUltrasonicTopic(MessageHandler handler, ROSBridgeClient client) {
+        ultrasonicTopic = new Topic<Ultrasonic>("/ultrasonic/data", Ultrasonic.class, client);
+        ultrasonicTopic.subscribe(handler);
+    }
+
+    public void subscribeUltrasonicTopic0(MessageHandler handler, ROSBridgeClient client) {
+        ultrasonicTopic0 = new Topic<Range>("/ultrasonic/sensor0", Range.class, client);
+        ultrasonicTopic0.subscribe(handler);
+    }
+    public void subscribeUltrasonicTopic1(MessageHandler handler, ROSBridgeClient client) {
+        ultrasonicTopic1 = new Topic<Range>("/ultrasonic/sensor1", Range.class, client);
+        ultrasonicTopic1.subscribe(handler);
+    }
+    public void subscribeUltrasonicTopic2(MessageHandler handler, ROSBridgeClient client) {
+        ultrasonicTopic2 = new Topic<Range>("/ultrasonic/sensor2", Range.class, client);
+        ultrasonicTopic2.subscribe(handler);
+    }
+    public void subscribeUltrasonicTopic3(MessageHandler handler, ROSBridgeClient client) {
+        ultrasonicTopic3 = new Topic<Range>("/ultrasonic/sensor3", Range.class, client);
+        ultrasonicTopic3.subscribe(handler);
     }
 
     public void deInitAll() {
@@ -75,8 +123,7 @@ public class RosTopic {
                         goalTopic.unsubscribe();
                         break;
                     case 4:
-                        coverageMapTopic.unadvertise();
-                        coverageMapTopic.unsubscribe();
+                        coveragePointsTopic.unadvertise();
                         break;
                 }
             }

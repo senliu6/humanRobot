@@ -1,23 +1,17 @@
-package com.shciri.rosapp.ui.taskdetail;
-
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
+package com.shciri.rosapp.ui.taskexe;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.data.RosData;
 
@@ -25,7 +19,7 @@ import com.shciri.rosapp.dmros.data.RosData;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class TaskDetailFragment extends Fragment {
+public class TaskExeFragment extends Fragment {
 
     private ViewPager viewPager;
     TextView tabLeftIv;
@@ -37,7 +31,7 @@ public class TaskDetailFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_task_detail, container, false);
+        return inflater.inflate(R.layout.fragment_task_exe, container, false);
     }
 
     @Override
@@ -52,8 +46,8 @@ public class TaskDetailFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
-        viewPager = view.findViewById(R.id.task_detail_view_pager);
-        TasksDetailPagerAdapter tasksDetailAdapter = new TasksDetailPagerAdapter( getChildFragmentManager());
+        viewPager = view.findViewById(R.id.task_exe_view_pager);
+        TasksExePagerAdapter tasksDetailAdapter = new TasksExePagerAdapter( getChildFragmentManager());
         viewPager.setAdapter(tasksDetailAdapter);
         tabLeftIv = view.findViewById(R.id.tabLeftIv);
         tabLeftIv.setOnClickListener(new View.OnClickListener() {

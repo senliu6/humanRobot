@@ -109,13 +109,17 @@ public class CH34xAction {
 
     public void queryBatteryInfo() {
         //byte[] cmd = {0x01, 0x03, 0x00, 0x00, 0x00, 0x2A, (byte)0xC4, 0x15};
-        byte[] cmd = {0x01, 0x03, 0x00, 0x14, 0x00, 0x01, (byte)0xC4, 0x0E};
-        writeByte(cmd);
+        if(RCApplication.driver.isConnected()) {
+            byte[] cmd = {0x01, 0x03, 0x00, 0x14, 0x00, 0x01, (byte) 0xC4, 0x0E};
+            writeByte(cmd);
+        }
     }
 
     public void queryAirQuality() {
-        byte[] cmd = {0x07, 0x03, 0x00, 0x02, 0x00, 0x07, (byte)0xA5, (byte)0xAE};
-        writeByte(cmd);
+        if(RCApplication.driver.isConnected()) {
+            byte[] cmd = {0x07, 0x03, 0x00, 0x02, 0x00, 0x07, (byte)0xA5, (byte)0xAE};
+            writeByte(cmd);
+        }
     }
 
     private void frameUnpack() {

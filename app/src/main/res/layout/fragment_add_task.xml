@@ -13,29 +13,30 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="21dp"
-            android:layout_marginLeft="120dp"
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:layout_marginLeft="100dp"
             android:scaleType="fitXY"
             android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
             android:text="定时任务"
             android:textColor="#ff02fde8"
-            android:textSize="22sp" />
+            android:textSize="@dimen/return_text_size" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="任务名称"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +58,7 @@
             android:layout_marginLeft="226dp"
             android:text="时间"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +66,7 @@
             android:layout_marginLeft="131dp"
             android:text="重复"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,7 +74,7 @@
             android:layout_marginLeft="52dp"
             android:text="循环次数"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,33 +82,47 @@
             android:layout_marginLeft="52dp"
             android:text="操作"
             android:textColor="#ff02a496"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/listview"
-        android:layout_width="1089dp"
-        android:layout_height="344dp"
+        android:layout_width="1000dp"
+        android:layout_height="450dp"
         android:background="@drawable/tasks_report_text_shape"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.213" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
         android:id="@+id/new_task_bt"
-        android:layout_width="140dp"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="280dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="新建任务"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/listview"
+        app:layout_constraintTop_toBottomOf="@+id/listview" />
+
+    <TextView
+        android:id="@+id/new_time_task_bt"
+        android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="新建"
+        android:text="新建定时任务"
         android:textSize="24sp"
-        android:textColor="#F4F1F1"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/listview"
         app:layout_constraintTop_toBottomOf="@+id/listview" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,9 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.shciri.rosapp.dmros.client.RosInit;
@@ -72,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     private StatusBarView statusBarView;
 
+    private Spinner identitySpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
         RCApplication.driver = new CH34xUARTDriver((UsbManager) getSystemService(Context.USB_SERVICE), this,
                 ACTION_USB_PERMISSION);
+
+//        getBaseContext().deleteDatabase("test");
+        DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,5);
+        RCApplication.db = dbOpenHelper.getWritableDatabase();
+//        RCApplication.db.delete("map","id=?",new String[]{"1"});
+//        ContentValues values = new ContentValues();
+//        values.put("name", "DAMon");
+//        RCApplication.db.update("map", values, "name = ?", new String[]{"TT"});
+
         InitUI();
 
         ch34xAction.queryBatteryInfo();
@@ -86,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter filter=new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeReceiver,filter);
+
+
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -124,6 +140,25 @@ public class MainActivity extends AppCompatActivity {
 
         /* 防止软键盘自动弹出 */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+        String[] idOption = {"User","Admin"};
+        ArrayAdapter<String> idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
+        //设置数组适配器的布局样式
+        idAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
+        identitySpinner = findViewById(R.id.identity_select);
+        identitySpinner.setAdapter(idAdapter);
+        RCApplication.Operator = idOption[0];
+        identitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                RCApplication.Operator = identitySpinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         password = new String("");
         LoginKeyboardView loginKeyboardView = findViewById(R.id.loginKeyboard);
@@ -173,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Toast.makeText(getBaseContext(), "进入离线模式", Toast.LENGTH_SHORT).show();
-                        RCApplication.driver.CloseDevice();
+                        if(RCApplication.driver.isConnected())
+                            RCApplication.driver.CloseDevice();
                         RosInit.offLineMode = true;
                         layConnectingLoading.setVisibility(View.VISIBLE);
                         maskView.setVisibility(View.VISIBLE);
@@ -196,6 +232,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
+            if(msg.arg1 == 1)
+                statusBarView.setConnectStatus(true);
+            else
+                statusBarView.setConnectStatus(false);
         }
     }
 
@@ -207,13 +247,16 @@ public class MainActivity extends AppCompatActivity {
                 ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
                 ((RCApplication)getApplication()).setRosClient(client);
 
+                Message message = Message.obtain();
                 if(RosInit.isConnect || RosInit.offLineMode){
-                    statusBarView.setConnectStatus(true);
+                    message.arg1 = 1;
+                    handler.sendMessage(message);
                     return;
                 }else{
-                    Message message = Message.obtain();
+                    message.arg1 = 0;
                     handler.sendMessage(message);
                 }
+
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {

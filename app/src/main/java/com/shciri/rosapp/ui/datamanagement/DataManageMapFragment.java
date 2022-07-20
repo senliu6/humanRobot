@@ -1,22 +1,33 @@
 package com.shciri.rosapp.ui.datamanagement;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -24,12 +35,32 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.dmros.client.RosService;
+import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.BitmapUtils;
+import com.shciri.rosapp.dmros.tool.ControlMapEvent;
+import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.mydata.TaskHistoryAdapter;
+import com.shciri.rosapp.ui.TaskControlActivity;
+import com.shciri.rosapp.ui.control.ChooseTaskFragment;
 import com.shciri.rosapp.ui.myview.MapView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import src.com.jilk.ros.message.RobotControlRequest;
+import src.com.jilk.ros.message.StartMapping;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -38,11 +69,13 @@ import java.util.List;
 public class DataManageMapFragment extends Fragment {
 
     private OnBackPressedCallback mBackPressedCallback;
-    private MapView mMapView;
+    private MapView mapView;
     ArrayList<Path> mVirtualWallPaths = new ArrayList<>();
     SwipeMenuListView swipeMenuListView;
     private List<MapListTitle> mapListData;
     private AppAdapter mAdapter;
+
+    private TextView scanBtn;
 
     @Nullable
     @Override
@@ -55,10 +88,13 @@ public class DataManageMapFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mMapView = view.findViewById(R.id.mapView);
-        mMapView = view.findViewById(R.id.mapView);
-        Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
-        mMapView.setBitmap(map, 12);
+        mapView = view.findViewById(R.id.mapView);
+        if(RosData.rosBitmap != null){
+            mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
+        }else {
+            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+            mapView.setBitmap(map, MapView.updateMapID.RUNNING);
+        }
 
         swipeMenuListView = view.findViewById(R.id.map_manage_swipeList);
         mapTitleListInit();
@@ -73,25 +109,25 @@ public class DataManageMapFragment extends Fragment {
         view.findViewById(R.id.startEraseMapTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.startEraseState();
+                mapView.startEraseState();
             }
         });
         view.findViewById(R.id.undoEraseMapTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.undoErase();
+                mapView.undoErase();
             }
         });
         view.findViewById(R.id.saveEraseMapTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.saveErasedMap();
+                mapView.saveErasedMap();
             }
         });
         view.findViewById(R.id.endEraseMapTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.exitWithSaveEraseState();
+                mapView.exitWithSaveEraseState();
             }
         });
 
@@ -99,35 +135,140 @@ public class DataManageMapFragment extends Fragment {
         view.findViewById(R.id.startVirtualWallTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.startVirtualWallState(mVirtualWallPaths);
+                mapView.startVirtualWallState(mVirtualWallPaths);
             }
         });
         view.findViewById(R.id.saveVirtualWallTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.saveVirtualWallPathPoints();
-                mVirtualWallPaths.addAll(mMapView.getVirtualWallPaths());
+                mapView.saveVirtualWallPathPoints();
+                mVirtualWallPaths.addAll(mapView.getVirtualWallPaths());
             }
         });
         view.findViewById(R.id.exitVirtualWallTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.exitVirtualWallState();
+                mapView.exitVirtualWallState();
             }
         });
         view.findViewById(R.id.addVirtualWallTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMapView.addVirtualWallPathPoint();
+                mapView.addVirtualWallPathPoint();
             }
         });
 
-        view.findViewById(R.id.add_new_map).setOnClickListener(new View.OnClickListener() {
+        scanBtn = view.findViewById(R.id.scan_new_map);
+        scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                if (RosTopic.startMappingsTopic != null) {
+//                    if (v.isActivated()) {
+//                        StartMapping startMapping = new StartMapping();
+//                        startMapping.control = 2;
+//                        RosTopic.startMappingsTopic.publish(startMapping);
+//                        MapView.scanning = false;
+//                        //在API29及之后是不需要申请的，默认是允许的
+//                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+//                        } else {
+//                            //保存图片到相册
+//                            showInputDialog();
+//                        }
+//                        scanBtn.setText("+扫描地图");
+//                        v.setActivated(false);
+//                    } else {
+//                        StartMapping startMapping = new StartMapping();
+//                        startMapping.control = 1;
+//                        RosTopic.startMappingsTopic.publish(startMapping);
+//                        MapView.scanning = true;
+//                        scanBtn.setText("保存地图");
+//                        v.setActivated(true);
+//                    }
+//                }else {
+//                    Toast.makeText(getContext(), "离线模式或服务未开启，请退回登录界面重试！", Toast.LENGTH_SHORT).show();
+//                }
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            } else {
+                showInputDialog();
+            }
 
             }
         });
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //保存图片到相册
+                showInputDialog();
+            } else {
+                Toast.makeText(getContext(), "你拒绝了该权限，无法保存地图！", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void showInputDialog() {
+        /*@setView 装入一个EditView
+         */
+        final EditText editText = new EditText(getContext());
+        AlertDialog.Builder inputDialog =
+                new AlertDialog.Builder(getContext());
+        inputDialog.setTitle("请为地图命名").setView(editText);
+        inputDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(),
+                                editText.getText().toString(),
+                                Toast.LENGTH_SHORT).show();
+                        BitmapUtils.saveImage(editText.getText().toString(), RosData.dataBaseMaxMapID+1, mapView.mBitmap);
+                        DBInsertMap(editText.getText().toString());
+                        EventBus.getDefault().post(new ControlMapEvent("addMap",editText.getText().toString(),RosData.dataBaseMaxMapID+1));
+                    }
+                }).show();
+    }
+
+    private void DBInsertMap(String name) {
+        ContentValues values = new ContentValues();
+        values.put("name",name);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        values.put("time",simpleDateFormat.format(date));
+        values.put("width",mapView.mBitmap.getWidth());
+        values.put("height",mapView.mBitmap.getHeight());
+        RCApplication.db.insert("map",null,values);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PublishEvent event) {
+        if("/map".equals(event.getMessage())) {
+            if(RosData.rosBitmap != null){
+                mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
+            }else {
+                Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+                mapView.setBitmap(map, MapView.updateMapID.RUNNING);
+            }
+        }
+    };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        PublishEvent.readyPublish = true;
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        PublishEvent.readyPublish = false;
+        super.onStop();
     }
 
     private void addNewMapList(String name) {

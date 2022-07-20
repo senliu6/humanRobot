@@ -9,6 +9,8 @@ import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 
+import src.com.jilk.ros.message.std_msgs.MultiArrayDimension;
+
 public class DataProcess {
 
     MyPGM myPGM = new MyPGM();
@@ -27,9 +29,33 @@ public class DataProcess {
     }
 
     public void coverageMapProcess(int top, int bottom, int left, int right) {
-        RosData.coverageMap.header = RosData.map.header;
-        RosData.coverageMap.info = RosData.map.info;
-        RosData.coverageMap.data = myPGM.coverageMapProcess(RosData.map.info.width, RosData.map.info.height, RosData.map.data,
-                RosData.map.info.height-top, RosData.map.info.height-bottom, left, right);
+        if(RosData.map != null) {
+            RosData.coverageMap.header = RosData.map.header;
+            RosData.coverageMap.info = RosData.map.info;
+            RosData.coverageMap.data = myPGM.coverageMapProcess(RosData.map.info.width, RosData.map.info.height, RosData.map.data,
+                    RosData.map.info.height-top, RosData.map.info.height-bottom, left, right);
+        }
+    }
+
+    public void coveragePointsProcess(float top, float bottom, float left, float right) {
+        if(RosData.map != null) {
+            if(top > bottom) {
+                float tmp;
+                tmp = top;
+                top = bottom;
+                bottom = tmp;
+            }
+            if(left > right) {
+                float tmp;
+                tmp = left;
+                left = right;
+                right = tmp;
+            }
+            RosData.coveragePoints.data = new float[]{left, top,
+                    left, bottom,
+                    right, bottom,
+                    right, top,
+                    left, top};
+        }
     }
 }

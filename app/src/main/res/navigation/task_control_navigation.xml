@@ -23,12 +23,21 @@
             app:destination="@id/manuaControlFragment"
             app:launchSingleTop="true" />
         <action
-            android:id="@+id/action_nav_home_to_taskDetailFragment"
-            app:destination="@id/taskDetailFragment"
+            android:id="@+id/action_nav_home_to_taskExeFragment"
+            app:destination="@id/taskExeFragment"
             app:launchSingleTop="true" />
         <action
             android:id="@+id/action_nav_home_to_addTaskFragment"
             app:destination="@id/addTaskFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_moreTaskFragment"
+            app:destination="@id/moreTaskFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_systemSetFragment"
+            app:destination="@id/systemSetFragment" />
     </fragment>
 
 
@@ -64,9 +73,26 @@
         android:name="com.shciri.rosapp.ui.manualcontrol.ManuaControlFragment"
         android:label="ManuaControlFragment" />
     <fragment
+        android:id="@+id/taskExeFragment"
+        android:name="com.shciri.rosapp.ui.taskexe.TaskExeFragment"
+        android:label="TaskExeFragment" />
+    <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="com.shciri.rosapp.ui.taskdetail.TaskDetailFragment"
+        android:name="com.shciri.rosapp.ui.control.TaskDetailFragment"
         android:label="TaskDetailFragment" />
+    <fragment
+        android:id="@+id/moreTaskFragment"
+        android:name="com.shciri.rosapp.ui.control.MoreTaskFragment"
+        android:label="MoreTaskFragment" >
+        <action
+            android:id="@+id/action_nav_home_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_taskExeFragment"
+            app:destination="@id/taskExeFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.shciri.rosapp.ui.addtask.AddTaskFragment"
@@ -74,10 +100,24 @@
         <action
             android:id="@+id/action_addTaskFragment_to_addNewTaskFragment"
             app:destination="@id/addNewTaskFragment"/>
+        <action
+            android:id="@+id/action_addTaskFragment_to_addNewTimeTaskFragment"
+            app:destination="@id/addNewTimeTaskFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/systemSetFragment"
+        android:name="com.shciri.rosapp.ui.set.SystemSetFragment"
+        android:label="SystemSetFragment"
+        tools:layout="@layout/fragment_system_set"/>
 
     <fragment
         android:id="@+id/addNewTaskFragment"
         android:name="com.shciri.rosapp.ui.addtask.AddNewTaskFragment"
         android:label="AddNewTaskFragment" />
+    <fragment
+        android:id="@+id/addNewTimeTaskFragment"
+        android:name="com.shciri.rosapp.ui.addtask.AddNewTimeTaskFragment"
+        android:label="AddNewTimeTaskFragment" />
+
 </navigation>

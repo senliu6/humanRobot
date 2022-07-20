@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@mipmap/login_dabeijing4_21"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/return_ll"
+        android:layout_marginTop="@dimen/return_margin_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:layout_marginLeft="100dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
+            android:text="更多任务"
+            android:textColor="#ff02fde8"
+            android:textSize="@dimen/return_text_size" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/more_task_title_ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/more_task_lv"
+        app:layout_constraintStart_toStartOf="@+id/more_task_lv"
+        app:layout_constraintTop_toBottomOf="@+id/return_ll">
+
+        <TextView
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintBottom_toBottomOf="@+id/more_task_title_ll"
+            app:layout_constraintTop_toTopOf="@+id/more_task_title_ll"
+            app:layout_constraintStart_toStartOf="@+id/more_task_title_ll"
+            app:layout_constraintEnd_toEndOf="@+id/more_task_title_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="任务名称"
+            android:textColor="#ff02a496"
+            android:textSize="20sp" />
+
+        <TextView
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="@+id/more_task_title_ll"
+            app:layout_constraintTop_toTopOf="@+id/more_task_title_ll"
+            app:layout_constraintStart_toStartOf="@+id/more_task_title_ll"
+            app:layout_constraintEnd_toEndOf="@+id/more_task_title_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="循环次数"
+            android:textColor="#ff02a496"
+            android:textSize="20sp" />
+
+        <TextView
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintBottom_toBottomOf="@+id/more_task_title_ll"
+            app:layout_constraintTop_toTopOf="@+id/more_task_title_ll"
+            app:layout_constraintStart_toStartOf="@+id/more_task_title_ll"
+            app:layout_constraintEnd_toEndOf="@+id/more_task_title_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="消杀模式"
+            android:textColor="#ff02a496"
+            android:textSize="20sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ListView
+        android:id="@+id/more_task_lv"
+        android:layout_width="600dp"
+        android:layout_height="450dp"
+        android:background="@drawable/tasks_report_text_shape"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/more_task_title_ll"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintVertical_bias="0.1" />
+
+    <TextView
+        android:id="@+id/delete_task_bt"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="删除"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/detail_task_bt"
+        app:layout_constraintTop_toBottomOf="@+id/more_task_lv" />
+
+    <TextView
+        android:id="@+id/detail_task_bt"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="详情"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/start_task_bt"
+        app:layout_constraintTop_toBottomOf="@+id/more_task_lv" />
+
+    <TextView
+        android:id="@+id/start_task_bt"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="开始任务"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/more_task_lv"
+        app:layout_constraintTop_toBottomOf="@+id/more_task_lv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

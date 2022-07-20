@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/return_ll"
+        android:layout_marginTop="@dimen/return_margin_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:layout_marginLeft="100dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
+            android:text="系统设置"
+            android:textColor="#ff02fde8"
+            android:textSize="@dimen/return_text_size" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/system_set_lv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/tasks_report_text_shape"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/return_ll"
+        android:layout_marginTop="10dp"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

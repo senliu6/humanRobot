@@ -17,19 +17,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="21dp"
-            android:layout_marginLeft="120dp"
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:layout_marginLeft="100dp"
             android:scaleType="fitXY"
             android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
             android:text="新建任务"
             android:textColor="#ff02fde8"
-            android:textSize="22sp" />
+            android:textSize="@dimen/return_text_size" />
     </LinearLayout>
 
     <TextView
@@ -40,8 +40,8 @@
         android:text="重复"
         android:textColor="#ff02a496"
         android:textSize="21sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
-        app:layout_constraintStart_toStartOf="@+id/textView11" />
+        app:layout_constraintBottom_toTopOf="@+id/add_task_date_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_task_date_spinner" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,34 +51,46 @@
         android:text="时间"
         android:textColor="#ff02a496"
         android:textSize="21sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView12"
-        app:layout_constraintStart_toStartOf="@+id/textView12" />
+        app:layout_constraintBottom_toTopOf="@+id/add_task_time_select"
+        app:layout_constraintStart_toStartOf="@+id/add_task_time_select" />
 
-    <TextView
-        android:id="@+id/textView11"
+    <Spinner
+        android:id="@+id/add_task_date_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
-        android:background="@drawable/tasks_report_text_shape"
-        android:gravity="center_vertical"
-        android:text="空跑"
-        android:textColor="#ff02fde8"
-        android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintBottom_toBottomOf="@+id/add_task_time_select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView12" />
+        app:layout_constraintStart_toEndOf="@+id/add_task_time_select"/>
+
+    <ImageView
+        android:id="@+id/date_spinner_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_task_date_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_task_date_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_task_date_spinner" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/add_task_time_select"
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
         android:background="@drawable/tasks_report_text_shape"
         android:gravity="center_vertical"
-        android:text="空跑"
+        android:text=""
         android:textColor="#ff02fde8"
         android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/textView15"
-        app:layout_constraintEnd_toStartOf="@+id/textView11"
+        app:layout_constraintBottom_toTopOf="@+id/add_task_map_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/add_task_date_spinner"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/return_ll" />
@@ -93,8 +105,8 @@
         android:text="地图"
         android:textColor="#ff02a496"
         android:textSize="21sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView15"
-        app:layout_constraintStart_toStartOf="@+id/textView15" />
+        app:layout_constraintBottom_toTopOf="@+id/add_task_map_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_task_map_spinner" />
 
     <TextView
         android:id="@+id/textView20"
@@ -105,38 +117,62 @@
         android:text="任务"
         android:textColor="#ff02a496"
         android:textSize="21sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView19"
-        app:layout_constraintStart_toStartOf="@+id/textView19" />
+        app:layout_constraintBottom_toTopOf="@+id/add_task_mode_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_task_mode_spinner" />
 
-    <TextView
-        android:id="@+id/textView15"
+    <Spinner
+        android:id="@+id/add_task_map_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
-        android:background="@drawable/tasks_report_text_shape"
-        android:gravity="center_vertical"
-        android:text="空跑"
-        android:textColor="#ff02fde8"
-        android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/textView19"
-        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintBottom_toTopOf="@+id/add_task_mode_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/add_task_time_select"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintStart_toStartOf="@+id/add_task_time_select"
+        app:layout_constraintTop_toBottomOf="@+id/add_task_time_select"/>
 
-    <TextView
-        android:id="@+id/textView19"
+    <ImageView
+        android:id="@+id/map_spinner_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_task_map_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_task_map_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_task_map_spinner" />
+
+    <Spinner
+        android:id="@+id/add_task_mode_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
-        android:background="@drawable/tasks_report_text_shape"
-        android:gravity="center_vertical"
-        android:text="空跑"
-        android:textColor="#ff02fde8"
-        android:textSize="@dimen/add_new_task_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView15"
+        app:layout_constraintEnd_toEndOf="@+id/add_task_map_spinner"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintStart_toStartOf="@+id/add_task_map_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/add_task_map_spinner"/>
+
+    <ImageView
+        android:id="@+id/mode_spinner_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_task_mode_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_task_mode_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_task_mode_spinner" />
 
     <TextView
         android:id="@+id/textView18"
@@ -147,25 +183,38 @@
         android:text="循环"
         android:textColor="#ff02a496"
         android:textSize="21sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView16"
-        app:layout_constraintStart_toStartOf="@+id/textView16" />
+        app:layout_constraintBottom_toTopOf="@+id/add_task_loop_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_task_loop_spinner" />
 
-    <TextView
-        android:id="@+id/textView16"
+    <Spinner
+        android:id="@+id/add_task_loop_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
-        android:background="@drawable/tasks_report_text_shape"
-        android:gravity="center_vertical"
-        android:text="空跑"
-        android:textColor="#ff02fde8"
-        android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/textView15"
-        app:layout_constraintEnd_toEndOf="@+id/textView11"
+        app:layout_constraintBottom_toBottomOf="@+id/add_task_map_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/add_task_date_spinner"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/textView11" />
+        app:layout_constraintStart_toStartOf="@+id/add_task_date_spinner" />
+
+    <ImageView
+        android:id="@+id/jiantou_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_task_loop_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_task_loop_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_task_loop_spinner" />
+
 
     <TextView
-        android:id="@+id/button"
+        android:id="@+id/add_task_cancel_btn"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:background="@drawable/button_background_selector"
@@ -173,13 +222,13 @@
         android:text="取消"
         android:textColor="#F4F1F1"
         android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/textView19"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintBottom_toBottomOf="@+id/add_task_mode_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/add_task_confirm_btn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/textView16" />
+        app:layout_constraintStart_toStartOf="@+id/add_task_loop_spinner" />
 
     <TextView
-        android:id="@+id/button2"
+        android:id="@+id/add_task_confirm_btn"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:background="@drawable/button_background_selector"
@@ -187,44 +236,12 @@
         android:text="确认"
         android:textColor="#F4F1F1"
         android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="@+id/textView16"
+        app:layout_constraintBottom_toBottomOf="@+id/add_task_cancel_btn"
+        app:layout_constraintEnd_toEndOf="@+id/add_task_loop_spinner"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button" />
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="24dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/textView15"
-        app:layout_constraintEnd_toEndOf="@+id/textView15"
-        app:layout_constraintTop_toTopOf="@+id/textView15"
-        app:srcCompat="@mipmap/login_jiantou4_21" />
-
-    <ImageView
-        android:id="@+id/imageView11"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="24dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/textView11"
-        app:layout_constraintEnd_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toTopOf="@+id/textView11"
-        app:srcCompat="@mipmap/login_jiantou4_21" />
-
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="24dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="@+id/textView19"
-        app:layout_constraintEnd_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toTopOf="@+id/textView19"
-        app:srcCompat="@mipmap/login_jiantou4_21" />
+        app:layout_constraintStart_toEndOf="@+id/add_task_cancel_btn"
+        app:layout_constraintTop_toTopOf="@+id/add_task_cancel_btn" />
+    
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

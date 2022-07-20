@@ -3,11 +3,17 @@ package com.shciri.rosapp.dmros.data;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
+import android.os.Debug;
 import android.os.Handler;
+import android.util.Log;
 
+import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
+import com.shciri.rosapp.ui.TaskControlActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -19,6 +25,8 @@ import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.Message;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformsMsg;
+import src.com.jilk.ros.message.Ultrasonic;
+import src.com.jilk.ros.message.sensor_msgs.Range;
 
 public class ReceiveHandler {
 
@@ -28,11 +36,11 @@ public class ReceiveHandler {
     GoalTopicHandler goalTopicHandler;
     CoverageMapHandler coverageMapHandler;
     CoveragePathHandler coveragePathHandler;
+    UltrasonicHandler ultrasonicHandler;
 
     private class MapTopicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            System.out.println("MapTopicHandler");
             RosData.map = (MapMsg)message;
             RosData.MapData.fastConversion();
             analysisMap();
@@ -50,7 +58,10 @@ public class ReceiveHandler {
             invert.setScale(1, -1); //镜像翻转以与真实地图对应
             RosData.rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert ,true);
 
-            System.out.println("MapOK");
+//            System.out.println("MapOK");
+
+            if(PublishEvent.readyPublish)
+                EventBus.getDefault().post(new PublishEvent("/map"));
         }
     }
 
@@ -94,10 +105,21 @@ public class ReceiveHandler {
         @Override
         public void onMessage(Message message) {
             RosData.coveragePath = (CoveragePath) message ;
-//            System.out.println("coveragePath coveragePath coveragePath coveragePath coveragePath coveragePath  ." + RosData.coveragePath.poses[1].header.seq);
+            //System.out.println("coveragePath coveragePath coveragePath coveragePath coveragePath coveragePath  ." + RosData.coveragePath.poses[1].header.seq);
             //, (int)(RosData.coveragePath.poseStamped.pose.position.x/0.05f), (int)(RosData.coveragePath.poseStamped.pose.position.x/0.05f))
             if(PublishEvent.readyPublish)
                 EventBus.getDefault().post(new PublishEvent("/coverage_path"));
+        }
+    }
+
+    private class UltrasonicHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            Range ultrasonic = (Range) message ;
+//            Log.i("xxx",Float.toString(ultrasonic.range));
+            if(ultrasonic.range < 0.3) {
+                EventBus.getDefault().post(new UltrasonicEvent("warning"));
+            }
         }
     }
 
@@ -130,5 +152,10 @@ public class ReceiveHandler {
     public MessageHandler getCoveragePathTopicHandler() {
         coveragePathHandler = new CoveragePathHandler();
         return coveragePathHandler;
+    }
+
+    public MessageHandler getUltrasonicTopicHandler() {
+        ultrasonicHandler = new UltrasonicHandler();
+        return ultrasonicHandler;
     }
 }

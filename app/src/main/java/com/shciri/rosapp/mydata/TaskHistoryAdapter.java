@@ -10,10 +10,10 @@ import com.shciri.rosapp.R;
 import java.util.List;
 
 public class TaskHistoryAdapter extends BaseAdapter {
-    private List<ShowData> dataList = null;
+    private List<TaskHistoryList> dataList = null;
     private Context mContext = null;
 
-    public TaskHistoryAdapter(Context context, List<ShowData> data){
+    public TaskHistoryAdapter(Context context, List<TaskHistoryList> data){
         dataList = data;
         mContext = context;
     }
@@ -39,56 +39,54 @@ public class TaskHistoryAdapter extends BaseAdapter {
         if (convertView == null){
             vh = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_task_report_list, null);
-            vh.mCreateTime = (TextView)convertView.findViewById(R.id.create_time_tv);
-            vh.mTaskName = (TextView)convertView.findViewById(R.id.task_name_tv);
-            vh.mTaskType = (TextView)convertView.findViewById(R.id.task_type_tv);
-            vh.mUsername = (TextView)convertView.findViewById(R.id.username_tv);
-            vh.mOperadetail = (TextView)convertView.findViewById(R.id.operator_detail_tv);
-            vh.mOperaSend = (TextView)convertView.findViewById(R.id.operator_send_tv);
+            vh.dateCreated = (TextView)convertView.findViewById(R.id.create_time_tv);
+            vh.taskName = (TextView)convertView.findViewById(R.id.task_name_tv);
+            vh.taskType = (TextView)convertView.findViewById(R.id.task_type_tv);
+            vh.operator = (TextView)convertView.findViewById(R.id.operator_tv);
+            vh.mode = (TextView)convertView.findViewById(R.id.mode_tv);
+            vh.percentage = (TextView)convertView.findViewById(R.id.percentage_tv);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder)convertView.getTag();
         }
-        vh.mCreateTime.setText(dataList.get(position).mCreateTime);
-        vh.mTaskName.setText(dataList.get(position).mTaskName);
-        vh.mTaskType.setText(dataList.get(position).mTaskType);
-        vh.mUsername.setText(dataList.get(position).mUsername);
-        vh.mOperadetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        vh.mOperaSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        vh.dateCreated.setText(dataList.get(position).dateCreated);
+        vh.taskName.setText(dataList.get(position).taskName);
+        if(dataList.get(position).taskType.equals("independent task"))
+            vh.taskType.setText("独立任务");
+        else
+            vh.taskType.setText("组合任务");
+        vh.operator.setText(dataList.get(position).operator);
+        vh.mode.setText(dataList.get(position).mode);
+        vh.percentage.setText(String.format("%s%%", dataList.get(position).percentage));
         return convertView;
-    }
-
-    public static class ShowData {
-        public String mCreateTime;
-        public String mTaskName;
-        public String mTaskType;
-        public String mUsername;
-
-        public ShowData(String createTime, String taskName, String taskType, String username){
-            mCreateTime = createTime;
-            mTaskName = taskName;
-            mTaskType=taskType;
-            mUsername=username;
-        }
     }
 
     public final class ViewHolder
     {
-        public TextView mCreateTime;
-        public TextView mTaskName;
-        public TextView mTaskType;
-        public TextView mUsername;
-        public TextView mOperadetail;
-        public TextView mOperaSend;
+        public TextView dateCreated;
+        public TextView taskName;
+        public TextView taskType;
+        public TextView operator;
+        public TextView mode;
+        public TextView percentage;
+    }
+    
+
+    public static class TaskHistoryList {
+        public String dateCreated;
+        public String taskName;
+        public String taskType;
+        public String operator;
+        public String mode;
+        public int percentage;
+
+        public TaskHistoryList(String createTime, String taskName, String taskType, String operator, String mode, int percentage){
+            this.dateCreated = createTime;
+            this.taskName = taskName;
+            this.taskType = taskType;
+            this.operator = operator;
+            this.mode = mode;
+            this.percentage = percentage;
+        }
     }
 }

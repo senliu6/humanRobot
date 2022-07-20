@@ -4,25 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="70dp"
-        android:id="@+id/task_detail_head_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:srcCompat="@mipmap/tou4_21" />
-
     <LinearLayout
+        app:layout_constraintStart_toStartOf="@+id/task_detail_board"
         android:id="@+id/return_ll"
+        android:layout_marginTop="@dimen/return_margin_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/task_detail_head_view">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="@dimen/return_arrows_width"
@@ -33,65 +23,107 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/return_arrow_text_margin"
-            android:text="任务列表"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
+            android:text="任务详情"
             android:textColor="#ff02fde8"
             android:textSize="@dimen/return_text_size" />
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="300dp"
-        android:layout_height="63dp"
-        android:background="@mipmap/performmap_xiacengkuang4_21"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toBottomOf="@+id/task_detail_head_view"
-        app:layout_constraintBottom_toTopOf="@+id/task_detail_view_pager"
-        app:layout_constraintEnd_toEndOf="@+id/task_detail_view_pager"
-        app:layout_constraintHorizontal_bias="0.499"
-        app:layout_constraintStart_toStartOf="@+id/task_detail_view_pager"
-        app:srcCompat="@mipmap/performmap_xiacengkuang4_21" />
-
-    <TextView
-        android:id="@+id/tabLeftIv"
-        android:layout_width="166dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="-4dp"
-        android:background="@mipmap/choosetask_kaishianniu4_21"
-        android:gravity="center"
-        android:scaleType="fitXY"
-        android:text="工作视图"
-        android:textColor="#fff3f3f3"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView19"
-        app:layout_constraintStart_toStartOf="@+id/imageView19"
-        app:layout_constraintTop_toTopOf="@+id/imageView19" />
-
-    <TextView
-        android:id="@+id/tabRightIv"
-        android:layout_width="166dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="-4dp"
-        android:scaleType="fitXY"
-        android:gravity="center"
-        android:text="地图视图"
-        android:textColor="#fff3f3f3"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView19"
-        app:layout_constraintEnd_toEndOf="@+id/imageView19"
-        app:layout_constraintTop_toTopOf="@+id/imageView19"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@mipmap/choosetask_kaishianniu4_21" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/task_detail_view_pager"
-        android:layout_width="1050dp"
-        android:layout_height="500dp"
-        android:layout_marginBottom="60dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/task_detail_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintEnd_toStartOf="@+id/task_detail_map_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:srcCompat="@mipmap/performmap_zuokuang4_21" />
 
+    <com.shciri.rosapp.ui.myview.MapView
+        android:id="@+id/task_detail_map_view"
+        android:layout_width="600dp"
+        android:layout_height="600dp"
+        android:background="@color/powderblue"
+        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/task_detail_board" />
+
+    <TextView
+        android:id="@+id/task_detail_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="execute_task_1"
+        android:textColor="#ff02fde8"
+        android:textSize="35sp"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintEnd_toEndOf="@id/task_detail_board"
+        app:layout_constraintBottom_toBottomOf="@+id/task_detail_board"
+        app:layout_constraintStart_toStartOf="@+id/task_detail_board"
+        app:layout_constraintTop_toTopOf="@+id/task_detail_board"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <TextView
+        android:id="@+id/task_path_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="step 1:    路径一"
+        android:textColor="#ff02fde8"
+        android:textSize="23sp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/task_detail_name"
+        app:layout_constraintTop_toBottomOf="@+id/task_detail_name" />
+
+
+    <TextView
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintBottom_toBottomOf="@id/task_detail_name"
+        app:layout_constraintTop_toTopOf="@id/task_detail_name"
+        app:layout_constraintEnd_toEndOf="@+id/task_detail_board"
+        app:layout_constraintStart_toStartOf="@id/task_detail_board"
+        android:id="@+id/predict_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="预计用时"
+        android:textColor="#ff05737f"
+        android:textSize="23sp" />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@id/task_path_name"
+        app:layout_constraintTop_toTopOf="@id/task_path_name"
+        app:layout_constraintEnd_toEndOf="@+id/predict_time_tv"
+        app:layout_constraintStart_toStartOf="@id/predict_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:00"
+        android:textColor="#ff1f4e96"
+        android:textSize="23sp" />
+
+
+    <TextView
+        android:id="@+id/creation_time_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="创建时间---"
+        android:textColor="#ff05737f"
+        android:textSize="23sp"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintBottom_toBottomOf="@id/task_detail_board"
+        app:layout_constraintStart_toStartOf="@+id/task_path_name"
+        app:layout_constraintTop_toBottomOf="@+id/task_path_name" />
+
+    <TextView
+        android:id="@+id/creation_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:text="2022.06.06"
+        android:textColor="#ff05737f"
+        android:textSize="23sp"
+        app:layout_constraintStart_toStartOf="@+id/creation_time_title"
+        app:layout_constraintTop_toTopOf="@+id/creation_time_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

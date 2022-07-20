@@ -3,7 +3,6 @@ package src.com.jilk.ros.message;
 @MessageType(string = "path_follower/RobotStatus")
 public class RobotControlRequest extends Message{
     public int control;
-
     /**
      *  ENABLE_ROBOT = 1;
      *  EXECUTE_ROBOT = 2;

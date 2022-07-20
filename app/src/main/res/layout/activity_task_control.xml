@@ -18,7 +18,7 @@
         android:layout_width="242dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#33222601"
+        android:background="@drawable/nav_view_background"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -89,6 +89,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/time_task_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/drawer_layout_margin_left"
@@ -128,12 +129,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/drawer_text_margin_left"
-                android:text="数据管理"
+                android:text="地图与路径"
                 android:textColor="#ff02fde8"
                 android:textSize="@dimen/drawer_text_size" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/system_set_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/drawer_layout_margin_left"

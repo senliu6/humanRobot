@@ -19,6 +19,9 @@
  */
 package src.com.jilk.ros;
 
+import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.dmros.client.RosInit;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
 import src.com.jilk.ros.message.Message;

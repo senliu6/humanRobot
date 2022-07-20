@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.CoverageMap;
 import src.com.jilk.ros.message.CoveragePath;
+import src.com.jilk.ros.message.CoveragePoints;
 import src.com.jilk.ros.message.Header;
 import src.com.jilk.ros.message.MapMetaData;
 import src.com.jilk.ros.message.MapMsg;
@@ -14,7 +15,10 @@ import src.com.jilk.ros.message.QuaternionMsg;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TimePrimitive;
 import src.com.jilk.ros.message.TransformMsg;
+import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.goal.MoveGoal;
+import src.com.jilk.ros.message.std_msgs.MultiArrayDimension;
+import src.com.jilk.ros.message.std_msgs.MultiArrayLayout;
 
 public class RosData {
     public static CmdVel cmd_vel;
@@ -24,7 +28,11 @@ public class RosData {
     public static Bitmap rosBitmap;
     public static CoverageMap coverageMap;
     public static CoveragePath coveragePath;
+    public static Ultrasonic ultrasonic;
+    public static CoveragePoints coveragePoints;
     public static byte taskPercent;
+    public static int currentMapID = 1;
+    public static int dataBaseMaxMapID = 0;
 
     public static final String MAP = "com.shciri.rosapp.map";
     public static final String TF = "com.shciri.rosapp.tf";
@@ -43,6 +51,13 @@ public class RosData {
         coverageMap.info = new MapMetaData();
         coverageMap.info.origin = new Pose();
         coverageMap.info.map_load_time = new TimePrimitive();
+
+        coveragePoints = new CoveragePoints();
+        coveragePoints.layout = new MultiArrayLayout();
+        coveragePoints.layout.dim = new MultiArrayDimension[1];
+        coveragePoints.layout.dim[0] = new MultiArrayDimension();
+        coveragePoints.layout.dim[0].label = "sm";
+        coveragePoints.layout.dim[0].size = 10;
     }
 
     public static class BaseLink {

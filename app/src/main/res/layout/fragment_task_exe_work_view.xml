@@ -15,6 +15,7 @@
         android:text="任务进度"
         android:textColor="#ff02fde8"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintBottom_toTopOf="@+id/task_detail_percent"
         app:layout_constraintStart_toStartOf="@+id/task_detail_percent" />
 
@@ -44,25 +45,26 @@
         app:layout_constraintStart_toEndOf="@+id/task_detail_percent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/task_exe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="execute_task_1"
         android:textColor="#ff02fde8"
-        android:textSize="30sp"
+        android:textSize="45sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView13"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/task_detail_percent"
         app:layout_constraintTop_toBottomOf="@+id/task_detail_percent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="作业中..."
-        android:textColor="#ff02fde8"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:text="作业中..."-->
+<!--        android:textColor="#ff02fde8"-->
+<!--        android:textSize="30sp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/task_exe_name"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/task_exe_name" />-->
 
     <ImageView
         android:id="@+id/task_detail_stop_view"

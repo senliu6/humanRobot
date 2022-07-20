@@ -1,4 +1,4 @@
-package com.shciri.rosapp.ui.taskdetail;
+package com.shciri.rosapp.ui.taskexe;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -6,11 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 
-public class TasksDetailPagerAdapter extends FragmentPagerAdapter {
+public class TasksExePagerAdapter extends FragmentPagerAdapter {
 
     private static final String[] TAB_TITLES = new String[]{"工作视图","地图视图"};
 
-    public TasksDetailPagerAdapter(FragmentManager fm) {
+    public TasksExePagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,9 +18,9 @@ public class TasksDetailPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new TaskDetailWorkViewFragment();
+                return new TaskExeWorkViewFragment();
             case 1:
-                return new TaskDetailMapViewFragment();
+                return new TaskExeMapViewFragment();
             default:
                 return new Fragment();
         }

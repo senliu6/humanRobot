@@ -1,7 +1,9 @@
 package com.shciri.rosapp.ui.myview;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,6 +16,8 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -29,13 +33,19 @@ import com.shciri.rosapp.dmros.data.DataProcess;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MapView extends View {
 
-    private Bitmap mBitmap = null;
+    public Bitmap mBitmap = null;
     private Bitmap mOriginBitmap = null;
-    private int mMapWidth, mMapHeight;
+    private int viewWidth, viewHeight;
     private Matrix mCurrentMatrix = new Matrix();
 
     //robot
@@ -56,10 +66,19 @@ public class MapView extends View {
     PointF mRobotPoint = new PointF();
     ArrayList<PointF> mRobotPath = new ArrayList<>();
     /* 自动规划的路径点数组 */
-    ArrayList<PointF> coveragePath = new ArrayList<>();
+    public ArrayList<PointF> coveragePath = new ArrayList<>();
     public boolean isSetGoal = false;
 
     DataProcess dataProcess = new DataProcess();
+
+    private float initMapToCenterOffset = 0f;
+    private int updateMapNum = 0;
+    public static boolean scanning;
+
+
+
+
+
 
     public MapView(Context context) {
         super(context);
@@ -116,10 +135,10 @@ public class MapView extends View {
         mAddPathPointPaint = new Paint();
         mAddPathPointPaint.setColor(Color.BLUE);
         mAddPathStartPointPaint = new Paint();
-        mAddPathStartPointPaint.setColor(Color.RED);
+        mAddPathStartPointPaint.setColor(0xFFFF7F50);
 
         mAddPathPaint = new Paint();
-        mAddPathPaint.setColor(Color.YELLOW);
+        mAddPathPaint.setColor(Color.GREEN);
         mAddPathPaint.setAntiAlias(true);
         mAddPathPaint.setStyle(Paint.Style.STROKE);
         mAddPathPaint.setStrokeWidth(2);
@@ -129,7 +148,7 @@ public class MapView extends View {
         mShowRectPaint.setAntiAlias(true);
         mShowRectPaint.setStrokeWidth(2);
         mShowRectPaint.setStyle(Paint.Style.STROKE);
-        mShowRectPaint.setColor(Color.RED);
+        mShowRectPaint.setColor(0xFFFF7F50);
 
         mShowOldRectPaint = new Paint();
         mShowOldRectPaint.setAntiAlias(true);
@@ -141,7 +160,7 @@ public class MapView extends View {
         mShowRectPointPaint.setAntiAlias(true);
         mShowRectPointPaint.setStrokeWidth(2);
         mShowRectPointPaint.setStyle(Paint.Style.STROKE);
-        mShowRectPointPaint.setColor(Color.RED);
+        mShowRectPointPaint.setColor(0xFFFF7F50);
         mShowRectPointPaint.setStyle(Paint.Style.FILL);
 
         //机器人路径
@@ -175,17 +194,57 @@ public class MapView extends View {
     /**
      * 通用接口
      **/
-    public void setBitmap(Bitmap map, int mapId) {
+    public void setBitmap(Bitmap map, updateMapID mapId) {
         this.mBitmap = map.copy(Bitmap.Config.ARGB_8888, true);
-        mCurrentMatrix = new Matrix();
-        if (getWidth() != 0 && getHeight() != 0) {
-            mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), (((float) mMapHeight) / mBitmap.getHeight()));
+
+        if(mapId == updateMapID.SCANNING){
+            float xScale = ((float) viewWidth) / mBitmap.getWidth();
+            float yScale = ((float) viewHeight) / mBitmap.getHeight();
+            float scale = Math.min(xScale, yScale);
+            mCurrentMatrix.setScale(scale, scale);
+            if (scale == xScale) {
+                initMapToCenterOffset = (((float) viewHeight) - (mBitmap.getHeight()*scale)) / 2;
+                mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
+            } else {
+                initMapToCenterOffset = (((float) viewWidth) - (mBitmap.getWidth()*scale)) / 2;
+                mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
+            }
+        }else {
+            if (getWidth() != 0 && getHeight() != 0) {
+                if(updateMapNum == 0) {
+                    mCurrentMatrix = new Matrix();
+                    float xScale = ((float) viewWidth) / mBitmap.getWidth();
+                    float yScale = ((float) viewHeight) / mBitmap.getHeight();
+                    float scale = Math.min(xScale, yScale);
+                    mCurrentMatrix.setScale(scale, scale);
+                    if (scale == xScale) {
+                        initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight()*scale) / 2;
+                        mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
+                    } else {
+                        initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth()*scale) / 2;
+                        mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
+                    }
+                }
+            }
         }
+        updateMapNum++;
         postInvalidate();
     }
 
-    public void reset() {
-        mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), ((float) mMapHeight) / mBitmap.getHeight());
+    public void  reset() {
+        float xScale = ((float) viewWidth) / mBitmap.getWidth();
+        float yScale = ((float) viewHeight) / mBitmap.getHeight();
+        float scale = Math.min(xScale, yScale);
+        mCurrentMatrix.setScale(scale, scale);
+        if(scale == xScale) {
+            initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight()*scale) / 2;
+            mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
+        }else {
+            initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth()*scale) / 2;
+            mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
+        }
+        pathPointList.clear();
+        clearCoveragePath();
         exitWithoutSaveEraseState();
         postInvalidate();
     }
@@ -200,6 +259,7 @@ public class MapView extends View {
         isShowRectState = false;
         isShowRobotState = false;
         isAddPathState = false;
+        clearCoveragePath();
         exitWithoutSaveEraseState();
         postInvalidate();
     }
@@ -207,7 +267,38 @@ public class MapView extends View {
     /**
      * 添加路径
      **/
-    ArrayList<PointF> mAddPathPoints = new ArrayList<>();
+    public ArrayList<PointF> pathPointList = new ArrayList<>();
+    public ArrayList<PointF> DBPathPointList = new ArrayList<>();
+
+    private boolean isShowDBPath;
+    public void setShowDBPath(boolean show) {
+        isShowDBPath = show;
+        isAddPathState = !show;
+        isShowRectState = !show;
+        if(show) reset();
+    }
+
+    private void performShowDBPath(Canvas canvas) {
+        if(isShowDBPath) {
+            // draw record paths
+            float[] transPoint = new float[]{0, 0};
+            Path path = new Path();
+            for (int i = 0; i < DBPathPointList.size(); i++) {
+                PointF point = DBPathPointList.get(i);
+                transPoint[0] = point.x;
+                transPoint[1] = point.y;
+                mCurrentMatrix.mapPoints(transPoint);
+                if (i == 0) {
+                    path.moveTo(transPoint[0], transPoint[1]);
+                } else {
+                    path.lineTo(transPoint[0], transPoint[1]);
+                }
+                canvas.drawCircle(transPoint[0], transPoint[1], 5, mAddPathPointPaint);
+            }
+            canvas.drawPath(path, mAddPathPaint);
+        }
+    }
+
 
     public void startPathState() {
         exitAllState();
@@ -222,12 +313,12 @@ public class MapView extends View {
     public void addPathPoint() {
         float[] transPoints = new float[]{mCentorX, mCentorY};
         transPoints = getInvertPoints(transPoints);
-        mAddPathPoints.add(new PointF(transPoints[0], transPoints[1]));
+        pathPointList.add(new PointF(transPoints[0], transPoints[1]));
         postInvalidate();
     }
 
     public ArrayList<PointF> savePath() {
-        return mAddPathPoints;
+        return pathPointList;
     }
 
     public void exitAddPathState() {
@@ -324,6 +415,10 @@ public class MapView extends View {
             coveragePath.add(pointf);
         }
         postInvalidate();
+    }
+
+    public void clearCoveragePath() {
+        coveragePath.clear();
     }
 
     public PointF getRobotPosition() {
@@ -471,17 +566,27 @@ public class MapView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        mMapWidth = getWidth();
-        mMapHeight = getHeight();
+        viewWidth = getWidth();
+        viewHeight = getHeight();
         //set centor point
-        mCentorX = mMapWidth / 2;
-        mCentorY = mMapHeight / 2;
+        mCentorX = viewWidth / 2;
+        mCentorY = viewHeight / 2;
         //set rect position
-        mRect = new RectF(mMapWidth / 3, mMapHeight / 3, 2 * mMapWidth / 3, 2 * mMapHeight / 3);
+        mRect = new RectF(viewWidth / 3, viewHeight / 3, 2 * viewWidth / 3, 2 * viewHeight / 3);
 
         //get rect position
         if (mBitmap != null) {
-            mCurrentMatrix.setScale(((float) mMapWidth) / mBitmap.getWidth(), ((float) mMapHeight) / mBitmap.getHeight());
+            float xScale = ((float) viewWidth) / mBitmap.getWidth();
+            float yScale = ((float) viewHeight) / mBitmap.getHeight();
+            float scale = Math.min(xScale, yScale);
+            mCurrentMatrix.setScale(scale, scale);
+            if(scale == xScale) {
+                initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight()*scale) / 2;
+                mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
+            }else {
+                initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth()*scale) / 2;
+                mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
+            }
         }
         //set robot image
         if (mRobotImage == null) {
@@ -504,15 +609,15 @@ public class MapView extends View {
         if (viewMode == MeasureSpec.AT_MOST) {
             //wrap_content
             if (mBitmap != null) {
-                mMapWidth = mBitmap.getWidth();
-                mMapHeight = mBitmap.getHeight();
+                viewWidth = mBitmap.getWidth();
+                viewHeight = mBitmap.getHeight();
                 return MeasureSpec.makeMeasureSpec(isWidth ? mBitmap.getWidth() : mBitmap.getHeight(), viewMode);
             }
         }
         if (isWidth) {
-            mMapWidth = viewSize;
+            viewWidth = viewSize;
         } else {
-            mMapHeight = viewSize;
+            viewHeight = viewSize;
         }
         return measureSpec;
     }
@@ -549,8 +654,8 @@ public class MapView extends View {
             // draw record paths
             float[] transPoint = new float[]{0, 0};
             Path path = new Path();
-            for (int i = 0; i < mAddPathPoints.size(); i++) {
-                PointF point = mAddPathPoints.get(i);
+            for (int i = 0; i < pathPointList.size(); i++) {
+                PointF point = pathPointList.get(i);
                 transPoint[0] = point.x;
                 transPoint[1] = point.y;
                 mCurrentMatrix.mapPoints(transPoint);
@@ -561,12 +666,14 @@ public class MapView extends View {
                 }
                 canvas.drawCircle(transPoint[0], transPoint[1], 5, mAddPathPointPaint);
             }
-            if (mAddPathPoints.size() > 0) {
+            if (pathPointList.size() > 0) {
                 path.lineTo(mCentorX, mCentorY);
             }
             canvas.drawPath(path, mAddPathPaint);
             canvas.drawCircle(mCentorX, mCentorY, 8, mAddPathStartPointPaint);
         }
+
+        performShowDBPath(canvas);
 
         if (isVirtualWallState) {
             // 画已保存段
@@ -593,23 +700,23 @@ public class MapView extends View {
 
         if (isShowRectState) {
             // draw record rect
-            Path path = new Path();
-            for (float[] transPoints : mRecordRectPoints) {
-                float[] points = transPoints.clone();
-                mCurrentMatrix.mapPoints(points);
-                path.moveTo(points[0], points[1]);
-                path.lineTo(points[2], points[3]);
-                path.lineTo(points[6], points[7]);
-                path.lineTo(points[4], points[5]);
-                path.lineTo(points[0], points[1]);
-                canvas.drawPath(path, mShowOldRectPaint);
-            }
+//            Path path = new Path();
+//            for (float[] transPoints : mRecordRectPoints) {
+//                float[] points = transPoints.clone();
+//                mCurrentMatrix.mapPoints(points);
+//                path.moveTo(points[0], points[1]);
+//                path.lineTo(points[2], points[3]);
+//                path.lineTo(points[6], points[7]);
+//                path.lineTo(points[4], points[5]);
+//                path.lineTo(points[0], points[1]);
+//                canvas.drawPath(path, mShowOldRectPaint);
+//            }
 
             float[] xy = {mRect.left, mRect.top, mRect.right, mRect.top, mRect.right, mRect.bottom, mRect.left, mRect.bottom};
             Matrix matrixInvert = new Matrix();
             mCurrentMatrix.invert(matrixInvert);
             matrixInvert.mapPoints(xy);
-            dataProcess.coverageMapProcess((int)xy[1], (int)xy[5], (int)xy[0], (int)xy[2]);
+            dataProcess.coveragePointsProcess(xy[1], xy[5], xy[0], xy[2]);
 
             // draw current rect
             canvas.drawRect(mRect, mShowRectPaint);
@@ -747,4 +854,11 @@ public class MapView extends View {
         float result = (float) Math.sqrt(x * x + y * y);
         return result;
     }
+
+    public enum updateMapID
+    {
+        RUNNING,
+        SCANNING,
+    }
 }
+

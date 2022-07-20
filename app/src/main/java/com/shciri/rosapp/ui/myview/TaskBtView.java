@@ -32,12 +32,12 @@ import java.util.ArrayList;
 
 public class TaskBtView extends ConstraintLayout{
 
-    public TextView mTitleTv;
+    public TextView titleTv;
     TextView currFunStatusTv;
     Spinner mSpinner;
     View view;
     View taskBtView;
-    View mMoreInfo;
+    public View detailPage;
     ImageView mEditIv;
     ImageView pullIv;
     ContentLoadingProgressBar contentLoadingProgressBar;
@@ -61,10 +61,10 @@ public class TaskBtView extends ConstraintLayout{
 
     private void initView(Context context) {
         view = LayoutInflater.from(context).inflate(R.layout.view_task_bt, this, true);
-        mTitleTv = (TextView) findViewById(R.id.task_title);
+        titleTv = (TextView) findViewById(R.id.task_title);
         mEditIv = (ImageView) findViewById(R.id.editIv);
         mSpinner = findViewById(R.id.task_bt_spinner);
-        mMoreInfo = findViewById(R.id.moreInfo);
+        detailPage = findViewById(R.id.detail_page_Tv);
         taskBtView = findViewById(R.id.task_bt_run_status_view);
         currFunStatusTv = findViewById(R.id.task_bt_status_tv);
         pullIv = findViewById(R.id.task_bt_pull_iv);
@@ -107,13 +107,13 @@ public class TaskBtView extends ConstraintLayout{
                     //动画结束是否保持结束状态
                     animation.setFillAfter(true);
                     view.startAnimation(animation);
-                    mMoreInfo.setVisibility(VISIBLE);
+                    detailPage.setVisibility(VISIBLE);
                     mEditIv.setVisibility(VISIBLE);
                     pullIv.setVisibility(VISIBLE);
                     contentLoadingProgressBar.setVisibility(VISIBLE);
                 } else {
                     view.clearAnimation();
-                    mMoreInfo.setVisibility(INVISIBLE);
+                    detailPage.setVisibility(INVISIBLE);
                     mEditIv.setVisibility(INVISIBLE);
                     pullIv.setVisibility(INVISIBLE);
                     contentLoadingProgressBar.setVisibility(INVISIBLE);
@@ -142,5 +142,13 @@ public class TaskBtView extends ConstraintLayout{
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
+    }
+
+    public void setTitleTv(String name) {
+        titleTv.setText(name);
+    }
+
+    public String getCurrentMode() {
+        return currFunStatusTv.getText().toString();
     }
 }

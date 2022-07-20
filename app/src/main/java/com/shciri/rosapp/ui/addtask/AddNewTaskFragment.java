@@ -9,30 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.ui.taskdetail.TasksDetailPagerAdapter;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class AddNewTaskFragment extends Fragment {
-
-    private ViewPager viewPager;
-    TabLayout tabs;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_add_new_task, container, false);
-
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -43,5 +32,13 @@ public class AddNewTaskFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
+        view.findViewById(R.id.add_time_task_cancel_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigateUp();
+            }
+        });
+
+
     }
 }

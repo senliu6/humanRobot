@@ -127,40 +127,76 @@
                 </LinearLayout>
 
 
-                <com.rey.material.widget.RelativeLayout
-                    android:id="@+id/identity_select"
-                    android:layout_width="481dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:textAlignment="gravity"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/identity_select"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:theme="@style/ThemeSpinner"
+                        android:gravity="center"
+                        android:overlapAnchor="false"
+                        android:spinnerMode="dropdown"
+                        android:background="@drawable/selector_for_custom_spinner_light"
+                        android:layout_width="460dp"
+                        android:layout_height="60dp" />
 
                     <ImageView
-                        android:id="@+id/imageView_username"
-                        android:layout_width="474dp"
-                        android:layout_height="75dp"
-                        android:layout_centerHorizontal="true"
-                        android:adjustViewBounds="false"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@mipmap/login_kuang4_21" />
-
-                    <ImageView
-                        android:id="@+id/jiantou_btn"
+                        android:id="@+id/map_spinner_arrow"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_marginEnd="@dimen/add_task_spinner_row_margin"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="416dp"
-                        app:srcCompat="@mipmap/login_jiantou4_21" />
+                        app:srcCompat="@mipmap/login_jiantou4_21"
+                        app:layout_constraintBottom_toBottomOf="@id/identity_select"
+                        app:layout_constraintEnd_toEndOf="@id/identity_select"
+                        app:layout_constraintTop_toTopOf="@id/identity_select" />
 
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="80dp"
-                        android:layout_height="25dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="26dp"
-                        android:includeFontPadding="false"
-                        android:text="@string/admin"
-                        android:textColor="#ff02FDE8"
-                        android:textSize="25sp" />
-                </com.rey.material.widget.RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--                <com.rey.material.widget.RelativeLayout-->
+<!--                    android:id="@+id/identity_select"-->
+<!--                    android:layout_width="481dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="5dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imageView_username"-->
+<!--                        android:layout_width="474dp"-->
+<!--                        android:layout_height="75dp"-->
+<!--                        android:layout_centerHorizontal="true"-->
+<!--                        android:adjustViewBounds="false"-->
+<!--                        android:scaleType="fitXY"-->
+<!--                        app:srcCompat="@mipmap/login_kuang4_21" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/jiantou_btn"-->
+<!--                        android:layout_width="20dp"-->
+<!--                        android:layout_height="20dp"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_marginStart="416dp"-->
+<!--                        app:srcCompat="@mipmap/login_jiantou4_21" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/username"-->
+<!--                        android:layout_width="80dp"-->
+<!--                        android:layout_height="25dp"-->
+<!--                        android:layout_centerVertical="true"-->
+<!--                        android:layout_marginStart="26dp"-->
+<!--                        android:includeFontPadding="false"-->
+<!--                        android:text="@string/admin"-->
+<!--                        android:textColor="#ff02FDE8"-->
+<!--                        android:textSize="25sp" />-->
+<!--                </com.rey.material.widget.RelativeLayout>-->
 
                 <LinearLayout
                     android:id="@+id/linearLayout"

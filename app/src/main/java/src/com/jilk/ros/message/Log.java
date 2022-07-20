@@ -29,4 +29,5 @@ public class Log extends Message {
     public String function;
     public long line;
     public String[] topics;
+
 }

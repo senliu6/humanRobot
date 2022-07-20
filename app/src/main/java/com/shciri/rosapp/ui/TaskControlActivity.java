@@ -4,6 +4,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,9 +14,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -32,14 +35,23 @@ import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.MyPGM;
+import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
 import com.shciri.rosapp.mydata.CH34xAction;
+import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.ui.myview.StatusBarView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import cn.wch.ch34xuartdriver.CH34xUARTDriver;
+import src.com.jilk.ros.message.PoseStamped;
 
 public class TaskControlActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -47,6 +59,9 @@ public class TaskControlActivity extends AppCompatActivity {
     private RosTopic rosTopic = new RosTopic();
     private RosService rosService = new RosService();
     private ReceiveHandler receiveHandler = new ReceiveHandler();
+
+    public static MediaPlayer mediaPlayer;
+
 
     private CH34xAction ch34xAction;
     private StatusBarView statusBarView;
@@ -56,16 +71,20 @@ public class TaskControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_control);
 
+        EventBus.getDefault().register(this);
+
         drawerLayout = findViewById(R.id.drawer_layout);
         findViewById(R.id.drawer_close_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerLayout.closeDrawer(Gravity.LEFT);
+                drawerLayout.closeDrawer(GravityCompat.START);
                 finish();
             }
+
         });
 
-        //windowSet();
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MediaPlayer.create(this, R.raw.disinfecting_warning);  //无需再调用setDataSource
 
         fragmentTrans();
 
@@ -117,7 +136,7 @@ public class TaskControlActivity extends AppCompatActivity {
     };
 
     public void openDrawerLayout() {
-        drawerLayout.openDrawer(Gravity.LEFT);
+        drawerLayout.openDrawer(GravityCompat.START);
     }
 
     private void rosSubscribe() {
@@ -141,11 +160,29 @@ public class TaskControlActivity extends AppCompatActivity {
                                     rosTopic.initGoalTopic(receiveHandler.getGoalTopicHandler(), ((RCApplication) getApplication()).getRosClient());
                                     break;
                                 case 4:
-                                    rosTopic.initCoverageMapTopic(receiveHandler.getCoverageMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                    rosTopic.initCoveragePointsTopic(((RCApplication) getApplication()).getRosClient());
                                     break;
                                 case 5:
                                     rosTopic.initCoveragePathTopic(receiveHandler.getCoveragePathTopicHandler(), ((RCApplication) getApplication()).getRosClient());
                                     break;
+                                case 6:
+                                    rosTopic.subscribeStartMappingTopic(((RCApplication) getApplication()).getRosClient());
+                                    break;
+                                case 7:
+                                    rosTopic.subscribeUltrasonicTopic(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                    break;
+                                case 8:
+                                    rosTopic.subscribeUltrasonicTopic0(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                    break;
+//                                case 9:
+//                                    rosTopic.subscribeUltrasonicTopic1(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+//                                    break;
+//                                case 10:
+//                                    rosTopic.subscribeUltrasonicTopic2(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+//                                    break;
+//                                case 11:
+//                                    rosTopic.subscribeUltrasonicTopic3(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+//                                    break;
                             }
                         }
                     }
@@ -159,7 +196,7 @@ public class TaskControlActivity extends AppCompatActivity {
     private void rosServiceInit() {
         if(RosInit.isConnect) {
             try {
-                for (String s : ((RCApplication) getApplication()).getRosClient().getServices()) {
+                for (String s : RCApplication.client.getServices()) {
                     if(s.equals(rosService.ServiceName[0])) {
                         rosService.initCoverageMapService(((RCApplication) getApplication()).getRosClient());
                         return;
@@ -174,7 +211,21 @@ public class TaskControlActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UltrasonicEvent event) {
+        try {
+            if (mediaPlayer.isPlaying())
+                return;
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.disinfecting_warning);
+            //mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    };
 
     private void windowSet() {
         Window window = getWindow();
@@ -185,19 +236,37 @@ public class TaskControlActivity extends AppCompatActivity {
     }
 
     private void fragmentTrans() {
+        findViewById(R.id.system_set_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+                navController.navigate(R.id.systemSetFragment);
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        findViewById(R.id.time_task_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+                navController.navigate(R.id.addTaskFragment);
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
         findViewById(R.id.manager_data_ll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
                 navController.navigate(R.id.manageDataFragment);
-                drawerLayout.closeDrawer(Gravity.LEFT);
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
 
         findViewById(R.id.location_ll).setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
             navController.navigate(R.id.nav_home);
-            drawerLayout.closeDrawer(Gravity.LEFT);
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
 
         findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
@@ -205,7 +274,7 @@ public class TaskControlActivity extends AppCompatActivity {
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
                 navController.navigate(R.id.manageDataFragment);
-                drawerLayout.closeDrawer(Gravity.LEFT);
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
     }

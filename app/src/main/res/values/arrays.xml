@@ -57,4 +57,12 @@
         <item>空跑</item>
         <item>消杀</item>
     </string-array>
+
+    <string-array name="loop_spinner_string">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>∞</item>
+    </string-array>
+
 </resources>

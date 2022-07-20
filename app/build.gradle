@@ -20,6 +20,13 @@ android {
         }
     }
 
+    // 自定义打包名称
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "GenerateAPK_${buildType.name}_v${versionName}.apk"
+        }
+    }
+
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute module('org.hamcrest:hamcrest-core:1.1') with module('junit:junit:4.10')
@@ -70,6 +77,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'org.greenrobot:eventbus:3.3.1'
     implementation 'com.baoyz.swipemenulistview:library:1.3.0'
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
+    implementation 'com.google.code.gson:gson:2.6.2'
 }
 
 

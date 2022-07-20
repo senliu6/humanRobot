@@ -11,7 +11,7 @@
         android:id="@+id/return_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="@dimen/return_margin_top"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -19,8 +19,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="21dp"
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
             android:scaleType="fitXY"
             android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
@@ -49,15 +49,16 @@
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/map_manage_swipeList"
-        app:layout_constraintBottom_toBottomOf="@+id/mapView"
-        app:layout_constraintEnd_toStartOf="@+id/mapView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="@+id/mapView"
         android:layout_width="443dp"
-        android:layout_height="400dp"/>
+        android:layout_height="450dp"
+        app:layout_constraintVertical_bias="0.625"/>
 
     <TextView
-        android:id="@+id/add_new_map"
+        android:id="@+id/scan_new_map"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginBottom="24dp"
@@ -107,7 +108,7 @@
         android:text="开始虚拟墙"
         android:textColor="#F4F1F1"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/add_new_map"
+        app:layout_constraintBottom_toTopOf="@+id/scan_new_map"
         app:layout_constraintEnd_toStartOf="@+id/saveVirtualWallTv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/imageView3" />

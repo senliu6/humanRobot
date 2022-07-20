@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
+    android:background="@mipmap/login_dabeijing4_21">
+
+    <LinearLayout
+        android:id="@+id/return_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/return_margin_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:layout_marginLeft="100dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
+            android:text="新建任务"
+            android:textColor="#ff02fde8"
+            android:textSize="@dimen/return_text_size" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/add_new_task_text_margin_left"
+        android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
+        android:text="重复"
+        android:textColor="#ff02a496"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_date_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_date_spinner" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/add_new_task_text_margin_left"
+        android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
+        android:text="时间"
+        android:textColor="#ff02a496"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_time_select"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_time_select" />
+
+    <Spinner
+        android:id="@+id/add_time_task_date_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
+        android:layout_width="@dimen/add_new_task_width"
+        android:layout_height="@dimen/add_new_task_height"
+        app:layout_constraintBottom_toBottomOf="@+id/add_time_task_time_select"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/add_time_task_time_select"/>
+
+    <ImageView
+        android:id="@+id/date_spinner_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_time_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_time_task_date_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_time_task_date_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_time_task_date_spinner" />
+
+    <TextView
+        android:id="@+id/add_time_task_time_select"
+        android:layout_width="@dimen/add_new_task_width"
+        android:layout_height="@dimen/add_new_task_height"
+        android:background="@drawable/tasks_report_text_shape"
+        android:gravity="center_vertical"
+        android:text=""
+        android:textColor="#ff02fde8"
+        android:textSize="@dimen/add_new_task_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/add_time_task_date_spinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/return_ll" />
+
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/add_new_task_text_margin_left"
+        android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
+        android:text="地图"
+        android:textColor="#ff02a496"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_map_spinner" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
+        android:text="任务"
+        android:textColor="#ff02a496"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_mode_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_mode_spinner" />
+
+    <Spinner
+        android:id="@+id/add_time_task_map_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
+        android:layout_width="@dimen/add_new_task_width"
+        android:layout_height="@dimen/add_new_task_height"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_mode_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/add_time_task_time_select"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_time_select"
+        app:layout_constraintTop_toBottomOf="@+id/add_time_task_time_select"/>
+
+    <ImageView
+        android:id="@+id/map_spinner_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_time_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_time_task_map_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_time_task_map_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_time_task_map_spinner" />
+
+    <Spinner
+        android:id="@+id/add_time_task_mode_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
+        android:layout_width="@dimen/add_new_task_width"
+        android:layout_height="@dimen/add_new_task_height"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/add_time_task_map_spinner"/>
+
+    <ImageView
+        android:id="@+id/mode_spinner_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_time_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_time_task_mode_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_time_task_mode_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_time_task_mode_spinner" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/add_new_task_text_margin_left"
+        android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
+        android:text="循环"
+        android:textColor="#ff02a496"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_task_loop_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_loop_spinner" />
+
+    <Spinner
+        android:id="@+id/add_time_task_loop_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:theme="@style/ThemeSpinner"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/selector_for_custom_spinner"
+        android:layout_width="@dimen/add_new_task_width"
+        android:layout_height="@dimen/add_new_task_height"
+        app:layout_constraintBottom_toBottomOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/add_time_task_date_spinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_date_spinner" />
+
+    <ImageView
+        android:id="@+id/jiantou_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="@dimen/add_time_task_spinner_row_margin"
+        android:layout_centerVertical="true"
+        app:srcCompat="@mipmap/login_jiantou4_21"
+        app:layout_constraintBottom_toBottomOf="@id/add_time_task_loop_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_time_task_loop_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_time_task_loop_spinner" />
+
+
+    <TextView
+        android:id="@+id/add_time_task_cancel_btn"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="#F4F1F1"
+        android:textSize="@dimen/add_new_task_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/add_time_task_mode_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/add_time_task_confirm_btn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/add_time_task_loop_spinner" />
+
+    <TextView
+        android:id="@+id/add_time_task_confirm_btn"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:background="@drawable/button_background_selector"
+        android:gravity="center"
+        android:text="确认"
+        android:textColor="#F4F1F1"
+        android:textSize="@dimen/add_new_task_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/add_time_task_cancel_btn"
+        app:layout_constraintEnd_toEndOf="@+id/add_time_task_loop_spinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/add_time_task_cancel_btn"
+        app:layout_constraintTop_toTopOf="@+id/add_time_task_cancel_btn" />
+    
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

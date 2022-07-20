@@ -28,15 +28,20 @@ import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.MapView;
 import com.shciri.rosapp.ui.myview.MyControllerView;
 
-public class ManuaControlFragment extends Fragment implements View.OnClickListener {
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import src.com.jilk.ros.message.PoseStamped;
+
+public class ManuaControlFragment extends Fragment {
 
     View root;
-
-    public Button connectBtn;
 
     public DmSwitchView ledSwitch;
 
@@ -77,16 +82,13 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         controllerView.setMoveListener(moveListener);
         mMapView = root.findViewById(R.id.ros_map);
         if(RosData.rosBitmap != null){
-            mMapView.setBitmap(RosData.rosBitmap, 12);
+            mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
         }else {
             Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
-            mMapView.setBitmap(map, 12);
+            mMapView.setBitmap(map, MapView.updateMapID.RUNNING);
         }
 
         mMapView.isSetGoal = true;
-        connectBtn = root.findViewById(R.id.connect_btn);
-        connectBtn.setOnClickListener(this);
-
         ledSwitch = root.findViewById(R.id.led_switch);
 
         IntentFilter intentFilter = new IntentFilter();
@@ -96,8 +98,6 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         localReceiver = new LocalReceiver();
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
-
-
 
         return root;
     }
@@ -114,14 +114,6 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), mBackPressedCallback);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.connect_btn) {
-
-            return;
-        }
     }
 
     private void plotRoute(int x, int y) {
@@ -152,15 +144,28 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
         Matrix invert = new Matrix();
         invert.setScale(1, -1); //镜像翻转以与真实地图对应
         Bitmap rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert ,true);
-        mMapView.setBitmap(rosBitmap,12);
+        mMapView.setBitmap(rosBitmap,MapView.updateMapID.RUNNING);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        PublishEvent.readyPublish = true;
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        PublishEvent.readyPublish = false;
+        super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mMapView.isSetGoal = false;
         mBackPressedCallback.remove();
         localBroadcastManager.unregisterReceiver(localReceiver);
+        super.onDestroy();
     }
 
     public class LocalReceiver extends BroadcastReceiver {
@@ -182,4 +187,19 @@ public class ManuaControlFragment extends Fragment implements View.OnClickListen
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PublishEvent event) {
+        if("/map".equals(event.getMessage())) {
+            if(RosData.rosBitmap != null){
+                if(MapView.scanning)
+                    mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.SCANNING);
+                else
+                    mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
+            }else {
+                Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+                mMapView.setBitmap(map, MapView.updateMapID.RUNNING);
+            }
+        }
+    };
 }

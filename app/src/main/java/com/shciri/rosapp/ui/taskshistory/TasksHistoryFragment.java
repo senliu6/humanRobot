@@ -1,6 +1,8 @@
 package com.shciri.rosapp.ui.taskshistory;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.mydata.TaskHistoryAdapter;
+import com.shciri.rosapp.ui.datamanagement.DataManagePathInfoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,7 @@ import java.util.List;
 public class TasksHistoryFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     ListView lv;
+    private List<TaskHistoryAdapter.TaskHistoryList> taskHistoryLists;
 
     public static TasksHistoryFragment newInstance(int index) {
         TasksHistoryFragment fragment = new TasksHistoryFragment();
@@ -42,21 +48,29 @@ public class TasksHistoryFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        List<TaskHistoryAdapter.ShowData> datas = new ArrayList<TaskHistoryAdapter.ShowData>();
-        TaskHistoryAdapter.ShowData data1 = new TaskHistoryAdapter.ShowData("2022-04-21  19:03:00", "execute_task_2", "组合任务", "admin");
-        TaskHistoryAdapter.ShowData data2 = new TaskHistoryAdapter.ShowData("2022-04-21  19:03:00", "execute_task_2", "组合任务", "admin");
-        TaskHistoryAdapter.ShowData data3 = new TaskHistoryAdapter.ShowData("2022-04-21  19:03:00", "execute_task_2", "组合任务", "admin");
-        TaskHistoryAdapter.ShowData data4 = new TaskHistoryAdapter.ShowData("2022-04-21  19:03:00", "execute_task_2", "组合任务", "admin");
-        TaskHistoryAdapter.ShowData data5 = new TaskHistoryAdapter.ShowData("2022-04-21  19:03:00", "execute_task_2", "组合任务", "admin");
-        TaskHistoryAdapter.ShowData data6 = new TaskHistoryAdapter.ShowData("2022-04-21  19:03:00", "execute_task_2", "组合任务", "admin");
-        datas.add(data1);
-        datas.add(data2);
-        datas.add(data3);
-        datas.add(data4);
-        datas.add(data5);
-        datas.add(data6);
 
         lv = (ListView) view.findViewById(R.id.task_report_lv);
-        lv.setAdapter(new TaskHistoryAdapter(getActivity(), datas));
+        taskHistoryLists = new ArrayList<TaskHistoryAdapter.TaskHistoryList>();
+        queryTaskHistory();
+        lv.setAdapter(new TaskHistoryAdapter(getActivity(), taskHistoryLists));
+    }
+
+    //id integer primary key autoincrement,date_created varchar(20),task_name varchar(20),task_type varchar(20),operator varchar(20), mode varchar(20), percentage integer
+    private void queryTaskHistory() {
+        //查询全部数据
+        Cursor cursor = RCApplication.db.query("task_history",null, null, null, null, null, null);
+        if(cursor.getCount() > 0)
+        {
+            while(cursor.moveToNext()){
+                @SuppressLint("Range") String date_created = cursor.getString(cursor.getColumnIndex("date_created"));
+                @SuppressLint("Range") String task_name = cursor.getString(cursor.getColumnIndex("task_name"));
+                @SuppressLint("Range") String task_type = cursor.getString(cursor.getColumnIndex("task_type"));
+                @SuppressLint("Range") String operator = cursor.getString(cursor.getColumnIndex("operator"));
+                @SuppressLint("Range") String mode = cursor.getString(cursor.getColumnIndex("mode"));
+                @SuppressLint("Range") int percentage = cursor.getInt(cursor.getColumnIndex("percentage"));
+                taskHistoryLists.add(new TaskHistoryAdapter.TaskHistoryList(date_created, task_name, task_type, operator, mode, percentage));
+            }
+        }
+        cursor.close();
     }
 }
