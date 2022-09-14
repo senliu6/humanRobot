@@ -1,6 +1,7 @@
 package com.shciri.rosapp.ui.taskexe;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.server.ConnectServer;
+import com.shciri.rosapp.server.ServerInfoTab;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -40,12 +43,12 @@ public class TaskExeFragment extends Fragment {
 
         RosData.taskPercent = 0;
 
-        view.findViewById(R.id.return_ll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigateUp();
-            }
-        });
+//        view.findViewById(R.id.return_ll).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(view).navigateUp();
+//            }
+//        });
         viewPager = view.findViewById(R.id.task_exe_view_pager);
         TasksExePagerAdapter tasksDetailAdapter = new TasksExePagerAdapter( getChildFragmentManager());
         viewPager.setAdapter(tasksDetailAdapter);
@@ -98,5 +101,11 @@ public class TaskExeFragment extends Fragment {
     private void selectTabRight(){
         tabLeftIv.setBackgroundResource(0);
         tabRightIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Log.e("TaskExe", "stop");
     }
 }

@@ -5,14 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
@@ -32,16 +29,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.shciri.rosapp.dmros.client.RosInit;
-import com.shciri.rosapp.dmros.tool.BatteryPercentChangeEvent;
 import com.shciri.rosapp.mydata.CH34xAction;
 import com.shciri.rosapp.mydata.DBOpenHelper;
+import com.shciri.rosapp.mydata.DBUtils;
+import com.shciri.rosapp.server.ConnectServer;
+import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.myview.LoginKeyboardView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,6 +44,7 @@ import java.util.Locale;
 
 import cn.wch.ch34xuartdriver.CH34xUARTDriver;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
+import android.app.ADWApiManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText passwordEdit;
 
     private String password;
-
-    private ContentLoadingProgressBar connectingProgressBar;
 
     private RosInit rosInit;
 
@@ -86,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 ACTION_USB_PERMISSION);
 
 //        getBaseContext().deleteDatabase("test");
-        DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,5);
+        DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,7);
         RCApplication.db = dbOpenHelper.getWritableDatabase();
 //        RCApplication.db.delete("map","id=?",new String[]{"1"});
 //        ContentValues values = new ContentValues();
@@ -101,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeReceiver,filter);
 
-
+        RCApplication.adwApiManager = new ADWApiManager(this);
+        String string = RCApplication.adwApiManager.GetDeviceRamSize();
+        System.out.println("adwApiManager ram = " + string);
+        System.out.println("adwApiManager ip = " + RCApplication.adwApiManager.GetDeviceIpAddr());
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -126,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         ch34xAction = new CH34xAction(this, statusBarView);
         ch34xAction.queryBatteryInfo();
 
-        connectingProgressBar = findViewById(R.id.connecting_progress_bar);
+        ContentLoadingProgressBar connectingProgressBar = findViewById(R.id.connecting_progress_bar);
         connectingProgressBar.setVisibility(View.VISIBLE);
 
         layConnectingLoading = findViewById(R.id.lay_connecting_loading);
@@ -179,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (password.equals("1")) {
+                    serverOperation();
+
                     if(!RosInit.isConnect) {
                         if(!alertDialog.isShowing()){
                             alertDialog.show();
@@ -207,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("进入离线模式", new DialogInterface.OnClickListener() {//添加"Yes"按钮
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //Toast.makeText(getBaseContext(), "进入离线模式", Toast.LENGTH_SHORT).show();
                         if(RCApplication.driver.isConnected())
                             RCApplication.driver.CloseDevice();
                         RosInit.offLineMode = true;
@@ -226,6 +224,18 @@ public class MainActivity extends AppCompatActivity {
                 }).create();
 
         rosInit = new RosInit();
+    }
+
+    private void serverOperation() {
+        ConnectServer connectServer = new ConnectServer();
+        ServerInfoTab.id = DBUtils.getInstance().DBQueryInfo();
+        if(ServerInfoTab.id == 0) {
+            connectServer.addInfo();
+        }else{
+            connectServer.queryInfo();
+//            connectServer.updateInfo();
+        }
+
     }
 
     private class myHandler extends Handler{

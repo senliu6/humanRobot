@@ -11,10 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.dmros.client.RosService;
+import com.shciri.rosapp.server.ConnectServer;
+import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
 
 import java.text.SimpleDateFormat;
@@ -32,6 +35,10 @@ public class TaskExeWorkViewFragment extends Fragment {
     ImageView start_pause_btn;
     ImageView stop_btn;
     private int percentage;
+    private boolean once = true;
+    private static long startMills;
+    private static long exeTime;
+    private ConnectServer connectServer;
 
     @Nullable
     @Override
@@ -48,6 +55,8 @@ public class TaskExeWorkViewFragment extends Fragment {
         start_pause_btn = view.findViewById(R.id.task_detail_exe_view);
         stop_btn = view.findViewById(R.id.task_detail_stop_view);
 
+        connectServer = new ConnectServer();
+
         TextView taskName = view.findViewById(R.id.task_exe_name);
         taskName.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).taskName);
 
@@ -58,11 +67,19 @@ public class TaskExeWorkViewFragment extends Fragment {
                     if(RosService.coverageMapService != null)
                         RosService.coverageMapService.call(new RobotControlRequest(3));
                     start_pause_btn.setActivated(false);
+                    exeTime += System.currentTimeMillis() - startMills;
                 }else{
                     if(RosService.coverageMapService != null)
                         RosService.coverageMapService.call(new RobotControlRequest(2));
                     start_pause_btn.setActivated(true);
-                    insertTaskHistory(100);
+                    if(once){
+                        insertTaskHistory(100);
+                        ServerInfoTab.task_exe_number ++;
+
+                        connectServer.updateInfo();
+                        once = false;
+                    }
+                    startMills = System.currentTimeMillis();
                 }
             }
         });
@@ -72,6 +89,15 @@ public class TaskExeWorkViewFragment extends Fragment {
             public void onClick(View v) {
                 if(RosService.coverageMapService != null)
                     RosService.coverageMapService.call(new RobotControlRequest(4));
+                if(!once){
+                    exeTime += System.currentTimeMillis() - startMills;
+                    ServerInfoTab.task_exe_duration += exeTime/1000/60;
+                    if(exeTime < 60000){
+                        ServerInfoTab.task_exe_duration += 1;
+                    }
+                    connectServer.updateInfo();
+                }
+                Navigation.findNavController(view).navigateUp();
             }
         });
     }

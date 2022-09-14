@@ -13,10 +13,12 @@ import android.graphics.Path;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,6 +46,7 @@ import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.BitmapUtils;
 import com.shciri.rosapp.dmros.tool.ControlMapEvent;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.mydata.TaskHistoryAdapter;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.control.ChooseTaskFragment;
@@ -72,8 +75,7 @@ public class DataManageMapFragment extends Fragment {
     private MapView mapView;
     ArrayList<Path> mVirtualWallPaths = new ArrayList<>();
     SwipeMenuListView swipeMenuListView;
-    private List<MapListTitle> mapListData;
-    private AppAdapter mAdapter;
+    private MapAdapter mapAdapter;
 
     private TextView scanBtn;
 
@@ -92,7 +94,7 @@ public class DataManageMapFragment extends Fragment {
         if(RosData.rosBitmap != null){
             mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
         }else {
-            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.daimon_map);
             mapView.setBitmap(map, MapView.updateMapID.RUNNING);
         }
 
@@ -227,14 +229,16 @@ public class DataManageMapFragment extends Fragment {
                         Toast.makeText(getContext(),
                                 editText.getText().toString(),
                                 Toast.LENGTH_SHORT).show();
-                        BitmapUtils.saveImage(editText.getText().toString(), RosData.dataBaseMaxMapID+1, mapView.mBitmap);
-                        DBInsertMap(editText.getText().toString());
+                        String MD5 = BitmapUtils.saveImage(editText.getText().toString(), RosData.dataBaseMaxMapID+1, mapView.mBitmap);
+                        if(MD5.equals(""))
+                            return;
+                        DBInsertMap(editText.getText().toString(), MD5);
                         EventBus.getDefault().post(new ControlMapEvent("addMap",editText.getText().toString(),RosData.dataBaseMaxMapID+1));
                     }
                 }).show();
     }
 
-    private void DBInsertMap(String name) {
+    private void DBInsertMap(String name, String md5) {
         ContentValues values = new ContentValues();
         values.put("name",name);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
@@ -242,6 +246,7 @@ public class DataManageMapFragment extends Fragment {
         values.put("time",simpleDateFormat.format(date));
         values.put("width",mapView.mBitmap.getWidth());
         values.put("height",mapView.mBitmap.getHeight());
+        values.put("md5",md5);
         RCApplication.db.insert("map",null,values);
     }
 
@@ -251,7 +256,7 @@ public class DataManageMapFragment extends Fragment {
             if(RosData.rosBitmap != null){
                 mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
             }else {
-                Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+                Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.daimon_map);
                 mapView.setBitmap(map, MapView.updateMapID.RUNNING);
             }
         }
@@ -271,15 +276,12 @@ public class DataManageMapFragment extends Fragment {
         super.onStop();
     }
 
-    private void addNewMapList(String name) {
-        MapListTitle data = new MapListTitle(name);
-        mapListData.add(data);
-    }
+//    private void addNewMapList(String name) {
+//        MapAdapter.MapList data = new MapAdapter.MapList(name);
+//        mapLists.add(data);
+//    }
 
     private void mapTitleListInit() {
-        mapListData = new ArrayList<MapListTitle>();
-        MapListTitle data = new MapListTitle("DAImon");
-        mapListData.add(data);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
@@ -313,8 +315,8 @@ public class DataManageMapFragment extends Fragment {
             }
         };
         swipeMenuListView.setMenuCreator(creator);
-        mAdapter = new AppAdapter();
-        swipeMenuListView.setAdapter(mAdapter);
+        mapAdapter = new MapAdapter(getContext());
+        swipeMenuListView.setAdapter(mapAdapter);
         swipeMenuListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
@@ -324,72 +326,30 @@ public class DataManageMapFragment extends Fragment {
                         break;
                     case 1:
                         // delete
+                        if(BitmapUtils.deleteMap(mapAdapter.getItem(position).name, mapAdapter.getItem(position).id)) {
+                            DBUtils.getInstance().deleteMap(mapAdapter.getItem(position).id);
+                            DBUtils.getInstance().deletePathOfMapID(mapAdapter.getItem(position).id);
+                            mapAdapter.removeItem(position);
+                        }
                         break;
                 }
                 // false : close the menu; true : not close the menu
                 return false;
             }
         });
-    }
 
-    class AppAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mapListData.size();
-        }
-
-        @Override
-        public MapListTitle getItem(int position) {
-            return mapListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            // menu type count
-            return 3;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            // current menu type
-            return position % 3;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder vh;
-            if (convertView == null) {
-                convertView = View.inflate(getContext(), R.layout.item_list_map_title, null);
-                vh = new ViewHolder();
-                vh.iv_icon = convertView.findViewById(R.id.iv_icon);
-                vh.tv_name = convertView.findViewById(R.id.tv_name);
-                convertView.setTag(vh);
-            }else{
-                vh = (ViewHolder) convertView.getTag();
+        swipeMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(mapAdapter.getCount() != 0) {
+//                    currentPosition = position;
+                    Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath()+
+                            "/RobotLocalMap"+
+                            "/"+mapAdapter.getItem(position).name+"_1"+".png");
+                    mapView.setBitmap(bitmap, MapView.updateMapID.RUNNING);
+                }
             }
-            MapListTitle item = getItem(position);
-            vh.tv_name.setText(item.mapName);
-            return convertView;
-        }
-
-        class ViewHolder {
-            ImageView iv_icon;
-            TextView tv_name;
-        }
-    }
-
-    public class MapListTitle {
-        public String mapName;
-
-        public MapListTitle(String name){
-            mapName = name;
-        }
+        });
     }
 
     // 将dp转换为px

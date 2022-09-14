@@ -31,6 +31,7 @@ import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.ControlMapEvent;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.ui.TaskControlActivity;
+import com.shciri.rosapp.ui.datamanagement.MapAdapter;
 import com.shciri.rosapp.ui.myview.MapView;
 import com.shciri.rosapp.ui.myview.TaskBtView;
 
@@ -62,8 +63,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
     private Spinner mapSpinner;
     public static ArrayAdapter<String> mapAdapter;
     private TextView mapText;
-    public List<String> mapList;
-    public List<Integer> mapID;
+    public List<String> mapNameList;
 
     private ManageTaskDB manageTaskDB;
 
@@ -98,20 +98,20 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 mapSpinner.performClick();
             }
         });
-        mapList = new ArrayList<String>();
-        mapID = new ArrayList<Integer>();
 
         startTaskTv = binding.startTaskBt;
         startTaskTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ManageTaskDB.currentTaskIndex == 0)
-                    ManageTaskDB.taskLists.get(0).mode = mTaskBt1.getCurrentMode();
-                else if(ManageTaskDB.currentTaskIndex == 1)
-                    ManageTaskDB.taskLists.get(1).mode = mTaskBt2.getCurrentMode();
-                else if(ManageTaskDB.currentTaskIndex == 2)
-                    ManageTaskDB.taskLists.get(2).mode = mTaskBt3.getCurrentMode();
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
+                if(!ManageTaskDB.taskLists.isEmpty()) {
+                    if (ManageTaskDB.currentTaskIndex == 0)
+                        ManageTaskDB.taskLists.get(0).mode = mTaskBt1.getCurrentMode();
+                    else if (ManageTaskDB.currentTaskIndex == 1)
+                        ManageTaskDB.taskLists.get(1).mode = mTaskBt2.getCurrentMode();
+                    else if (ManageTaskDB.currentTaskIndex == 2)
+                        ManageTaskDB.taskLists.get(2).mode = mTaskBt3.getCurrentMode();
+                    Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
+                }
             }
         });
 
@@ -161,15 +161,20 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
 
     private void queryMapList() {
         //查询全部数据
-        Cursor cursor = RCApplication.db.query("map",new String[]{"name","id"},null, null, null, null, null);
-
+        Cursor cursor = RCApplication.db.query("map", null, null, null, null, null, null);
+        MapAdapter.mapLists = new ArrayList<>();
+        mapNameList = new ArrayList<>();
         if(cursor.getCount() > 0)
         {
             while(cursor.moveToNext()){
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
-                @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
-                mapList.add(name);
-                mapID.add(id);
+                @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("time"));
+                @SuppressLint("Range") int width = cursor.getInt(cursor.getColumnIndex("width"));
+                @SuppressLint("Range") int height = cursor.getInt(cursor.getColumnIndex("height"));
+                mapNameList.add(name);
+                MapAdapter.MapList mapList = new MapAdapter.MapList(id, name, time, width, height);
+                MapAdapter.mapLists.add(mapList);
             }
         }
         cursor.close();
@@ -177,13 +182,21 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
 
     private void initSpinner(Context context) {
         queryMapList();
-        mapAdapter = new ArrayAdapter<String>(context, R.layout.task_bt_spinner_item_select, mapList);
+        mapAdapter = new ArrayAdapter<String>(context, R.layout.task_bt_spinner_item_select, mapNameList);
         //设置数组适配器的布局样式
         mapAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
         //设置下拉框的数组适配器
         mapSpinner.setAdapter(mapAdapter);
         //给下拉框设置选择监听器，一旦用户选中某一项，就触发监听器的onItemSelected方法
         mapSpinner.setOnItemSelectedListener(new MyMapSpinner());
+        if(!MapAdapter.mapLists.isEmpty()){
+            mapText.setText(mapAdapter.getItem(0));
+            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath()+
+                    "/RobotLocalMap"+
+                    "/"+mapAdapter.getItem(0)+"_1"+".png");
+            RosData.rosBitmap = bitmap;
+            RosData.currentMapID = MapAdapter.mapLists.get(0).id;
+        }
     }
 
     class MyMapSpinner implements AdapterView.OnItemSelectedListener{
@@ -194,7 +207,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                     "/RobotLocalMap"+
                     "/"+mapAdapter.getItem(position)+"_1"+".png");
             RosData.rosBitmap = bitmap;
-            RosData.currentMapID = mapID.get(position);
+            RosData.currentMapID = MapAdapter.mapLists.get(position).id;
         }
 
         @Override
@@ -238,7 +251,6 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
             }
         });
-
     }
 
     void setNoBackgroundCirculateTv() {

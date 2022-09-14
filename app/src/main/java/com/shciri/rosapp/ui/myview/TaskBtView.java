@@ -105,7 +105,7 @@ public class TaskBtView extends ConstraintLayout{
                     //持续时间
                     animation.setDuration(200);
                     //动画结束是否保持结束状态
-                    animation.setFillAfter(true);
+                    animation.setFillAfter(false);
                     view.startAnimation(animation);
                     detailPage.setVisibility(VISIBLE);
                     mEditIv.setVisibility(VISIBLE);

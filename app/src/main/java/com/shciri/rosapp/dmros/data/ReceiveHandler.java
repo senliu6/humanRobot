@@ -56,7 +56,7 @@ public class ReceiveHandler {
             bitmap.setPixels(pix, 0, RosData.map.info.width, 0, 0, RosData.map.info.width, RosData.map.info.height);
             Matrix invert = new Matrix();
             invert.setScale(1, -1); //镜像翻转以与真实地图对应
-            RosData.rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert ,true);
+//            RosData.rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert ,true);
 
 //            System.out.println("MapOK");
 

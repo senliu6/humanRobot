@@ -50,7 +50,7 @@ public class TaskDetailFragment extends Fragment {
         if(RosData.rosBitmap != null){
             mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
         }else {
-            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.daimon_map);
             mapView.setBitmap(map, MapView.updateMapID.RUNNING);
         }
 

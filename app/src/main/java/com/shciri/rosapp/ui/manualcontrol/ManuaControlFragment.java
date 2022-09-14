@@ -84,7 +84,7 @@ public class ManuaControlFragment extends Fragment {
         if(RosData.rosBitmap != null){
             mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
         }else {
-            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+            Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.daimon_map);
             mMapView.setBitmap(map, MapView.updateMapID.RUNNING);
         }
 
@@ -197,7 +197,7 @@ public class ManuaControlFragment extends Fragment {
                 else
                     mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
             }else {
-                Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map_example);
+                Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.daimon_map);
                 mMapView.setBitmap(map, MapView.updateMapID.RUNNING);
             }
         }

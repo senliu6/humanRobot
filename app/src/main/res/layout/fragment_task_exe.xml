@@ -14,30 +14,30 @@
         android:scaleType="fitXY"
         app:srcCompat="@mipmap/tou4_21" />
 
-    <LinearLayout
-        android:id="@+id/return_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/task_exe_head_view">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/return_ll"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="120dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/task_exe_head_view">-->
 
-        <ImageView
-            android:layout_width="@dimen/return_arrows_width"
-            android:layout_height="@dimen/return_arrows_height"
-            android:scaleType="fitXY"
-            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+<!--        <ImageView-->
+<!--            android:layout_width="@dimen/return_arrows_width"-->
+<!--            android:layout_height="@dimen/return_arrows_height"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@mipmap/choosetask_jiantouzuo4_21" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/return_arrow_text_margin"
-            android:text="任务列表"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/return_text_size" />
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/return_arrow_text_margin"-->
+<!--            android:text="任务列表"-->
+<!--            android:textColor="#ff02fde8"-->
+<!--            android:textSize="@dimen/return_text_size" />-->
+<!--    </LinearLayout>-->
 
     <ImageView
         android:id="@+id/imageView19"
