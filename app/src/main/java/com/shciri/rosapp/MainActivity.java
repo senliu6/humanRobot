@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeReceiver,filter);
 
-        RCApplication.adwApiManager = new ADWApiManager(this);
-        String string = RCApplication.adwApiManager.GetDeviceRamSize();
-        System.out.println("adwApiManager ram = " + string);
-        System.out.println("adwApiManager ip = " + RCApplication.adwApiManager.GetDeviceIpAddr());
+//        RCApplication.adwApiManager = new ADWApiManager(this);
+//        String string = RCApplication.adwApiManager.GetDeviceRamSize();
+//        System.out.println("adwApiManager ram = " + string);
+//        System.out.println("adwApiManager ip = " + RCApplication.adwApiManager.GetDeviceIpAddr());
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -205,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("进入离线模式", new DialogInterface.OnClickListener() {//添加"Yes"按钮
                     @Override
+
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(RCApplication.driver.isConnected())
                             RCApplication.driver.CloseDevice();

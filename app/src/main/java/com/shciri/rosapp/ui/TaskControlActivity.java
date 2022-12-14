@@ -120,6 +120,11 @@ public class TaskControlActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        if(RosInit.isConnect)
+            statusBarView.setConnectStatus(true);
+        else
+            statusBarView.setConnectStatus(false);
     }
 
     private final BroadcastReceiver myTimeReceiver = new BroadcastReceiver() {
@@ -130,6 +135,10 @@ public class TaskControlActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 Date date = new Date(System.currentTimeMillis());
                 statusBarView.setTimeView(simpleDateFormat.format(date));
+                if(RosInit.isConnect)
+                    statusBarView.setConnectStatus(true);
+                else
+                    statusBarView.setConnectStatus(false);
                 ch34xAction.queryBatteryInfo();
             }
         }

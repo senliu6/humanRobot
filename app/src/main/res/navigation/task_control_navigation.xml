@@ -19,6 +19,7 @@
             app:destination="@id/manageDataFragment"
             app:launchSingleTop="true"/>
         <action
+
             android:id="@+id/action_nav_home_to_manuaControlFragment"
             app:destination="@id/manuaControlFragment"
             app:launchSingleTop="true" />

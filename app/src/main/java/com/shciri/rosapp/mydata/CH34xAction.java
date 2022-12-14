@@ -143,6 +143,14 @@ public class CH34xAction {
                             (((readBuffer[15] & 0xFF) << 8) + (readBuffer[16] & 0xFF)) / 10f));
                 }
             }
+        }else if(readBuffer.length == 27) {
+            if (readBuffer[0] == 0x7f && readBuffer[1] == 0x10 && readBuffer[2] == 0x02) {
+                float chargeFullAh = ((readBuffer[24] << 8) | ((byte)readBuffer[23] & 0xff)) / 10f;
+                float currentAh = ((readBuffer[22] << 8) | ((byte)readBuffer[21] & 0xff)) / 10f;
+                float batteryPercent = currentAh / chargeFullAh * 100 / 100;
+                //System.out.println("batteryPercent = " + batteryPercent);
+                EventBus.getDefault().post(new BatteryPercentChangeEvent((int)(batteryPercent * 100)));
+            }
         }
     }
 
@@ -157,7 +165,7 @@ public class CH34xAction {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             readString = (String) msg.obj;
-//            System.out.println("readString = " + readString);
+            //System.out.println("readString = " + readString);
             frameUnpack();
         }
     }
