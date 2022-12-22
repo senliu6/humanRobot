@@ -1,5 +1,9 @@
 package com.shciri.rosapp.dmros.client;
 
+import static com.shciri.rosapp.dmros.data.RosData.jointSpeeds;
+
+import android.util.Log;
+
 import java.util.List;
 
 import src.com.jilk.ros.MessageHandler;
@@ -13,6 +17,7 @@ import src.com.jilk.ros.message.StartMapping;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.goal.MoveGoal;
+import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
 import src.com.jilk.ros.message.sensor_msgs.Range;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
@@ -30,11 +35,13 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic1;
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic2;
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic3;
+    public static src.com.jilk.ros.Topic<Base_JointSpeeds> joint_velocity;
 
     public final String[] TopicName = {"/map","/cmd_vel","/tf","/move_base_simple/goal","/coverage/points","/coverage/path","/start_mapping", "/ultrasonic/data", "/ultrasonic/sensor0",
         "/ultrasonic/sensor1",
         "/ultrasonic/sensor2",
         "/ultrasonic/sensor3",
+            "/my_gen3/in/joint_velocity",
     };
 
     public boolean[] TopicMatch = new boolean[TopicName.length];
@@ -102,6 +109,13 @@ public class RosTopic {
     public void subscribeUltrasonicTopic3(MessageHandler handler, ROSBridgeClient client) {
         ultrasonicTopic3 = new Topic<Range>("/ultrasonic/sensor3", Range.class, client);
         ultrasonicTopic3.subscribe(handler);
+    }
+
+    public void subscribeJointVelocityTopic(ROSBridgeClient client) {
+        joint_velocity = new Topic<Base_JointSpeeds>("/my_gen3/in/joint_velocity", Base_JointSpeeds.class, client);
+        joint_velocity.advertise();
+//        jointSpeeds = joint_velocity.take();
+        Log.d("SUB", "subscribeJointVelocityTopic");
     }
 
     public void deInitAll() {

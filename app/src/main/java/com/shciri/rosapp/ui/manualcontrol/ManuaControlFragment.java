@@ -72,9 +72,11 @@ public class ManuaControlFragment extends Fragment {
 //                float direction = (float) Math.random();
                 //mMapView.setRobotPosition(robot.x + dx, robot.y + dy, direction*100, true);
                 if (RosInit.isConnect) {
-                    RosData.cmd_vel.linear.x = dy / 1.5f;
-                    RosData.cmd_vel.angular.z = -dx / 2f;
-                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
+//                    RosData.cmd_vel.linear.x = dy / 1.5f;
+//                    RosData.cmd_vel.angular.z = -dx / 2f;
+//                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
+                    RosData.jointSpeeds.joint_speeds[0].value = dy;
+                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
                 }
             }
         };

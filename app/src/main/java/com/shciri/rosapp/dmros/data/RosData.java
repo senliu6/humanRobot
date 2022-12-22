@@ -17,6 +17,8 @@ import src.com.jilk.ros.message.TimePrimitive;
 import src.com.jilk.ros.message.TransformMsg;
 import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.goal.MoveGoal;
+import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
+import src.com.jilk.ros.message.kortex_driver.JointSpeed;
 import src.com.jilk.ros.message.std_msgs.MultiArrayDimension;
 import src.com.jilk.ros.message.std_msgs.MultiArrayLayout;
 
@@ -30,6 +32,7 @@ public class RosData {
     public static CoveragePath coveragePath;
     public static Ultrasonic ultrasonic;
     public static CoveragePoints coveragePoints;
+    public static Base_JointSpeeds jointSpeeds;
     public static byte taskPercent;
     public static int currentMapID = 1;
     public static int dataBaseMaxMapID = 0;
@@ -58,6 +61,13 @@ public class RosData {
         coveragePoints.layout.dim[0] = new MultiArrayDimension();
         coveragePoints.layout.dim[0].label = "sm";
         coveragePoints.layout.dim[0].size = 10;
+
+        jointSpeeds = new Base_JointSpeeds();
+        jointSpeeds.joint_speeds = new JointSpeed[1];
+        jointSpeeds.joint_speeds[0] = new JointSpeed();
+        jointSpeeds.joint_speeds[0].joint_identifier = 0;
+        jointSpeeds.joint_speeds[0].value = 0.3f;
+        jointSpeeds.joint_speeds[0].duration = 0;
     }
 
     public static class BaseLink {

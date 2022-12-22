@@ -22,6 +22,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -153,6 +154,7 @@ public class TaskControlActivity extends AppCompatActivity {
             try{
                 for(String s : RCApplication.client.getTopics()) {
                     for (int i=0; i<rosTopic.TopicName.length; i++) {
+//                        Log.d("TOPIC", rosTopic.TopicName[i]);
                         if(s.equals(rosTopic.TopicName[i])){
                             rosTopic.TopicMatch[i] = true;
                             switch (i){
@@ -177,15 +179,9 @@ public class TaskControlActivity extends AppCompatActivity {
                                 case 6:
                                     rosTopic.subscribeStartMappingTopic(((RCApplication) getApplication()).getRosClient());
                                     break;
-                                case 7:
-                                    rosTopic.subscribeUltrasonicTopic(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                case 12:
+                                    rosTopic.subscribeJointVelocityTopic(((RCApplication) getApplication()).getRosClient());
                                     break;
-                                case 8:
-                                    rosTopic.subscribeUltrasonicTopic0(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-//                                case 9:
-//                                    rosTopic.subscribeUltrasonicTopic1(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-//                                    break;
 //                                case 10:
 //                                    rosTopic.subscribeUltrasonicTopic2(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
 //                                    break;

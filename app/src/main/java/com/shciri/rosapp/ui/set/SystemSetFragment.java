@@ -1,6 +1,9 @@
 package com.shciri.rosapp.ui.set;
 
+import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +48,7 @@ public class SystemSetFragment extends Fragment {
 
         systemSetListList = new ArrayList<>();
         systemSetListList.add(new SystemSetAdapter.SystemSetList("清除任务历史报告数据"));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList("WIFI连接"));
         systemSetAdapter = new SystemSetAdapter(getContext(), systemSetListList);
         listView = view.findViewById(R.id.system_set_lv);
         listView.setAdapter(systemSetAdapter);
@@ -54,6 +58,15 @@ public class SystemSetFragment extends Fragment {
                 switch (position) {
                     case 0:
                         deleteTaskHistoryAll();
+                        break;
+                    case 1:
+                        //startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
+                        //注意是这个：WifiManager.ACTION_PICK_WIFI_NETWORK
+                        Intent intent = new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK);
+                        intent.putExtra("only_access_points", true);
+                        intent.putExtra("extra_prefs_show_button_bar", true);
+                        intent.putExtra("wifi_enable_next_on_connect", true);
+                        startActivityForResult(intent, 1);
                         break;
                 }
             }
