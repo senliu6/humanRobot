@@ -16,6 +16,7 @@ import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.StartMapping;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.Ultrasonic;
+import src.com.jilk.ros.message.custom.EmergencyButton;
 import src.com.jilk.ros.message.goal.MoveGoal;
 import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
 import src.com.jilk.ros.message.sensor_msgs.Range;
@@ -36,12 +37,14 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic2;
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic3;
     public static src.com.jilk.ros.Topic<Base_JointSpeeds> joint_velocity;
+    public static src.com.jilk.ros.Topic<EmergencyButton> emergencyButtonTopic;
 
     public final String[] TopicName = {"/map","/cmd_vel","/tf","/move_base_simple/goal","/coverage/points","/coverage/path","/start_mapping", "/ultrasonic/data", "/ultrasonic/sensor0",
         "/ultrasonic/sensor1",
         "/ultrasonic/sensor2",
         "/ultrasonic/sensor3",
             "/my_gen3/in/joint_velocity",
+            "/EmergencyButton/emergency",
     };
 
     public boolean[] TopicMatch = new boolean[TopicName.length];
@@ -115,7 +118,13 @@ public class RosTopic {
         joint_velocity = new Topic<Base_JointSpeeds>("/my_gen3/in/joint_velocity", Base_JointSpeeds.class, client);
         joint_velocity.advertise();
 //        jointSpeeds = joint_velocity.take();
-        Log.d("SUB", "subscribeJointVelocityTopic");
+        Log.d("SUB Topic", "subscribeJointVelocityTopic");
+    }
+
+    public void subscribeEmergencyTopic(ROSBridgeClient client) {
+        emergencyButtonTopic = new Topic<EmergencyButton>("/EmergencyButton/emergency", EmergencyButton.class, client);
+        emergencyButtonTopic.advertise();
+        Log.d("SUB Topic", "subscribeEmergencyTopic");
     }
 
     public void deInitAll() {

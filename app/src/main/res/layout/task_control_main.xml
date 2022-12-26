@@ -15,6 +15,43 @@
         android:layout_width="match_parent"
         android:layout_height="118dp"/>
 
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="textEnd"
+        android:includeFontPadding="false"
+        android:text="Robot Battery"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:id="@+id/robot_battery_des"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/robot_battery_des"
+        android:textAlignment="textEnd"
+        android:includeFontPadding="false"
+        android:text="100%"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:id="@+id/robot_battery_percent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="5dp"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"/>
+
+    <com.shciri.rosapp.ui.myview.BatteryView
+        android:id="@+id/robot_battery"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/robot_battery_percent"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="1dp"
+        android:layout_width="40dp"
+        android:layout_height="19dp"/>
+
     <fragment
         android:id="@+id/fragment_control_main"
         android:name="androidx.navigation.fragment.NavHostFragment"
