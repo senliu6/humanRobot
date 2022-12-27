@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -29,7 +30,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.shciri.rosapp.dmros.client.RosInit;
-import com.shciri.rosapp.mydata.CH34xAction;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ConnectServer;
@@ -42,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import cn.wch.ch34xuartdriver.CH34xUARTDriver;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 import android.app.ADWApiManager;
 
@@ -65,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView maskView;
 
-    private CH34xAction ch34xAction;
-
     private StatusBarView statusBarView;
 
     private Spinner identitySpinner;
@@ -75,9 +72,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        RCApplication.driver = new CH34xUARTDriver((UsbManager) getSystemService(Context.USB_SERVICE), this,
-                ACTION_USB_PERMISSION);
 
 //        getBaseContext().deleteDatabase("test");
         DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,7);
@@ -89,16 +83,9 @@ public class MainActivity extends AppCompatActivity {
 
         InitUI();
 
-        ch34xAction.queryBatteryInfo();
-
         IntentFilter filter=new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeReceiver,filter);
-
-//        RCApplication.adwApiManager = new ADWApiManager(this);
-//        String string = RCApplication.adwApiManager.GetDeviceRamSize();
-//        System.out.println("adwApiManager ram = " + string);
-//        System.out.println("adwApiManager ip = " + RCApplication.adwApiManager.GetDeviceIpAddr());
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -109,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 Date date = new Date(System.currentTimeMillis());
                 statusBarView.setTimeView(simpleDateFormat.format(date));
-                ch34xAction.queryBatteryInfo();
             }
         }
     };
@@ -119,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
         Date date = new Date(System.currentTimeMillis());
         statusBarView.setTimeView(simpleDateFormat.format(date));
-
-        ch34xAction = new CH34xAction(this, statusBarView);
-        ch34xAction.queryBatteryInfo();
+        statusBarView.setBatteryPercent((byte)(RCApplication.localBattery * 100));
 
         ContentLoadingProgressBar connectingProgressBar = findViewById(R.id.connecting_progress_bar);
         connectingProgressBar.setVisibility(View.VISIBLE);
@@ -205,10 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("进入离线模式", new DialogInterface.OnClickListener() {//添加"Yes"按钮
                     @Override
-
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(RCApplication.driver.isConnected())
-                            RCApplication.driver.CloseDevice();
                         RosInit.offLineMode = true;
                         layConnectingLoading.setVisibility(View.VISIBLE);
                         maskView.setVisibility(View.VISIBLE);
@@ -357,7 +338,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        RCApplication.driver.CloseDevice();
         super.onDestroy();
     }
 

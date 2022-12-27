@@ -1,8 +1,6 @@
 package com.shciri.rosapp.ui;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -14,19 +12,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
@@ -35,24 +26,16 @@ import com.shciri.rosapp.dmros.client.RosService;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.dmros.tool.MyPGM;
-import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
-import com.shciri.rosapp.mydata.CH34xAction;
-import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.ui.myview.StatusBarView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import cn.wch.ch34xuartdriver.CH34xUARTDriver;
-import src.com.jilk.ros.message.PoseStamped;
 
 public class TaskControlActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -62,9 +45,6 @@ public class TaskControlActivity extends AppCompatActivity {
     private ReceiveHandler receiveHandler = new ReceiveHandler();
 
     public static MediaPlayer mediaPlayer;
-
-
-    private CH34xAction ch34xAction;
     private StatusBarView statusBarView;
 
     @Override
@@ -97,8 +77,6 @@ public class TaskControlActivity extends AppCompatActivity {
         rosServiceInit();
 
         statusBarView = findViewById(R.id.statusBar);
-        ch34xAction = new CH34xAction(this, statusBarView);
-        ch34xAction.queryBatteryInfo();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
         Date date = new Date(System.currentTimeMillis());
@@ -108,19 +86,18 @@ public class TaskControlActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(myTimeReceiver,filter);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(1000);
-                        ch34xAction.queryAirQuality();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }).start();
 
         if(RosInit.isConnect)
             statusBarView.setConnectStatus(true);
@@ -140,7 +117,6 @@ public class TaskControlActivity extends AppCompatActivity {
                     statusBarView.setConnectStatus(true);
                 else
                     statusBarView.setConnectStatus(false);
-                ch34xAction.queryBatteryInfo();
             }
         }
     };
@@ -182,6 +158,11 @@ public class TaskControlActivity extends AppCompatActivity {
                                 case 12:
                                     rosTopic.subscribeJointVelocityTopic(((RCApplication) getApplication()).getRosClient());
                                     break;
+
+                                case 13:
+                                    rosTopic.subscribeEmergencyTopic(((RCApplication) getApplication()).getRosClient());
+                                    break;
+
 //                                case 10:
 //                                    rosTopic.subscribeUltrasonicTopic2(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
 //                                    break;
