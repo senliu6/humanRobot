@@ -10,7 +10,7 @@ public class RCApplication extends Application {
     public static CH34xUARTDriver driver;// 需要将CH34x的驱动类写在APP类下面，使得帮助类的生命周期与整个应用程序的生命周期是相同的
     public static ADWApiManager adwApiManager;
     public static ROSBridgeClient client;
-    public String rosIP = "192.168.42.24";
+    public String rosIP = "192.168.42.34";
     public String rosPort = "9090";
     public static SQLiteDatabase db;
     public static String Operator;

@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.shciri.rosapp.R;
 
-public class MyControllerView extends RelativeLayout implements View.OnTouchListener{
+public class MyControllerView extends RelativeLayout implements View.OnTouchListener {
     
     ImageView fingerView;
     ImageView backView;

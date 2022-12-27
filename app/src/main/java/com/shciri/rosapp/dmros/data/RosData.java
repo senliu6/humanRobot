@@ -65,7 +65,7 @@ public class RosData {
         jointSpeeds = new Base_JointSpeeds();
         jointSpeeds.joint_speeds = new JointSpeed[1];
         jointSpeeds.joint_speeds[0] = new JointSpeed();
-        jointSpeeds.joint_speeds[0].joint_identifier = 0;
+        jointSpeeds.joint_speeds[0].joint_identifier = 0;//关节轴数
         jointSpeeds.joint_speeds[0].value = 0.3f;
         jointSpeeds.joint_speeds[0].duration = 0;
     }

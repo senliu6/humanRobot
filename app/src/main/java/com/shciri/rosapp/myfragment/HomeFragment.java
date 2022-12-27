@@ -22,6 +22,7 @@ import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.ui.myview.ControlFaceplateView;
 import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.RosMapView;
 import com.shciri.rosapp.dmros.data.RosData;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment{
     public DmSwitchView ledSwitch;
 
     public MyControllerView controllerView;
+    public ControlFaceplateView controlFaceplateView;
 
     private PhotoView photoView;
 
@@ -55,6 +57,8 @@ public class HomeFragment extends Fragment{
         root = inflater.inflate(R.layout.fragment_manua_control, container, false);
 
         controllerView = root.findViewById(R.id.controller_view);
+        controlFaceplateView = root.findViewById(R.id.control_faceplate_view);
+
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
             public void move(float dx, float dy) {
@@ -66,9 +70,22 @@ public class HomeFragment extends Fragment{
             }
         };
 
+        ControlFaceplateView.JointControlListener jointControlListener = new ControlFaceplateView.JointControlListener() {
+            @Override
+            public void jointControl(int id, float dx) {
+                if(RosInit.isConnect) {
+                    RosData.cmd_vel.linear.x = dx / 1.5f;
+                    RosData.cmd_vel.angular.z = -dx / 1.5f;
+                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
+                }
+            }
+        };
+
         controllerView.setMoveListener(moveListener);
+        controlFaceplateView.setJointControlListener(jointControlListener);
+
         rosMapView = root.findViewById(R.id.ros_map);
-        ledSwitch = root.findViewById(R.id.led_switch);
+//        ledSwitch = root.findViewById(R.id.led_switch);
 
 
         IntentFilter intentFilter = new IntentFilter();

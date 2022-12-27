@@ -5,7 +5,7 @@ plugins {
 android {
     signingConfigs {
         debug {
-            storeFile file('E:\\AndroidConfig\\APK\\DaimonAPK.jks')
+            storeFile file('D:\\AndroidConfig\\APK\\DaimonAPK.jks')
             storePassword 'daimon666'
             keyAlias 'DaimonAPK'
             keyPassword 'daimon666'

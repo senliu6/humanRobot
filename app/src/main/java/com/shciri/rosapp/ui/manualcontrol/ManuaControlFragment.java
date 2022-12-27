@@ -29,6 +29,7 @@ import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.ui.myview.ControlFaceplateView;
 import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.MapView;
 import com.shciri.rosapp.ui.myview.MyControllerView;
@@ -43,11 +44,13 @@ public class ManuaControlFragment extends Fragment {
 
     View root;
 
-    public DmSwitchView ledSwitch;
+//    public DmSwitchView ledSwitch;
 
     public MyControllerView controllerView;
 
-    private PhotoView photoView;
+    public ControlFaceplateView controlFaceplateView;
+
+//    private PhotoView photoView;
 
     private Bitmap bitmap;
 
@@ -64,6 +67,8 @@ public class ManuaControlFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_manua_control, container, false);
 
         controllerView = root.findViewById(R.id.controller_view);
+        controlFaceplateView = root.findViewById(R.id.control_faceplate_view);
+
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
             public void move(float dx, float dy) {
@@ -80,8 +85,21 @@ public class ManuaControlFragment extends Fragment {
                 }
             }
         };
+        ControlFaceplateView.JointControlListener fpMoveListener = new ControlFaceplateView.JointControlListener() {
+            @Override
+            public void jointControl(int id, float dx) {
+                Log.v("J"+ id, "move:" + dx);
+                if (RosInit.isConnect) {
+                    RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
+                    RosData.jointSpeeds.joint_speeds[0].value = dx;
+                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
+                }
+            }
+        };
+
 
         controllerView.setMoveListener(moveListener);
+        controlFaceplateView.setJointControlListener(fpMoveListener);
         mMapView = root.findViewById(R.id.ros_map);
         if(RosData.rosBitmap != null){
             mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
@@ -91,7 +109,6 @@ public class ManuaControlFragment extends Fragment {
         }
 
         mMapView.isSetGoal = true;
-        ledSwitch = root.findViewById(R.id.led_switch);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RosData.MAP);
