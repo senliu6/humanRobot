@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="265dp"
+    android:layout_height="300dp"
+    android:background="@drawable/control_blackground"
+    android:padding="10dp">
+    <com.shciri.rosapp.ui.manualcontrol.OperatingArmView
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+    <com.shciri.rosapp.ui.manualcontrol.VerticalSeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:thumb="@drawable/seekbar_ball"
+        android:max="1000"
+        android:progress="500"
+        android:maxHeight="8dp"
+        android:minHeight="8dp"
+        android:padding="10dp"
+        android:progressDrawable="@drawable/seekbar"
+        android:splitTrack="false"/>
+</LinearLayout>

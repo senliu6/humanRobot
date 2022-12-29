@@ -113,10 +113,12 @@
     <string name="task_bt_default_run_state">空跑</string>
 
     <string name="task_detail_path">step 1:  %1$s</string>
-    
+
     <string name="mode_both">环境消杀与空气净化</string>
     <string name="mode_disinfection">仅环境消杀</string>
     <string name="mode_air">仅空气进化</string>
     <string name="mode_none">空跑</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

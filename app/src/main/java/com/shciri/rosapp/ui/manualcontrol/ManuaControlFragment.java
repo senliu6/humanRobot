@@ -12,17 +12,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.R;
@@ -30,15 +31,12 @@ import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.ui.myview.ControlFaceplateView;
-import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.MapView;
 import com.shciri.rosapp.ui.myview.MyControllerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import src.com.jilk.ros.message.PoseStamped;
 
 public class ManuaControlFragment extends Fragment {
 
@@ -50,6 +48,8 @@ public class ManuaControlFragment extends Fragment {
 
     public ControlFaceplateView controlFaceplateView;
 
+    public OperatingArmView operatingArmView;
+
 //    private PhotoView photoView;
 
     private Bitmap bitmap;
@@ -59,15 +59,35 @@ public class ManuaControlFragment extends Fragment {
     public static LocalBroadcastManager localBroadcastManager;
 
     private MapView mMapView;
-
+    TextView tabLeftIv;
+    TextView tabRightIv;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_manua_control, container, false);
+        tabLeftIv = root.findViewById(R.id.tabLeftIv);
+        tabRightIv = root.findViewById(R.id.tabRightIv);
+        selectTabLeft();
+        replaceFragment(new ControlFaceplateFragment());
+        tabLeftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTabLeft();
+                replaceFragment(new ControlFaceplateFragment());
+            }
+        });
+        tabRightIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTabRight();
+                replaceFragment(new RightFaceplateFragment());
+            }
+        });
 
         controllerView = root.findViewById(R.id.controller_view);
         controlFaceplateView = root.findViewById(R.id.control_faceplate_view);
+        operatingArmView = root.findViewById(R.id.activity_operating_arm_view);
 
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
@@ -85,10 +105,10 @@ public class ManuaControlFragment extends Fragment {
                 }
             }
         };
+
         ControlFaceplateView.JointControlListener fpMoveListener = new ControlFaceplateView.JointControlListener() {
             @Override
             public void jointControl(int id, float dx) {
-                Log.v("J"+ id, "move:" + dx);
                 if (RosInit.isConnect) {
                     RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
                     RosData.jointSpeeds.joint_speeds[0].value = dx;
@@ -97,9 +117,20 @@ public class ManuaControlFragment extends Fragment {
             }
         };
 
+        OperatingArmView.budgeListener BudgeListener = new ControlFaceplateView.JointControlListener() {
+            @Override
+            public void jointControl(int id, float dx) {
+                if (RosInit.isConnect) {
+                    RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
+                    RosData.jointSpeeds.joint_speeds[0].value = dx;
+                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
+                }
+            }
+        };
 
         controllerView.setMoveListener(moveListener);
         controlFaceplateView.setJointControlListener(fpMoveListener);
+
         mMapView = root.findViewById(R.id.ros_map);
         if(RosData.rosBitmap != null){
             mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
@@ -119,6 +150,24 @@ public class ManuaControlFragment extends Fragment {
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
 
         return root;
+    }
+
+    //动态切换Fragment
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frameLayout, fragment);
+        transaction.commit();
+    }
+
+    private void selectTabLeft(){
+        tabRightIv.setBackgroundResource(0);
+        tabLeftIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
+    }
+
+    private void selectTabRight(){
+        tabLeftIv.setBackgroundResource(0);
+        tabRightIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
     }
 
     OnBackPressedCallback mBackPressedCallback;
@@ -220,5 +269,5 @@ public class ManuaControlFragment extends Fragment {
                 mMapView.setBitmap(map, MapView.updateMapID.RUNNING);
             }
         }
-    };
+    }
 }
