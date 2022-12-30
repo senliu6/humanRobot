@@ -42,6 +42,9 @@ public class RosData {
     public static final String TOAST = "com.shciri.rosapp.toast";
 
     public static void RosDataInit() {
+        map = new MapMsg();
+        map.info = new MapMetaData();
+
         moveGoal = new MoveGoal();
         moveGoal.pose = new Pose();
         moveGoal.pose.position = new Point();

@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="15dp" />
-            <!--  描边颜色  -->
-            <stroke
-                android:width="1dp"
-                android:color="#ffffff" />
-
+            <solid android:color="#989898" />
         </shape>
     </item>
-
-    <item android:id="@android:id/progress">
+    <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
                 <corners android:radius="10dp" />
-                <!-- 进度条滑动时填充颜色 -->
                 <solid android:color="#ffffff" />
             </shape>
         </clip>
     </item>
-    <item android:id="@android:id/background">
-        <shape>
-            <corners android:radius="60dp" />
-
-            <gradient
-                android:angle="0"
-                android:centerY="0.20"
-                android:endColor="#989898"
-                android:startColor="#FFFFFF" />
-        </shape>
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="60dp" />
+                <solid android:color="#DDDDDD" />
+            </shape>
+        </clip>
     </item>
 </layer-list>

@@ -24,7 +24,7 @@ public class DataProcess {
         RosData.moveGoal.pose.position.y = y * 0.05f;
         RosData.moveGoal.pose.orientation.z = 0.98f;
         RosData.moveGoal.pose.orientation.w = -0.019f;
-        if (!RosInit.offLineMode)
+        if (!RosInit.offLineMode && RosTopic.goalTopic != null)
             RosTopic.goalTopic.publish(RosData.moveGoal);
     }
 

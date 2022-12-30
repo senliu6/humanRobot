@@ -37,46 +37,44 @@
         android:layout_marginEnd="26dp"
         />
 
+<!--    <LinearLayout-->
+<!--        android:layout_width="340dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        app:layout_constraintRight_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginEnd="-340dp"-->
+<!--        >-->
+<!--        <TextView-->
+<!--            android:id="@+id/tabLeftIv"-->
+<!--            android:layout_width="166dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@mipmap/choosetask_kaishianniu4_21"-->
+<!--            android:gravity="center"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:text="控速面板"-->
+<!--            android:textColor="#fff3f3f3"-->
+<!--            android:textSize="24sp" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/tabRightIv"-->
+<!--            android:background="@mipmap/choosetask_kaishianniu4_21"-->
+<!--            android:layout_width="166dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="-4dp"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:gravity="center"-->
+<!--            android:text="遥控面板"-->
+<!--            android:textColor="#fff3f3f3"-->
+<!--            android:textSize="24sp" />-->
+<!--    </LinearLayout>-->
 
-    <LinearLayout
-        android:layout_width="340dp"
-        android:layout_height="60dp"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="-340dp"
-        >
-        <TextView
-            android:id="@+id/tabLeftIv"
-            android:layout_width="166dp"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/choosetask_kaishianniu4_21"
-            android:gravity="center"
-            android:scaleType="fitXY"
-            android:text="控速面板"
-            android:textColor="#fff3f3f3"
-            android:textSize="24sp" />
-        <TextView
-            android:id="@+id/tabRightIv"
-            android:background="@mipmap/choosetask_kaishianniu4_21"
-            android:layout_width="166dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="-4dp"
-            android:scaleType="fitXY"
-            android:gravity="center"
-            android:text="遥控面板"
-            android:textColor="#fff3f3f3"
-            android:textSize="24sp" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="270dp"
-        android:layout_height="300dp"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="-270dp"
-        android:layout_marginTop="70dp"
-        android:background="@color/teal_700" />
-
+<!--    <FrameLayout-->
+<!--        android:id="@+id/frameLayout"-->
+<!--        android:layout_width="270dp"-->
+<!--        android:layout_height="300dp"-->
+<!--        app:layout_constraintRight_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginEnd="-270dp"-->
+<!--        android:layout_marginTop="70dp"-->
+<!--        android:background="@color/teal_700" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

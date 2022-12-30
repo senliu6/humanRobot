@@ -3,10 +3,14 @@ package com.shciri.rosapp.mydata;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.google.gson.Gson;
+import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
+import com.shciri.rosapp.ui.myview.StatusBarView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +19,7 @@ import java.util.Locale;
 public class DBUtils {
 
     private static DBUtils dbUtils;
+    private StatusBarView statusBarView;
 
     public static DBUtils getInstance() {
         if(dbUtils == null){
@@ -29,6 +34,13 @@ public class DBUtils {
         values.put("my_server_id",id);
         values.put("robot_ip",robot_ip);
         RCApplication.rosIP = robot_ip;
+        if(RosInit.isConnect)
+            statusBarView.setConnectStatus(true);
+        else
+            statusBarView.setConnectStatus(false);
+//        rosInit.rosConnect(id, robot_ip);
+//        MainActivity mainActivity = new MainActivity();
+//        mainActivity.rosConnectAndInit();
         RCApplication.db.insert("info",null,values);
     }
 

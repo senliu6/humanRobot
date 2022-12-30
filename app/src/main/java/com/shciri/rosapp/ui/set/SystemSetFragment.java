@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ServerInfoTab;
 
@@ -97,18 +98,20 @@ public class SystemSetFragment extends Fragment {
         inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String rosIP = editText.getText().toString();
-                Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
-                Matcher matcher = pattern.matcher(rosIP);
-                boolean bool = matcher.matches();
-                if(bool) {   // 如果验证通过
-                    Log.i("正确",""+rosIP);
-                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIP);
-                    Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.i("错误",""+rosIP);
-                    showErrorDialog();
-                }
+                DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, "192.168.42.36");
+//                String rosIP = editText.getText().toString();
+//                Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
+//                Matcher matcher = pattern.matcher(rosIP);
+//                boolean bool = matcher.matches();
+//                if(bool) {   // 如果验证通过
+//                    Log.i("正确",""+rosIP);
+//
+//                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, "192.168.42.36");
+//                    Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Log.i("错误",""+rosIP);
+//                    showErrorDialog();
+//                }
             }
         });
         inputDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

@@ -66,24 +66,24 @@ public class ManuaControlFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_manua_control, container, false);
-        tabLeftIv = root.findViewById(R.id.tabLeftIv);
-        tabRightIv = root.findViewById(R.id.tabRightIv);
-        selectTabLeft();
-        replaceFragment(new ControlFaceplateFragment());
-        tabLeftIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTabLeft();
-                replaceFragment(new ControlFaceplateFragment());
-            }
-        });
-        tabRightIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTabRight();
-                replaceFragment(new RightFaceplateFragment());
-            }
-        });
+//        tabLeftIv = root.findViewById(R.id.tabLeftIv);
+//        tabRightIv = root.findViewById(R.id.tabRightIv);
+//        selectTabLeft();
+//        replaceFragment(new ControlFaceplateFragment());
+//        tabLeftIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                selectTabLeft();
+//                replaceFragment(new ControlFaceplateFragment());
+//            }
+//        });
+//        tabRightIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                selectTabRight();
+//                replaceFragment(new RightFaceplateFragment());
+//            }
+//        });
 
         controllerView = root.findViewById(R.id.controller_view);
         controlFaceplateView = root.findViewById(R.id.control_faceplate_view);
@@ -96,12 +96,10 @@ public class ManuaControlFragment extends Fragment {
 //                PointF robot = mMapView.getRobotPosition();
 //                float direction = (float) Math.random();
                 //mMapView.setRobotPosition(robot.x + dx, robot.y + dy, direction*100, true);
-                if (RosInit.isConnect) {
-//                    RosData.cmd_vel.linear.x = dy / 1.5f;
-//                    RosData.cmd_vel.angular.z = -dx / 2f;
-//                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
-                    RosData.jointSpeeds.joint_speeds[0].value = dy;
-                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
+                if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
+                    RosData.cmd_vel.linear.x = dy / 1.5f;
+                    RosData.cmd_vel.angular.z = -dx / 2f;
+                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
                 }
             }
         };
@@ -109,7 +107,8 @@ public class ManuaControlFragment extends Fragment {
         ControlFaceplateView.JointControlListener fpMoveListener = new ControlFaceplateView.JointControlListener() {
             @Override
             public void jointControl(int id, float dx) {
-                if (RosInit.isConnect) {
+                Log.v("J"+ id, "move:" + dx);
+                if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
                     RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
                     RosData.jointSpeeds.joint_speeds[0].value = dx;
                     RosTopic.joint_velocity.publish(RosData.jointSpeeds);
@@ -154,10 +153,10 @@ public class ManuaControlFragment extends Fragment {
 
     //动态切换Fragment
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayout, fragment);
-        transaction.commit();
+//        FragmentManager fragmentManager = getParentFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.frameLayout, fragment);
+//        transaction.commit();
     }
 
     private void selectTabLeft(){

@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (password.equals("1")) {
                     serverOperation();
-
                     if(!RosInit.isConnect) {
                         if(!alertDialog.isShowing()){
                             alertDialog.show();
@@ -231,11 +230,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void rosConnectAndInit() {
+    public void rosConnectAndInit() {
         new Thread(() -> {
             while (true) {
-                if(RosInit.isConnect || RosInit.offLineMode)
+                if(RosInit.isConnect || RosInit.offLineMode) {
                     return;
+                }
                 ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
                 ((RCApplication)getApplication()).setRosClient(client);
 
