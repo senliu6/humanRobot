@@ -97,16 +97,16 @@ public class SystemSetFragment extends Fragment {
         inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String rosIp = editText.getText().toString();
+                String rosIP = editText.getText().toString();
                 Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
-                Matcher matcher = pattern.matcher(rosIp);
+                Matcher matcher = pattern.matcher(rosIP);
                 boolean bool = matcher.matches();
                 if(bool) {   // 如果验证通过
-                    Log.i("正确",""+rosIp);
-                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIp);
-                    Toast.makeText(getContext(), "IP设置成功 "+rosIp, Toast.LENGTH_SHORT).show();
+                    Log.i("正确",""+rosIP);
+                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIP);
+                    Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.i("错误",""+rosIp);
+                    Log.i("错误",""+rosIP);
                     showErrorDialog();
                 }
             }
