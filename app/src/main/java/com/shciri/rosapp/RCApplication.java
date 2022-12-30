@@ -7,11 +7,14 @@ import android.os.Message;
 import android.util.Log;
 
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.BatteryPercentChangeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
 import cn.wch.ch34xuartdriver.CH34xUARTDriver;
+import src.com.jilk.ros.message.custom.EmergencyButton;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class RCApplication extends Application {
@@ -26,32 +29,38 @@ public class RCApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        adwApiManager = new ADWApiManager(this);
-//        adwApiManager.SetDeviceTimeZone("Asia/Shanghai");
-//        String string = adwApiManager.GetDeviceRamSize();
-//        Log.d("RCApplication","adwApiManager ram = " + string);
-//        Log.d("RCApplication","adwApiManager ip = " + adwApiManager.GetDeviceIpAddr());
-//        int adc_int = adwApiManager.GetGpioInputLevel("/sys/bus/iio/devices/iio:device0/in_voltage0_raw");
-//        localBattery = (byte)((adc_int / 1024f * 1.8f * 7 - 9) / (12 - 9) * 100); //because low level battery
-//        //RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
-//        new Thread(() -> {
-//            while (true) {
-//                int l = adwApiManager.GetGpioInputLevel("/sys/devices/virtual/adw/adwdev/adw_human");
-//                int adc = adwApiManager.GetGpioInputLevel("/sys/bus/iio/devices/iio:device0/in_voltage0_raw");
-//                ///Log.v("RCApplication", Integer.toString(l));
-//                //Log.v("RCApplication", Integer.toString(adc));
-//                localBattery = (byte)(localBattery * 0.9f + (adc / 1024f * 1.8f * 7 - 9) / (12 - 9) * 0.1f * 100);
-//                if(localBattery > 100) localBattery = 100;
-//                if(localBattery < 0) localBattery = 0;
-//                EventBus.getDefault().post(new BatteryPercentChangeEvent(localBattery));
-//                //Log.v("RCApplication", Float.toString(localBattery));
-//                try {
-//                    Thread.sleep(500);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        adwApiManager = new ADWApiManager(this);
+        adwApiManager.SetDeviceTimeZone("Asia/Shanghai");
+        String string = adwApiManager.GetDeviceRamSize();
+        Log.d("RCApplication","adwApiManager ram = " + string);
+        Log.d("RCApplication","adwApiManager ip = " + adwApiManager.GetDeviceIpAddr());
+        int adc_int = adwApiManager.GetGpioInputLevel("/sys/bus/iio/devices/iio:device0/in_voltage0_raw");
+        localBattery = (byte)((adc_int / 1024f * 1.8f * 7 - 10) / (12 - 10) * 100); //because low level battery
+        //RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
+        new Thread(() -> {
+            while (true) {
+                int l = adwApiManager.GetGpioInputLevel("/sys/devices/virtual/adw/adwdev/adw_human");
+                int adc = adwApiManager.GetGpioInputLevel("/sys/bus/iio/devices/iio:device0/in_voltage0_raw");
+                ///Log.v("RCApplication", Integer.toString(l));
+                //Log.v("RCApplication", Integer.toString(adc));
+                localBattery = (byte)(localBattery * 0.9f + (adc / 1024f * 1.8f * 7 - 10) / (12 - 10) * 0.1f * 100);
+                if(localBattery > 100) localBattery = 100;
+                if(localBattery < 0) localBattery = 0;
+                EventBus.getDefault().post(new BatteryPercentChangeEvent(localBattery));
+                //Log.v("RCApplication", Float.toString(localBattery));
+
+                if(RosInit.isConnect && RosTopic.emergencyButtonTopic != null){
+                    EmergencyButton emergencyButton = new EmergencyButton();
+                    emergencyButton.emergency_strike = l == 0;
+                    RosTopic.emergencyButtonTopic.publish(emergencyButton);
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void pushMessageToIPC() {

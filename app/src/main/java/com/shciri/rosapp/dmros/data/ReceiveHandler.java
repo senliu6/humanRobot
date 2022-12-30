@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
@@ -26,6 +27,7 @@ import src.com.jilk.ros.message.Message;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformsMsg;
 import src.com.jilk.ros.message.Ultrasonic;
+import src.com.jilk.ros.message.custom.Battery;
 import src.com.jilk.ros.message.sensor_msgs.Range;
 
 public class ReceiveHandler {
@@ -37,6 +39,7 @@ public class ReceiveHandler {
     CoverageMapHandler coverageMapHandler;
     CoveragePathHandler coveragePathHandler;
     UltrasonicHandler ultrasonicHandler;
+    BatteryHandler batteryHandler;
 
     private class MapTopicHandler extends Handler implements MessageHandler {
         @Override
@@ -123,6 +126,14 @@ public class ReceiveHandler {
         }
     }
 
+    private class BatteryHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            Battery battery = (Battery) message ;
+            EventBus.getDefault().post(new BatteryEvent(battery.battery_percent, battery.current));
+        }
+    }
+
 
     public MessageHandler getMapTopicHandler() {
         mapTopicHandler = new MapTopicHandler();
@@ -157,5 +168,10 @@ public class ReceiveHandler {
     public MessageHandler getUltrasonicTopicHandler() {
         ultrasonicHandler = new UltrasonicHandler();
         return ultrasonicHandler;
+    }
+
+    public MessageHandler getBatteryHandler() {
+        batteryHandler = new BatteryHandler();
+        return batteryHandler;
     }
 }

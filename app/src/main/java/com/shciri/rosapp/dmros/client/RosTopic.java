@@ -16,6 +16,7 @@ import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.StartMapping;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.Ultrasonic;
+import src.com.jilk.ros.message.custom.Battery;
 import src.com.jilk.ros.message.custom.EmergencyButton;
 import src.com.jilk.ros.message.goal.MoveGoal;
 import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
@@ -38,13 +39,15 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic3;
     public static src.com.jilk.ros.Topic<Base_JointSpeeds> joint_velocity;
     public static src.com.jilk.ros.Topic<EmergencyButton> emergencyButtonTopic;
+    public static src.com.jilk.ros.Topic<Battery> batteryTopic;
 
     public final String[] TopicName = {"/map","/cmd_vel","/tf","/move_base_simple/goal","/coverage/points","/coverage/path","/start_mapping", "/ultrasonic/data", "/ultrasonic/sensor0",
         "/ultrasonic/sensor1",
         "/ultrasonic/sensor2",
         "/ultrasonic/sensor3",
             "/my_gen3/in/joint_velocity",
-            "/EmergencyButton/emergency",
+            "/EmergencyButton/external_emergency",
+            "/battery"
     };
 
     public boolean[] TopicMatch = new boolean[TopicName.length];
@@ -122,9 +125,15 @@ public class RosTopic {
     }
 
     public void subscribeEmergencyTopic(ROSBridgeClient client) {
-        emergencyButtonTopic = new Topic<EmergencyButton>("/EmergencyButton/emergency", EmergencyButton.class, client);
+        emergencyButtonTopic = new Topic<EmergencyButton>("/EmergencyButton/external_emergency", EmergencyButton.class, client);
         emergencyButtonTopic.advertise();
         Log.d("SUB Topic", "subscribeEmergencyTopic");
+    }
+
+    public void subscribeBatteryTopic(MessageHandler handler, ROSBridgeClient client) {
+        batteryTopic = new Topic<Battery>("/battery", Battery.class, client);
+        batteryTopic.subscribe(handler);
+        Log.d("SUB Topic", "subscribeBatteryTopic");
     }
 
     public void deInitAll() {
