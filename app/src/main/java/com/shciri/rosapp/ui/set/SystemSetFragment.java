@@ -104,7 +104,7 @@ public class SystemSetFragment extends Fragment {
                 boolean bool = matcher.matches();
                 if(bool) {   // 如果验证通过
                     Log.i("正确",""+rosIP);
-                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIP);
+                    DBUtils.getInstance().DBUpdateInfo(ServerInfoTab.id, rosIP);
                     Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i("错误",""+rosIP);
@@ -133,7 +133,7 @@ public class SystemSetFragment extends Fragment {
                 boolean bool = matcher.matches();
                 if(bool) {   // 如果验证通过
                     Log.i("正确",""+rosIp);
-                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIp);
+                    DBUtils.getInstance().DBUpdateInfo(ServerInfoTab.id, rosIp);
                     Toast.makeText(getContext(), "IP设置成功 "+rosIp, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.i("错误",""+rosIp);

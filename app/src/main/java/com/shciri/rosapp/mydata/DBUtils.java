@@ -33,10 +33,14 @@ public class DBUtils {
         values.put("my_server_id",id);
         values.put("robot_ip",robot_ip);
         RCApplication.rosIP = robot_ip;
-//        rosInit.rosConnect(id, robot_ip);
-//        MainActivity mainActivity = new MainActivity();
-//        mainActivity.rosConnectAndInit();
         RCApplication.db.insert("info",null,values);
+    }
+
+    public void DBUpdateInfo(int id, String robot_ip) {
+        ContentValues values = new ContentValues();
+        values.put("robot_ip",robot_ip);
+        RCApplication.rosIP = robot_ip;
+        RCApplication.db.update("info",values,"my_server_id=?", new String[]{Integer.toString(id)});
     }
 
     public int DBQueryInfo() {
@@ -48,6 +52,7 @@ public class DBUtils {
             while(cursor.moveToNext()){
                 @SuppressLint("Range") int myID = cursor.getInt(cursor.getColumnIndex("my_server_id"));
                 @SuppressLint("Range") String ip = cursor.getString(cursor.getColumnIndex("robot_ip"));
+                Log.d("IP",ip);
                 id = myID;
                 RCApplication.rosIP = ip;
             }

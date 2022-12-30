@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (password.equals("1")) {
-                    serverOperation();
                     if(!RosInit.isConnect) {
                         if(!alertDialog.isShowing()){
                             alertDialog.show();
@@ -210,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
                 }).create();
 
         rosInit = new RosInit();
+
+        serverOperation();
     }
 
     private void serverOperation() {
