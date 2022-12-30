@@ -39,7 +39,7 @@ public class RosInit {
             return null;
     }
 
-    public class ConnectionStatus implements ROSClient.ConnectionStatusListener {
+    public static class ConnectionStatus implements ROSClient.ConnectionStatusListener {
 
         @Override
         public void onConnect() {

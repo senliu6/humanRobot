@@ -1,26 +1,33 @@
 package com.shciri.rosapp.ui.set;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.mydata.MoreTaskAdapter;
+import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.mydata.DBUtils;
+import com.shciri.rosapp.server.ServerInfoTab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SystemSetFragment extends Fragment {
 
@@ -49,6 +56,7 @@ public class SystemSetFragment extends Fragment {
         systemSetListList = new ArrayList<>();
         systemSetListList.add(new SystemSetAdapter.SystemSetList("清除任务历史报告数据"));
         systemSetListList.add(new SystemSetAdapter.SystemSetList("WIFI连接"));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList("设置机器人IP"));
         systemSetAdapter = new SystemSetAdapter(getContext(), systemSetListList);
         listView = view.findViewById(R.id.system_set_lv);
         listView.setAdapter(systemSetAdapter);
@@ -68,6 +76,12 @@ public class SystemSetFragment extends Fragment {
                         intent.putExtra("wifi_enable_next_on_connect", true);
                         startActivityForResult(intent, 1);
                         break;
+
+                    case 2:
+                        //startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
+                        //注意是这个：WifiManager.ACTION_PICK_WIFI_NETWORK
+                        showInputDialog();
+                        break;
                 }
             }
         });
@@ -75,5 +89,65 @@ public class SystemSetFragment extends Fragment {
 
     private void deleteTaskHistoryAll() {
         RCApplication.db.execSQL("delete from task_history");
+    }
+    private void showInputDialog() {
+        String regex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
+        EditText editText = new EditText(getContext());
+        AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+        inputDialog.setTitle("请输入机器人IP").setView(editText);
+        inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, "192.168.42.36");
+//                String rosIP = editText.getText().toString();
+//                Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
+//                Matcher matcher = pattern.matcher(rosIP);
+//                boolean bool = matcher.matches();
+//                if(bool) {   // 如果验证通过
+//                    Log.i("正确",""+rosIP);
+//
+//                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, "192.168.42.36");
+//                    Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Log.i("错误",""+rosIP);
+//                    showErrorDialog();
+//                }
+            }
+        });
+        inputDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        inputDialog.show();
+    }
+    private void showErrorDialog() {
+        String regex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
+        EditText editText = new EditText(getContext());
+        AlertDialog.Builder inputDialog = new AlertDialog.Builder(getContext());
+        inputDialog.setTitle("输入错误，请输入机器人IP").setView(editText);
+        inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String rosIp = editText.getText().toString();
+                Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
+                Matcher matcher = pattern.matcher(rosIp);
+                boolean bool = matcher.matches();
+                if(bool) {   // 如果验证通过
+                    Log.i("正确",""+rosIp);
+                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIp);
+                    Toast.makeText(getContext(), "IP设置成功 "+rosIp, Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("错误",""+rosIp);
+                    showErrorDialog();
+                }
+            }
+        });
+        inputDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        inputDialog.show();
     }
 }
