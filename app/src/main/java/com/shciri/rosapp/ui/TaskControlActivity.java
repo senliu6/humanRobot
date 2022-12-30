@@ -16,8 +16,10 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
@@ -26,7 +28,9 @@ import com.shciri.rosapp.dmros.client.RosService;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
+import com.shciri.rosapp.ui.myview.BatteryView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +50,8 @@ public class TaskControlActivity extends AppCompatActivity {
 
     public static MediaPlayer mediaPlayer;
     private StatusBarView statusBarView;
+    private BatteryView batteryView;
+    private TextView batteryTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,9 @@ public class TaskControlActivity extends AppCompatActivity {
             }
 
         });
+
+        batteryView = findViewById(R.id.robot_battery);
+        batteryTv = findViewById(R.id.robot_battery_percent);
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer = MediaPlayer.create(this, R.raw.disinfecting_warning);  //无需再调用setDataSource
@@ -163,6 +172,10 @@ public class TaskControlActivity extends AppCompatActivity {
                                     rosTopic.subscribeEmergencyTopic(((RCApplication) getApplication()).getRosClient());
                                     break;
 
+                                case 14:
+                                    rosTopic.subscribeBatteryTopic(receiveHandler.getBatteryHandler(), ((RCApplication) getApplication()).getRosClient());
+                                    break;
+
 //                                case 10:
 //                                    rosTopic.subscribeUltrasonicTopic2(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
 //                                    break;
@@ -201,16 +214,9 @@ public class TaskControlActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(UltrasonicEvent event) {
-        try {
-            if (mediaPlayer.isPlaying())
-                return;
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.disinfecting_warning);
-            //mediaPlayer.prepare();
-            mediaPlayer.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void onEvent(BatteryEvent event) {
+        batteryView.setProgress(event.percent);
+        batteryTv.setText(Integer.toString(event.percent)+"%");
     };
 
     private void windowSet() {

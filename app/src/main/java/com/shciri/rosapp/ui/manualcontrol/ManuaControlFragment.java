@@ -92,7 +92,7 @@ public class ManuaControlFragment extends Fragment {
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
             public void move(float dx, float dy) {
-                Log.v("ManuaControlFragment", "move " + dx + ", " + dy);
+                //Log.v("ManuaControlFragment", "move " + dx + ", " + dy);
 //                PointF robot = mMapView.getRobotPosition();
 //                float direction = (float) Math.random();
                 //mMapView.setRobotPosition(robot.x + dx, robot.y + dy, direction*100, true);
