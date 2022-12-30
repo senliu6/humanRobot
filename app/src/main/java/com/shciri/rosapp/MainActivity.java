@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shciri.rosapp.dmros.client.RosInit;
@@ -68,13 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
     private Spinner identitySpinner;
 
+    private TextView ipTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
 //        getBaseContext().deleteDatabase("test");
-        DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,7);
+        DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,9); //如果修改db的表内容，则需要在此提高db的version
         RCApplication.db = dbOpenHelper.getWritableDatabase();
 //        RCApplication.db.delete("map","id=?",new String[]{"1"});
 //        ContentValues values = new ContentValues();
@@ -101,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void InitUI() {
+        ipTv = findViewById(R.id.tv_ip);
+
         statusBarView = findViewById(R.id.login_statusBar);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
         Date date = new Date(System.currentTimeMillis());
@@ -236,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 if(RosInit.isConnect || RosInit.offLineMode) {
                     return;
                 }
+                ipTv.setText(RCApplication.rosIP);
                 ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
                 ((RCApplication)getApplication()).setRosClient(client);
 
@@ -323,10 +329,10 @@ public class MainActivity extends AppCompatActivity {
         requestFullscreen();
         if(RosInit.isConnect) {
 //            RCApplication.client.disconnect();
-            RosInit.offLineMode = false;
             RosInit.isConnect = false;
             System.out.println("onDestroy onDestroy onDestroyonDestroyonDestroy onDestroy ");
         }
+        RosInit.offLineMode = false;
         layConnectingLoading.setVisibility(View.INVISIBLE);
         maskView.setVisibility(View.INVISIBLE);
         rosConnectAndInit();

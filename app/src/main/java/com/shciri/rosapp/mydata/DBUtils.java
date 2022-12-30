@@ -19,7 +19,6 @@ import java.util.Locale;
 public class DBUtils {
 
     private static DBUtils dbUtils;
-    private StatusBarView statusBarView;
 
     public static DBUtils getInstance() {
         if(dbUtils == null){
@@ -34,10 +33,6 @@ public class DBUtils {
         values.put("my_server_id",id);
         values.put("robot_ip",robot_ip);
         RCApplication.rosIP = robot_ip;
-        if(RosInit.isConnect)
-            statusBarView.setConnectStatus(true);
-        else
-            statusBarView.setConnectStatus(false);
 //        rosInit.rosConnect(id, robot_ip);
 //        MainActivity mainActivity = new MainActivity();
 //        mainActivity.rosConnectAndInit();

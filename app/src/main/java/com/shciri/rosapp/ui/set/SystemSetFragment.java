@@ -98,20 +98,18 @@ public class SystemSetFragment extends Fragment {
         inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, "192.168.42.36");
-//                String rosIP = editText.getText().toString();
-//                Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
-//                Matcher matcher = pattern.matcher(rosIP);
-//                boolean bool = matcher.matches();
-//                if(bool) {   // 如果验证通过
-//                    Log.i("正确",""+rosIP);
-//
-//                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, "192.168.42.36");
-//                    Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Log.i("错误",""+rosIP);
-//                    showErrorDialog();
-//                }
+                String rosIP = editText.getText().toString();
+                Pattern pattern = Pattern.compile(regex);    // 编译正则表达式
+                Matcher matcher = pattern.matcher(rosIP);
+                boolean bool = matcher.matches();
+                if(bool) {   // 如果验证通过
+                    Log.i("正确",""+rosIP);
+                    DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, rosIP);
+                    Toast.makeText(getContext(), "IP设置成功 "+rosIP, Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i("错误",""+rosIP);
+                    showErrorDialog();
+                }
             }
         });
         inputDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
