@@ -62,6 +62,8 @@ public class ManuaControlFragment extends Fragment {
     TextView tabLeftIv;
     TextView tabRightIv;
 
+    private static boolean send_zero;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -93,22 +95,44 @@ public class ManuaControlFragment extends Fragment {
             @Override
             public void move(float dx, float dy) {
                 //Log.v("ManuaControlFragment", "move " + dx + ", " + dy);
-//                PointF robot = mMapView.getRobotPosition();
-//                float direction = (float) Math.random();
-                //mMapView.setRobotPosition(robot.x + dx, robot.y + dy, direction*100, true);
-                if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
-                    RosData.cmd_vel.linear.x = dy / 1.5f;
+                    RosData.cmd_vel.linear.x = dy / 2.5f;
                     RosData.cmd_vel.angular.z = -dx / 2f;
-                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
-                }
             }
         };
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while (true) {
+                    if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
+
+                        if(RosData.cmd_vel.linear.x != 0 || RosData.cmd_vel.angular.z != 0){
+                            RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
+                            send_zero = true;
+                        }
+                        else {
+                            if(send_zero)
+                                RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
+
+                            send_zero = false;
+                        }
+
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
 
         ControlFaceplateView.JointControlListener fpMoveListener = new ControlFaceplateView.JointControlListener() {
             @Override
             public void jointControl(int id, float dx) {
                 Log.v("J"+ id, "move:" + dx);
-                if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
+                if (RosInit.isConnect && RosTopic.joint_velocity != null) {
                     RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
                     RosData.jointSpeeds.joint_speeds[0].value = dx;
                     RosTopic.joint_velocity.publish(RosData.jointSpeeds);

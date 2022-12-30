@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         requestFullscreen();
         if(RosInit.isConnect) {
-            RCApplication.client.disconnect();
+//            RCApplication.client.disconnect();
             RosInit.offLineMode = false;
             RosInit.isConnect = false;
             System.out.println("onDestroy onDestroy onDestroyonDestroyonDestroy onDestroy ");

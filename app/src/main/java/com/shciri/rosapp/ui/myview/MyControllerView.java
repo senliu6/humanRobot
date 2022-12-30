@@ -111,10 +111,10 @@ public class MyControllerView extends RelativeLayout implements View.OnTouchList
         float deltaX = evx - centerX, deltaY = evy - centerY;
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.v("control", "ACTION_DOWN");
+                //Log.v("control", "ACTION_DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.v("control", "ACTION_MOVE");
+               // Log.v("control", "ACTION_MOVE");
                 //如果触摸点在圆外
                 if (Math.abs(deltaX) > radiusBorder || Math.abs(deltaY) > radiusBorder) {
                     float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -126,7 +126,7 @@ public class MyControllerView extends RelativeLayout implements View.OnTouchList
                 positionAnimator.cancel();
                 break;
             case MotionEvent.ACTION_UP:
-                Log.v("control", "ACTION_UP");
+                //Log.v("control", "ACTION_UP");
                 positionAnimator.setDuration(500);
                 positionAnimator.start();
                 break;
