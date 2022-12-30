@@ -76,12 +76,10 @@ public class ManuaControlFragment extends Fragment {
 //                PointF robot = mMapView.getRobotPosition();
 //                float direction = (float) Math.random();
                 //mMapView.setRobotPosition(robot.x + dx, robot.y + dy, direction*100, true);
-                if (RosInit.isConnect) {
-//                    RosData.cmd_vel.linear.x = dy / 1.5f;
-//                    RosData.cmd_vel.angular.z = -dx / 2f;
-//                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
-                    RosData.jointSpeeds.joint_speeds[0].value = dy;
-                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
+                if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
+                    RosData.cmd_vel.linear.x = dy / 1.5f;
+                    RosData.cmd_vel.angular.z = -dx / 2f;
+                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
                 }
             }
         };
@@ -89,7 +87,7 @@ public class ManuaControlFragment extends Fragment {
             @Override
             public void jointControl(int id, float dx) {
                 Log.v("J"+ id, "move:" + dx);
-                if (RosInit.isConnect) {
+                if (RosInit.isConnect && RosTopic.cmd_velTopic != null) {
                     RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
                     RosData.jointSpeeds.joint_speeds[0].value = dx;
                     RosTopic.joint_velocity.publish(RosData.jointSpeeds);

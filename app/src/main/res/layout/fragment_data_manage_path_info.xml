@@ -63,7 +63,7 @@
         app:layout_constraintTop_toTopOf="@+id/map_manager_map_list_view"
         app:layout_constraintStart_toStartOf="@+id/map_manager_map_list_view"
         android:textSize="20sp"
-        android:text="戴盟"
+        android:text="HKUST"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

@@ -118,5 +118,6 @@
     <string name="mode_disinfection">仅环境消杀</string>
     <string name="mode_air">仅空气进化</string>
     <string name="mode_none">空跑</string>
+    <string name="demo_map_name">地图名称：示例</string>
 
 </resources>

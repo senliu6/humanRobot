@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/map_image"
         app:layout_constraintEnd_toStartOf="@+id/map_image"
         android:textSize="29sp"
-        android:text="DAMon"
+        android:text="HKUST"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

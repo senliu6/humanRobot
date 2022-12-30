@@ -17,7 +17,7 @@ import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 public class RCApplication extends Application {
     public static ADWApiManager adwApiManager;
     public static ROSBridgeClient client;
-    public String rosIP = "192.168.42.34";
+    public String rosIP = "192.168.42.36";
     public String rosPort = "9090";
     public static SQLiteDatabase db;
     public static String Operator;
