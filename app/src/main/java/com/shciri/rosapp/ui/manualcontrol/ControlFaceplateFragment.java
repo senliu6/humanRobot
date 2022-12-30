@@ -1,24 +1,16 @@
 package com.shciri.rosapp.ui.manualcontrol;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.ui.myview.ControlFaceplateView;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class ControlFaceplateFragment extends Fragment {
 
@@ -36,7 +28,7 @@ public class ControlFaceplateFragment extends Fragment {
     private TextView textView5;
     private SeekBar seekBar6;
     private TextView textView6;
-    View root;
+    private View root;
 
 
     @Override
@@ -95,53 +87,8 @@ public class ControlFaceplateFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                setSeekBarAnimation(seekBar);
+                seekBar.setProgress(500);
             }
         });
-    }
-
-    //拖动条动画
-    public void setSeekBarAnimation(SeekBar seekBar) {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                int x = seekBar.getProgress();
-                x = diversification(x);
-                if(x == 500){
-                    timer.cancel();
-                }
-                seekBar.setProgress(x);
-            }
-        };
-        timer.schedule(task, 0 ,1);
-    }
-
-    //修改拖动条的数值
-    public int diversification(int x) {
-        if(x < 100) {
-            x = x + 50;
-        } else if(x < 200){
-            x = x + 30;
-        } else if(x < 200){
-            x = x + 20;
-        } else if(x < 400) {
-            x = x +10;
-        } else if(x < 500) {
-            x++;
-        } else if(x == 500) {
-            x = 500;
-        } else if(x < 600) {
-            x--;
-        } else if(x < 700){
-            x = x - 10;
-        } else if(x < 800) {
-            x = x - 20;
-        } else if(x < 900) {
-            x = x - 30;
-        } else if(x <= 1000) {
-            x = x - 50;
-        }
-        return x;
     }
 }

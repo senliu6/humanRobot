@@ -1,5 +1,6 @@
 package com.shciri.rosapp.server;
 
+import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.mydata.DBUtils;
 
 import org.json.JSONArray;
@@ -31,7 +32,7 @@ public class ConnectServer {
                     if (res != null && !res.trim().equals("")) {
                         JSONObject jsonObject = new JSONObject(res);
                         ServerInfoTab.id = jsonObject.getInt("info");
-                        DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id);
+                        DBUtils.getInstance().DBInsertInfo(ServerInfoTab.id, RCApplication.rosIP);
                     }
                 }catch (Exception e){
                     e.printStackTrace();

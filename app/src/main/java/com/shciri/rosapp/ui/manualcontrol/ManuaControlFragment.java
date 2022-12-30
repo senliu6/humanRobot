@@ -117,16 +117,16 @@ public class ManuaControlFragment extends Fragment {
             }
         };
 
-        OperatingArmView.budgeListener BudgeListener = new ControlFaceplateView.JointControlListener() {
-            @Override
-            public void jointControl(int id, float dx) {
-                if (RosInit.isConnect) {
-                    RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
-                    RosData.jointSpeeds.joint_speeds[0].value = dx;
-                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
-                }
-            }
-        };
+//        OperatingArmView.budgeListener BudgeListener = new ControlFaceplateView.JointControlListener() {
+//            @Override
+//            public void jointControl(int id, float dx) {
+//                if (RosInit.isConnect) {
+//                    RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
+//                    RosData.jointSpeeds.joint_speeds[0].value = dx;
+//                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
+//                }
+//            }
+//        };
 
         controllerView.setMoveListener(moveListener);
         controlFaceplateView.setJointControlListener(fpMoveListener);
