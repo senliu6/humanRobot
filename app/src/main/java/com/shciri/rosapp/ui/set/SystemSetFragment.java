@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,9 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.VersionUpdateManager;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ServerInfoTab;
 
@@ -34,6 +38,7 @@ public class SystemSetFragment extends Fragment {
     private List<SystemSetAdapter.SystemSetList> systemSetListList;
     private ListView listView;
     private SystemSetAdapter systemSetAdapter;
+    private VersionUpdateManager versionUpdateManager;
 
     @Nullable
     @Override
@@ -53,10 +58,31 @@ public class SystemSetFragment extends Fragment {
             }
         });
 
+        /*初始化检查更新manager*/
+        versionUpdateManager = new VersionUpdateManager(getContext(), new VersionUpdateManager.versionUpdateListener() {
+            @Override
+            public void haveNoInstallPermission(Intent intent, int requestCode) {
+                getActivity().startActivityForResult(intent, requestCode);
+            }
+
+            @Override
+            public void alreadyLastVersion() {
+                Toast.makeText(getContext(),"已是最新版本", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void clickCancel() {
+                Log.d("VersionUpdateManager","点击取消");
+            }
+        });
+        versionUpdateManager.queryAPKInfo();
+
         systemSetListList = new ArrayList<>();
         systemSetListList.add(new SystemSetAdapter.SystemSetList("清除任务历史报告数据"));
         systemSetListList.add(new SystemSetAdapter.SystemSetList("WIFI连接"));
         systemSetListList.add(new SystemSetAdapter.SystemSetList("设置机器人IP"));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList("打开文件目录"));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList("检查更新"));
         systemSetAdapter = new SystemSetAdapter(getContext(), systemSetListList);
         listView = view.findViewById(R.id.system_set_lv);
         listView.setAdapter(systemSetAdapter);
@@ -78,14 +104,36 @@ public class SystemSetFragment extends Fragment {
                         break;
 
                     case 2:
-                        //startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
-                        //注意是这个：WifiManager.ACTION_PICK_WIFI_NETWORK
                         showInputDialog();
+                        break;
+
+                    case 3:
+                        openFileManager();
+                        break;
+
+                    case 4:
+                        versionUpdateManager.checkUpdateVersion();
                         break;
                 }
             }
         });
     }
+
+    // 打开文件管理器选择文件
+    private void openFileManager() {
+        // 打开文件管理器选择文件
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        //intent.setType(“image/*”);//选择图片
+        //intent.setType(“audio/*”); //选择音频
+        //intent.setType(“video/*”); //选择视频 （mp4 3gp 是android支持的视频格式）
+        //intent.setType(“video/*;image/*”);//同时选择视频和图片
+        intent.setType("*/*");//无类型限制
+        intent.putExtra("only_access_points", true);
+        intent.putExtra("extra_prefs_show_button_bar", true);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(intent,"需要选择文件"),1);
+    }
+
 
     private void deleteTaskHistoryAll() {
         RCApplication.db.execSQL("delete from task_history");

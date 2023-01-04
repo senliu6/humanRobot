@@ -323,6 +323,18 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_ip_des"
+        app:layout_constraintEnd_toStartOf="@+id/tv_ip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:includeFontPadding="false"
+        android:text="Robot IP: "
+        android:textColor="#ff02a496"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/tv_ip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

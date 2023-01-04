@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <paths>
+        <!--external-path用来指定Uri共享的
+            name属性的值可以随便填
+            path属性的值表示共享的具体路径，这里设置为空代表将整个SD卡进行共享，当然你也可以共享存放的图片地址-->
+        <external-path name="external_files_path" path=""/>
+    </paths>
+</resources>

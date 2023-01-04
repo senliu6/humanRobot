@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.RosApp.NoActionBar">
+    <style name="Theme.RosApp.NoActionBar" parent="QMUI.Compat.NoActionBar">
         <item name="android:windowBackground">@drawable/kernel_logo</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

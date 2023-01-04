@@ -1,5 +1,7 @@
 package com.shciri.rosapp.server;
 
+import android.util.Log;
+
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.mydata.DBUtils;
 

@@ -16,6 +16,7 @@ import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TimePrimitive;
 import src.com.jilk.ros.message.TransformMsg;
 import src.com.jilk.ros.message.Ultrasonic;
+import src.com.jilk.ros.message.Vector3;
 import src.com.jilk.ros.message.goal.MoveGoal;
 import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
 import src.com.jilk.ros.message.kortex_driver.JointSpeed;
@@ -44,6 +45,10 @@ public class RosData {
     public static void RosDataInit() {
         map = new MapMsg();
         map.info = new MapMetaData();
+
+        cmd_vel = new CmdVel();
+        cmd_vel.linear = new Vector3();
+        cmd_vel.angular = new Vector3();
 
         moveGoal = new MoveGoal();
         moveGoal.pose = new Pose();

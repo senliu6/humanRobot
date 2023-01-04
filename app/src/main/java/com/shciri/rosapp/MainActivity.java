@@ -1,6 +1,8 @@
 package com.shciri.rosapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
 
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.VersionUpdateManager;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ConnectServer;
