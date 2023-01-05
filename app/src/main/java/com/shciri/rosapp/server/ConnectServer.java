@@ -15,7 +15,7 @@ import okhttp3.Response;
 
 public class ConnectServer {
 
-    String URL = "http://zqn.ink/daimon/info.php";
+    String URL = "https://www.zqn.ink/daimon/info.php";
 
     public void addInfo() {
         new Thread(new Runnable() {

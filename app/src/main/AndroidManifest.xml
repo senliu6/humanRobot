@@ -28,8 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RosApp.NoActionBar"
-        android:windowSoftInputMode="stateHidden"
-        android:usesCleartextTraffic="true"> <!-- if you use http instead of https in your url, add this line to AndroidManifest.xml in the <application> tag. -->
+        android:windowSoftInputMode="stateHidden">
 
         <activity
             android:name=".ui.taskshistory.TasksHistoryReportActivity"

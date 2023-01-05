@@ -61,12 +61,12 @@ public class VersionUpdateManager extends AppInnerDownLode{
     /* 当前的版本号 */
     public int versionName = 3;
     /*下载链接*/
-    public String downloadURL = "http://zqn.ink/?attach-download-";
+    public String downloadURL;
     /*是否有安装apk的权限*/
     private Boolean haveInstallPermission = true;
     /*下载apk的manager*/
     private DownloadManager downloadManager;
-    String apkURL = "http://zqn.ink/q2.php";
+    String apkURL = "https://www.zqn.ink/q2.php";
     private final int appID = 70;
     private int aid;
     private String updateSummary;
@@ -123,8 +123,7 @@ public class VersionUpdateManager extends AppInnerDownLode{
                 //获取是否有安装未知来源应用的权限
                 haveInstallPermission = mContext.getPackageManager().canRequestPackageInstalls();
             }
-            //downloadURL = "http://zqn.ink/?attach-download-" + aid + ".htm";
-            downloadURL = "https://sk2.benbox.com/?attach-download-986.htm";
+            downloadURL = "https://www.zqn.ink/?attach-download-" + aid + ".htm";
             Log.d("SelfUpdate", downloadURL);
             showUpdateTipdialog(Integer.toString(updateVersion), updateSummary, downloadURL);
         } else {
