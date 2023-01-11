@@ -1,5 +1,6 @@
 package com.shciri.rosapp.ui.addtask;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.navigation.Navigation;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.ui.control.ChooseTaskFragment;
+import com.shciri.rosapp.utils.AlarmManagerUtils;
 
 import java.util.Calendar;
 
@@ -30,17 +32,19 @@ import java.util.Calendar;
 public class AddNewTimeTaskFragment extends Fragment {
 
     private TimePickerDialog timePickerDialog;
-    private int year, monthOfYear, dayOfMonth, hourOfDay, minute;
+    private int year, monthOfYear, dayOfMonth, hourOfD, min;
 
     private Spinner loopSpinner;
     private Spinner dateSpinner;
     private Spinner mapSpinner;
     private Spinner modeSpinner;
     private TextView timeView;
+    private TextView cancelBtn;
     private TextView confirmBtn;
 
     private String date;
 
+    private AlarmManagerUtils alarmManagerUtils;
 
     @Nullable
     @Override
@@ -79,19 +83,21 @@ public class AddNewTimeTaskFragment extends Fragment {
         year = calendar.get(Calendar.YEAR);
         monthOfYear = calendar.get(Calendar.MONTH);
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
-        timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+        hourOfD = calendar.get(Calendar.HOUR_OF_DAY);
+        min = calendar.get(Calendar.MINUTE);
+        timePickerDialog = new TimePickerDialog(getContext(), AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 Toast.makeText(getContext(), hourOfDay + ":" + minute,
                         Toast.LENGTH_LONG).show();
-                timeView.setText((String)(hourOfDay+":"+minute));
+                timeView.setText((String)(" "+hourOfDay+":"+minute));
+                hourOfD = hourOfDay;
+                min = minute;
             }
-        }, hourOfDay, minute, true);
+        }, hourOfD, min, true);
 
         timeView = view.findViewById(R.id.add_time_task_time_select);
-        timeView.setText((String)(hourOfDay+":"+minute));
+        timeView.setText((String)(" "+hourOfD+":"+min));
         timeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,10 +123,19 @@ public class AddNewTimeTaskFragment extends Fragment {
         modeSpinner = view.findViewById(R.id.add_time_task_mode_spinner);
         modeSpinner.setAdapter(modeAdapter);
 
-        confirmBtn = view.findViewById(R.id.add_time_task_cancel_btn);
+        alarmManagerUtils = AlarmManagerUtils.getInstance(getContext());
+        alarmManagerUtils.createGetUpAlarmManager();
+
+        confirmBtn = view.findViewById(R.id.add_time_task_confirm_btn);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfD);
+                calendar.set(Calendar.MINUTE, min);
+                calendar.set(Calendar.SECOND, 0);
+                alarmManagerUtils.getUpAlarmManagerStartWork(calendar);
+                Toast.makeText(getContext(),"设置成功: "+hourOfD+":"+min,Toast.LENGTH_SHORT).show();
             }
         });
     }

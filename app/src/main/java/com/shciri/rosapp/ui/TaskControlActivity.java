@@ -32,6 +32,7 @@ import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
 import com.shciri.rosapp.ui.myview.BatteryView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
+import com.shciri.rosapp.utils.MyBroadCastReceiver;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,11 +68,7 @@ public class TaskControlActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 finish();
             }
-
         });
-
-        batteryView = findViewById(R.id.robot_battery);
-        batteryTv = findViewById(R.id.robot_battery_percent);
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer = MediaPlayer.create(this, R.raw.disinfecting_warning);  //无需再调用setDataSource
@@ -114,9 +111,10 @@ public class TaskControlActivity extends AppCompatActivity {
             statusBarView.setConnectStatus(false);
     }
 
-    private final BroadcastReceiver myTimeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver myTimeReceiver = new MyBroadCastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            super.onReceive(context, intent);
             String action = intent.getAction();
             if (action.equals(Intent.ACTION_TIME_TICK)) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
@@ -127,6 +125,14 @@ public class TaskControlActivity extends AppCompatActivity {
                 else
                     statusBarView.setConnectStatus(false);
             }
+        }
+    };
+
+    private final MyBroadCastReceiver myBroadCastReceiver = new MyBroadCastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            super.onReceive(context, intent);
+            Log.d("Alarm", "BroadcastReceiver receive");
         }
     };
 

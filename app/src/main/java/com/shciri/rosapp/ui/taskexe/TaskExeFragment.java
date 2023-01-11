@@ -43,12 +43,6 @@ public class TaskExeFragment extends Fragment {
 
         RosData.taskPercent = 0;
 
-//        view.findViewById(R.id.return_ll).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view).navigateUp();
-//            }
-//        });
         viewPager = view.findViewById(R.id.task_exe_view_pager);
         TasksExePagerAdapter tasksDetailAdapter = new TasksExePagerAdapter( getChildFragmentManager());
         viewPager.setAdapter(tasksDetailAdapter);

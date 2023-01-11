@@ -39,6 +39,12 @@ public class RCApplication extends Application {
         //RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
         new Thread(() -> {
             while (true) {
+                /*  OUTPUT IO
+                   /sys/class/gpio/gpio39/value
+                   /sys/class/gpio/gpio40/value
+                   /sys/class/gpio/gpio40/value
+                   /sys/class/gpio/gpio41/value
+                 */
                 int l = adwApiManager.GetGpioInputLevel("/sys/devices/virtual/adw/adwdev/adw_human");
                 int adc = adwApiManager.GetGpioInputLevel("/sys/bus/iio/devices/iio:device0/in_voltage0_raw");
                 ///Log.v("RCApplication", Integer.toString(l));

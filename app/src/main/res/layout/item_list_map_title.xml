@@ -18,7 +18,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="25dp"
         android:layout_toEndOf="@+id/iv_icon"
-        android:text="HKUST"
+        android:text="Daimon"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
 </RelativeLayout>

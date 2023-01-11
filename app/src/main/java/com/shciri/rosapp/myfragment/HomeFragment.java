@@ -37,7 +37,6 @@ public class HomeFragment extends Fragment{
     public DmSwitchView ledSwitch;
 
     public MyControllerView controllerView;
-    public ControlFaceplateView controlFaceplateView;
 
     private PhotoView photoView;
 
@@ -57,7 +56,6 @@ public class HomeFragment extends Fragment{
         root = inflater.inflate(R.layout.fragment_manua_control, container, false);
 
         controllerView = root.findViewById(R.id.controller_view);
-        controlFaceplateView = root.findViewById(R.id.control_faceplate_view);
 
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
@@ -70,19 +68,8 @@ public class HomeFragment extends Fragment{
             }
         };
 
-        ControlFaceplateView.JointControlListener jointControlListener = new ControlFaceplateView.JointControlListener() {
-            @Override
-            public void jointControl(int id, float dx) {
-                if(RosInit.isConnect) {
-                    RosData.cmd_vel.linear.x = dx / 1.5f;
-                    RosData.cmd_vel.angular.z = -dx / 1.5f;
-                    RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
-                }
-            }
-        };
 
         controllerView.setMoveListener(moveListener);
-        controlFaceplateView.setJointControlListener(jointControlListener);
 
         rosMapView = root.findViewById(R.id.ros_map);
 //        ledSwitch = root.findViewById(R.id.led_switch);

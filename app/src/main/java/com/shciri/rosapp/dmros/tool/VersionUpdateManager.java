@@ -67,7 +67,7 @@ public class VersionUpdateManager extends AppInnerDownLode{
     /*下载apk的manager*/
     private DownloadManager downloadManager;
     String apkURL = "https://www.zqn.ink/q2.php";
-    private final int appID = 70;
+    private final int appID = 71;
     private int aid;
     private String updateSummary;
     private String apkName;

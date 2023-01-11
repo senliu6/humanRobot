@@ -68,28 +68,8 @@ public class ManuaControlFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_manua_control, container, false);
-//        tabLeftIv = root.findViewById(R.id.tabLeftIv);
-//        tabRightIv = root.findViewById(R.id.tabRightIv);
-//        selectTabLeft();
-//        replaceFragment(new ControlFaceplateFragment());
-//        tabLeftIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                selectTabLeft();
-//                replaceFragment(new ControlFaceplateFragment());
-//            }
-//        });
-//        tabRightIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                selectTabRight();
-//                replaceFragment(new RightFaceplateFragment());
-//            }
-//        });
 
         controllerView = root.findViewById(R.id.controller_view);
-        controlFaceplateView = root.findViewById(R.id.control_faceplate_view);
-        operatingArmView = root.findViewById(R.id.activity_operating_arm_view);
 
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
@@ -128,32 +108,7 @@ public class ManuaControlFragment extends Fragment {
             }
         }).start();
 
-        ControlFaceplateView.JointControlListener fpMoveListener = new ControlFaceplateView.JointControlListener() {
-            @Override
-            public void jointControl(int id, float dx) {
-                Log.v("J"+ id, "move:" + dx);
-                if (RosInit.isConnect && RosTopic.joint_velocity != null) {
-                    RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
-                    RosData.jointSpeeds.joint_speeds[0].value = dx;
-                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
-                }
-            }
-        };
-
-//        OperatingArmView.budgeListener BudgeListener = new ControlFaceplateView.JointControlListener() {
-//            @Override
-//            public void jointControl(int id, float dx) {
-//                if (RosInit.isConnect) {
-//                    RosData.jointSpeeds.joint_speeds[0].joint_identifier = id;
-//                    RosData.jointSpeeds.joint_speeds[0].value = dx;
-//                    RosTopic.joint_velocity.publish(RosData.jointSpeeds);
-//                }
-//            }
-//        };
-
         controllerView.setMoveListener(moveListener);
-        controlFaceplateView.setJointControlListener(fpMoveListener);
-
         mMapView = root.findViewById(R.id.ros_map);
         if(RosData.rosBitmap != null){
             mMapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);

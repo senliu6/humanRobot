@@ -16,6 +16,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -40,8 +41,7 @@ public class TaskBtView extends ConstraintLayout{
     public View detailPage;
     ImageView mEditIv;
     ImageView pullIv;
-    ContentLoadingProgressBar contentLoadingProgressBar;
-    private String[] starArray = {"空跑", "消杀"};
+    private String[] starArray = {"空跑", "消杀","原地空气净化", "空气净化"};
     ArrayAdapter<String> starAdapter;
 
     public TaskBtView(Context context) {
@@ -68,7 +68,6 @@ public class TaskBtView extends ConstraintLayout{
         taskBtView = findViewById(R.id.task_bt_run_status_view);
         currFunStatusTv = findViewById(R.id.task_bt_status_tv);
         pullIv = findViewById(R.id.task_bt_pull_iv);
-        contentLoadingProgressBar = findViewById(R.id.focus_progress_bar);
 
         initSpinner(context);
 
@@ -105,18 +104,16 @@ public class TaskBtView extends ConstraintLayout{
                     //持续时间
                     animation.setDuration(200);
                     //动画结束是否保持结束状态
-                    animation.setFillAfter(false);
+                    animation.setFillAfter(true);
                     view.startAnimation(animation);
                     detailPage.setVisibility(VISIBLE);
                     mEditIv.setVisibility(VISIBLE);
                     pullIv.setVisibility(VISIBLE);
-                    contentLoadingProgressBar.setVisibility(VISIBLE);
                 } else {
                     view.clearAnimation();
                     detailPage.setVisibility(INVISIBLE);
                     mEditIv.setVisibility(INVISIBLE);
                     pullIv.setVisibility(INVISIBLE);
-                    contentLoadingProgressBar.setVisibility(INVISIBLE);
                 }
             }
         });

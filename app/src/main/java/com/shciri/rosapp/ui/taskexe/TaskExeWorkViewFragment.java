@@ -1,7 +1,9 @@
 package com.shciri.rosapp.ui.taskexe;
 
+import android.app.ADWApiManager;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,17 +66,26 @@ public class TaskExeWorkViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(start_pause_btn.isActivated()){
-                    if(RosService.coverageMapService != null)
-                        RosService.coverageMapService.call(new RobotControlRequest(3));
+                    if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("原地空气净化")){
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
+                        Log.d("adwApiManager", "/sys/class/gpio/gpio39/value = " + 1);
+                    }else{
+                        if(RosService.coverageMapService != null)
+                            RosService.coverageMapService.call(new RobotControlRequest(3));
+                    }
                     start_pause_btn.setActivated(false);
                     exeTime += System.currentTimeMillis() - startMills;
                 }else{
-                    if(RosService.coverageMapService != null)
-                        RosService.coverageMapService.call(new RobotControlRequest(2));
+                    if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("原地空气净化")){
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
+                    }else {
+                        if (RosService.coverageMapService != null)
+                            RosService.coverageMapService.call(new RobotControlRequest(2));
+                    }
                     start_pause_btn.setActivated(true);
-                    if(once){
+                    if (once) {
                         insertTaskHistory(100);
-                        ServerInfoTab.task_exe_number ++;
+                        ServerInfoTab.task_exe_number++;
 
                         connectServer.updateInfo();
                         once = false;
@@ -87,12 +98,16 @@ public class TaskExeWorkViewFragment extends Fragment {
         stop_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(RosService.coverageMapService != null)
-                    RosService.coverageMapService.call(new RobotControlRequest(4));
-                if(!once){
+                if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("原地空气净化")){
+                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
+                }else {
+                    if (RosService.coverageMapService != null)
+                        RosService.coverageMapService.call(new RobotControlRequest(4));
+                }
+                if (!once) {
                     exeTime += System.currentTimeMillis() - startMills;
-                    ServerInfoTab.task_exe_duration += exeTime/1000/60;
-                    if(exeTime < 60000){
+                    ServerInfoTab.task_exe_duration += exeTime / 1000 / 60;
+                    if (exeTime < 60000) {
                         ServerInfoTab.task_exe_duration += 1;
                     }
                     connectServer.updateInfo();
