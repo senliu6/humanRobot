@@ -1,9 +1,11 @@
 package com.shciri.rosapp.ui.addtask;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +20,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.ui.control.ChooseTaskFragment;
+import com.shciri.rosapp.ui.control.ManageTaskDB;
 import com.shciri.rosapp.utils.AlarmManagerUtils;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -36,7 +43,7 @@ public class AddNewTimeTaskFragment extends Fragment {
 
     private Spinner loopSpinner;
     private Spinner dateSpinner;
-    private Spinner mapSpinner;
+    private Spinner originTaskSpinner;
     private Spinner modeSpinner;
     private TextView timeView;
     private TextView cancelBtn;
@@ -55,6 +62,7 @@ public class AddNewTimeTaskFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_add_new_time_task, container, false);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,7 +105,7 @@ public class AddNewTimeTaskFragment extends Fragment {
         }, hourOfD, min, true);
 
         timeView = view.findViewById(R.id.add_time_task_time_select);
-        timeView.setText((String)(" "+hourOfD+":"+min));
+        timeView.setText((String)(" "+String.format("%02d", hourOfD)+":"+String.format("%02d", min)));
         timeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,8 +121,10 @@ public class AddNewTimeTaskFragment extends Fragment {
         dateSpinner = view.findViewById(R.id.add_time_task_date_spinner);
         dateSpinner.setAdapter(dateAdapter);
 
-        mapSpinner = view.findViewById(R.id.add_time_task_map_spinner);
-        mapSpinner.setAdapter(ChooseTaskFragment.mapAdapter);
+        originTaskSpinner = view.findViewById(R.id.add_origin_task_map_spinner);
+        ArrayAdapter<String> taskItemListArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.task_bt_spinner_item_select, ManageTaskDB.taskNameList);
+        taskItemListArrayAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
+        originTaskSpinner.setAdapter(taskItemListArrayAdapter);
 
         String[] modeOption = {"消杀与空气进化","仅消杀","仅空气净化","空跑"};
         ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(getContext(), R.layout.task_bt_spinner_item_select, modeOption);
@@ -130,23 +140,49 @@ public class AddNewTimeTaskFragment extends Fragment {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfD);
-                calendar.set(Calendar.MINUTE, min);
-                calendar.set(Calendar.SECOND, 0);
-                alarmManagerUtils.getUpAlarmManagerStartWork(calendar);
-                Toast.makeText(getContext(),"设置成功: "+hourOfD+":"+min,Toast.LENGTH_SHORT).show();
+                EditTextDialogBuilder(view);
             }
         });
     }
 
-    private void DBInsertTimeTask(String taskName, String time, String date, String mapName, int loop) {
-        ContentValues values = new ContentValues();
-        values.put("task_name",taskName);
-        values.put("time",time);
-        values.put("date",date);
-        values.put("map_name",mapName);
-        values.put("loop",loop);
-        RCApplication.db.insert("time_task",null,values);
+    private void EditTextDialogBuilder(View view) {
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getContext());
+        builder.setTitle("定时任务名称")
+                .setPlaceholder("在此输入任务名称")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", new QMUIDialogAction.ActionListener() {
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        dialog.dismiss();
+                    }
+                })
+                .addAction("确定", new QMUIDialogAction.ActionListener() {
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void onClick(QMUIDialog dialog, int index) {
+                        CharSequence text = builder.getEditText().getText();
+                        if (text != null && text.length() > 0) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set(Calendar.HOUR_OF_DAY, hourOfD);
+                            calendar.set(Calendar.MINUTE, min);
+                            calendar.set(Calendar.SECOND, 0);
+                            alarmManagerUtils.getUpAlarmManagerStartWork(calendar);
+                            Toast.makeText(getContext(),"设置成功: "+hourOfD+":"+min,Toast.LENGTH_SHORT).show();
+
+                            DBUtils.getInstance().DBInsertTimeTask(
+                                    text.toString(),
+                                    String.format("%02d", hourOfD)+":"+String.format("%02d", min),
+                                    dateSpinner.getSelectedItem().toString(),
+                                    "TEST",//originTaskSpinner.getSelectedItem().toString(),
+                                    loopSpinner.getSelectedItem().toString());
+
+                            dialog.dismiss();
+                            Navigation.findNavController(view).navigateUp();
+                        } else {
+                            Toast.makeText(getContext(), "请输入定时任务名称", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .show();
     }
 }

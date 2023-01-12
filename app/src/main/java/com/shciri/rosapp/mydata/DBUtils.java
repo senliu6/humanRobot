@@ -43,6 +43,16 @@ public class DBUtils {
         RCApplication.db.update("info",values,"my_server_id=?", new String[]{Integer.toString(id)});
     }
 
+    public void DBInsertTimeTask(String taskName, String time, String date, String mapName, String loop) {
+        ContentValues values = new ContentValues();
+        values.put("task_name",taskName);
+        values.put("time",time);
+        values.put("date",date);
+        values.put("map_name",mapName);
+        values.put("loop",Integer.valueOf(loop));
+        RCApplication.db.insert("time_task",null,values);
+    }
+
     public int DBQueryInfo() {
         int id = 0;
         Cursor cursor = RCApplication.db.query("info",null, null, null, null, null, null);

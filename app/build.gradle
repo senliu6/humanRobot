@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
 }
 
-def generateTime() {
+static def generateTime() {
     return new Date().format("yyyy.MM.dd.HH")
 }
 
@@ -15,6 +15,7 @@ android {
             keyPassword 'daimon666'
         }
     }
+
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {

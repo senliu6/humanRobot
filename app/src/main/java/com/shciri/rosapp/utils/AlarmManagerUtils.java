@@ -44,8 +44,7 @@ public class AlarmManagerUtils {
     }
 
     public void getUpAlarmManagerStartWork(Calendar calendar) {
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10000, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }
 

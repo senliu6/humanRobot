@@ -1,7 +1,6 @@
 package com.shciri.rosapp.ui.datamanagement;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -19,9 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,19 +34,14 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.dmros.client.RosService;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.BitmapUtils;
 import com.shciri.rosapp.dmros.tool.ControlMapEvent;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.mydata.DBUtils;
-import com.shciri.rosapp.mydata.TaskHistoryAdapter;
-import com.shciri.rosapp.ui.TaskControlActivity;
-import com.shciri.rosapp.ui.control.ChooseTaskFragment;
 import com.shciri.rosapp.ui.myview.MapView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,10 +51,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import src.com.jilk.ros.message.RobotControlRequest;
 import src.com.jilk.ros.message.StartMapping;
 
 /**
@@ -164,33 +154,32 @@ public class DataManageMapFragment extends Fragment {
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (RosTopic.startMappingsTopic != null) {
-//                    if (v.isActivated()) {
-//                        StartMapping startMapping = new StartMapping();
-//                        startMapping.control = 2;
-//                        RosTopic.startMappingsTopic.publish(startMapping);
-//                        MapView.scanning = false;
-//                        //在API29及之后是不需要申请的，默认是允许的
-//                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-//                        } else {
-//                            //保存图片到相册
-//                            showInputDialog();
-//                        }
-//                        scanBtn.setText("+扫描地图");
-//                        v.setActivated(false);
-//                    } else {
-//                        StartMapping startMapping = new StartMapping();
-//                        startMapping.control = 1;
-//                        RosTopic.startMappingsTopic.publish(startMapping);
-//                        MapView.scanning = true;
-//                        scanBtn.setText("保存地图");
-//                        v.setActivated(true);
-//                    }
-//                }else {
-//                    Toast.makeText(getContext(), "离线模式或服务未开启，请退回登录界面重试！", Toast.LENGTH_SHORT).show();
-//                }
-
+                if (RosTopic.startMappingsTopic != null) {
+                    if (v.isActivated()) {
+                        StartMapping startMapping = new StartMapping();
+                        startMapping.control = 2;
+                        RosTopic.startMappingsTopic.publish(startMapping);
+                        MapView.scanning = false;
+                        //在API29及之后是不需要申请的，默认是允许的
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+                        } else {
+                            //保存图片到相册
+                            showInputDialog();
+                        }
+                        scanBtn.setText("+扫描地图");
+                        v.setActivated(false);
+                    } else {
+                        StartMapping startMapping = new StartMapping();
+                        startMapping.control = 1;
+                        RosTopic.startMappingsTopic.publish(startMapping);
+                        MapView.scanning = true;
+                        scanBtn.setText("保存地图");
+                        v.setActivated(true);
+                    }
+                }else {
+                    Toast.makeText(getContext(), "离线模式或服务未开启，请退回登录界面重试！", Toast.LENGTH_SHORT).show();
+                }
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
             } else {

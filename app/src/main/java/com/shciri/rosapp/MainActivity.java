@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-       // getBaseContext().deleteDatabase("test");
+        //getBaseContext().deleteDatabase("test");
         DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,9); //如果修改db的表内容，则需要在此提高db的version
         RCApplication.db = dbOpenHelper.getWritableDatabase();
 //        RCApplication.db.delete("map","id=?",new String[]{"1"});

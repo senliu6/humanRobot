@@ -128,14 +128,6 @@ public class TaskControlActivity extends AppCompatActivity {
         }
     };
 
-    private final MyBroadCastReceiver myBroadCastReceiver = new MyBroadCastReceiver(){
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            super.onReceive(context, intent);
-            Log.d("Alarm", "BroadcastReceiver receive");
-        }
-    };
-
     public void openDrawerLayout() {
         drawerLayout.openDrawer(GravityCompat.START);
     }

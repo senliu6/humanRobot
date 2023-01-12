@@ -89,7 +89,7 @@
         android:text=""
         android:textColor="#ff02fde8"
         android:textSize="@dimen/add_new_task_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintBottom_toTopOf="@+id/add_origin_task_map_spinner"
         app:layout_constraintEnd_toStartOf="@+id/add_time_task_date_spinner"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,11 +102,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/add_new_task_text_margin_left"
         android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
-        android:text="地图"
+        android:text="源任务"
         android:textColor="#ff02a496"
         android:textSize="21sp"
-        app:layout_constraintBottom_toTopOf="@+id/add_time_task_map_spinner"
-        app:layout_constraintStart_toStartOf="@+id/add_time_task_map_spinner" />
+        app:layout_constraintBottom_toTopOf="@+id/add_origin_task_map_spinner"
+        app:layout_constraintStart_toStartOf="@+id/add_origin_task_map_spinner" />
 
     <TextView
         android:id="@+id/textView20"
@@ -121,7 +121,7 @@
         app:layout_constraintStart_toStartOf="@+id/add_time_task_mode_spinner" />
 
     <Spinner
-        android:id="@+id/add_time_task_map_spinner"
+        android:id="@+id/add_origin_task_map_spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:theme="@style/ThemeSpinner"
         android:gravity="center"
@@ -143,9 +143,9 @@
         android:layout_marginEnd="@dimen/add_time_task_spinner_row_margin"
         android:layout_centerVertical="true"
         app:srcCompat="@mipmap/login_jiantou4_21"
-        app:layout_constraintBottom_toBottomOf="@id/add_time_task_map_spinner"
-        app:layout_constraintEnd_toEndOf="@id/add_time_task_map_spinner"
-        app:layout_constraintTop_toTopOf="@id/add_time_task_map_spinner" />
+        app:layout_constraintBottom_toBottomOf="@id/add_origin_task_map_spinner"
+        app:layout_constraintEnd_toEndOf="@id/add_origin_task_map_spinner"
+        app:layout_constraintTop_toTopOf="@id/add_origin_task_map_spinner" />
 
     <Spinner
         android:id="@+id/add_time_task_mode_spinner"
@@ -158,10 +158,10 @@
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintEnd_toEndOf="@+id/add_origin_task_map_spinner"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/add_time_task_map_spinner"
-        app:layout_constraintTop_toBottomOf="@+id/add_time_task_map_spinner"/>
+        app:layout_constraintStart_toStartOf="@+id/add_origin_task_map_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/add_origin_task_map_spinner"/>
 
     <ImageView
         android:id="@+id/mode_spinner_arrow"
@@ -196,7 +196,7 @@
         android:background="@drawable/selector_for_custom_spinner"
         android:layout_width="@dimen/add_new_task_width"
         android:layout_height="@dimen/add_new_task_height"
-        app:layout_constraintBottom_toBottomOf="@+id/add_time_task_map_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/add_origin_task_map_spinner"
         app:layout_constraintEnd_toEndOf="@+id/add_time_task_date_spinner"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/add_time_task_date_spinner" />

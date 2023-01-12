@@ -17,7 +17,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
         sql="CREATE TABLE IF NOT EXISTS map(id integer primary key autoincrement,name varchar(20),time varchar(20),width integer,height integer, md5 varchar(32))";
         db.execSQL(sql);
-        sql="CREATE TABLE IF NOT EXISTS time_task(id integer primary key autoincrement,task_name varchar(20),time varchar(20),date varchar(20),map_name varchar(20),loop integer)";
+        sql="CREATE TABLE IF NOT EXISTS time_task(id integer primary key autoincrement,origin_task_name varchar(20),origin_task_id integer,time varchar(20),date varchar(20),map_name varchar(20),loop integer, mode varchar(20))";
         db.execSQL(sql);
         sql="CREATE TABLE IF NOT EXISTS manual_path(id integer primary key autoincrement,name varchar(20),map_id integer,point blob)";
         db.execSQL(sql);

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.qmuiteam.qmui.layout.QMUILinearLayout
         android:id="@+id/return_ll"
         android:layout_marginTop="@dimen/return_margin_top"
         android:layout_width="wrap_content"
@@ -16,23 +16,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/return_arrows_width"
             android:layout_height="@dimen/return_arrows_height"
             android:layout_marginLeft="100dp"
             android:scaleType="fitXY"
             android:src="@mipmap/choosetask_jiantouzuo4_21" />
 
-        <TextView
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/return_arrow_text_margin"
             android:text="定时任务"
             android:textColor="#ff02fde8"
             android:textSize="@dimen/return_text_size" />
-    </LinearLayout>
+    </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
-    <LinearLayout
+    <com.qmuiteam.qmui.layout.QMUILinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,19 +40,19 @@
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/listview"
-        app:layout_constraintStart_toStartOf="@+id/listview"
+        app:layout_constraintEnd_toEndOf="@+id/qlv_task"
+        app:layout_constraintStart_toStartOf="@+id/qlv_task"
         app:layout_constraintTop_toBottomOf="@+id/return_ll"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="任务名称"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
-        <TextView
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="226dp"
@@ -60,7 +60,7 @@
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
-        <TextView
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="131dp"
@@ -68,7 +68,7 @@
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
-        <TextView
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="52dp"
@@ -76,17 +76,17 @@
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
-        <TextView
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="52dp"
             android:text="操作"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
-    </LinearLayout>
+    </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
-    <ListView
-        android:id="@+id/listview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/qlv_task"
         android:layout_width="1000dp"
         android:layout_height="450dp"
         android:background="@drawable/tasks_report_text_shape"
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.1" />
 
-    <TextView
+    <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
         android:id="@+id/new_task_bt"
         android:layout_width="150dp"
         android:layout_height="60dp"
@@ -108,10 +108,10 @@
         android:text="新建任务"
         android:textSize="24sp"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/listview"
-        app:layout_constraintTop_toBottomOf="@+id/listview" />
+        app:layout_constraintEnd_toEndOf="@+id/qlv_task"
+        app:layout_constraintTop_toBottomOf="@+id/qlv_task" />
 
-    <TextView
+    <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
         android:id="@+id/new_time_task_bt"
         android:layout_width="200dp"
         android:layout_height="60dp"
@@ -122,7 +122,7 @@
         android:text="新建定时任务"
         android:textSize="24sp"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/listview"
-        app:layout_constraintTop_toBottomOf="@+id/listview" />
+        app:layout_constraintEnd_toEndOf="@+id/qlv_task"
+        app:layout_constraintTop_toBottomOf="@+id/qlv_task" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,5 @@ public class AddNewTaskFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
-
-
     }
 }

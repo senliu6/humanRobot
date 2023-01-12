@@ -50,7 +50,7 @@ public class MoreTaskFragment extends Fragment {
 
         listView = view.findViewById(R.id.more_task_lv);
         moreTaskList = new ArrayList<>();
-        for (ManageTaskDB.TaskList x :
+        for (ManageTaskDB.TaskItemList x :
                 ManageTaskDB.taskLists) {
             moreTaskList.add(new MoreTaskAdapter.MoreTaskList(x.ID, x.taskName, 1, getString(R.string.mode_none)));
         }

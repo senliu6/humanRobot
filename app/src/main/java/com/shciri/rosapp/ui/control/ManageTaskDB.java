@@ -9,10 +9,12 @@ import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.ui.datamanagement.DataManagePathInfoFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManageTaskDB {
 
-    public static ArrayList<TaskList> taskLists;
+    public static ArrayList<TaskItemList> taskLists;
+    public static List<String> taskNameList;
     public static int currentTaskIndex;
 
     private final Gson gson = new Gson();
@@ -20,6 +22,7 @@ public class ManageTaskDB {
     public void queryTask() {
         Cursor cursor = RCApplication.db.query("task",null, "map_id=?", new String[]{Integer.toString(RosData.currentMapID)}, null, null, null);
         taskLists = new ArrayList<>();
+        taskNameList = new ArrayList<>();
         if(cursor.getCount() > 0)
         {
             while(cursor.moveToNext()){
@@ -27,20 +30,21 @@ public class ManageTaskDB {
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
                 @SuppressLint("Range") String pathId = cursor.getString(cursor.getColumnIndex("path_id"));
                 @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("date_created"));
-                taskLists.add(new TaskList(id, name, gson.fromJson(pathId, int.class), date));
+                taskLists.add(new TaskItemList(id, name, gson.fromJson(pathId, int.class), date));
+                taskNameList.add(name);
             }
         }
         cursor.close();
     }
 
-    public static class TaskList {
+    public static class TaskItemList {
         public int ID;
         public String taskName;
         public int pathID;
         public String dateCreated;
         public String mode;
 
-        public TaskList(int id, String name, int pathID, String dateCreated){
+        public TaskItemList(int id, String name, int pathID, String dateCreated){
             this.ID = id;
             this.taskName = name;
             this.pathID = pathID;

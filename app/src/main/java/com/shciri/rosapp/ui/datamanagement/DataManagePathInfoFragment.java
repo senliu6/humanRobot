@@ -402,7 +402,7 @@ public class DataManagePathInfoFragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        for (ManageTaskDB.TaskList x: ManageTaskDB.taskLists){
+                        for (ManageTaskDB.TaskItemList x: ManageTaskDB.taskLists){
                             if(x.pathID == pathListTitle.ID) {
                                 RCApplication.db.delete("task","path_id=?", new String[]{Integer.toString(pathListTitle.ID)});
                             }

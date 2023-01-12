@@ -1,16 +1,12 @@
 package com.shciri.rosapp.ui.taskshistory;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.mydata.TaskHistoryAdapter;
-import com.shciri.rosapp.ui.datamanagement.DataManagePathInfoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
