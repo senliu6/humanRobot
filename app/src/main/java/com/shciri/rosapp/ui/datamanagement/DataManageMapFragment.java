@@ -97,7 +97,6 @@ public class DataManageMapFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
-
         view.findViewById(R.id.startEraseMapTv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

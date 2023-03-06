@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         //getBaseContext().deleteDatabase("test");
         DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,9); //如果修改db的表内容，则需要在此提高db的version
         RCApplication.db = dbOpenHelper.getWritableDatabase();
@@ -246,7 +247,8 @@ public class MainActivity extends AppCompatActivity {
                 if(RosInit.isConnect || RosInit.offLineMode) {
                     return;
                 }
-                ipTv.setText(RCApplication.rosIP);
+//                if(ipTv != null)
+//                    ipTv.setText(RCApplication.rosIP);
                 ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
                 ((RCApplication)getApplication()).setRosClient(client);
 

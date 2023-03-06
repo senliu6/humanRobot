@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center"
+        android:weightSum="7"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/qlv_task"
@@ -46,41 +47,65 @@
         app:layout_constraintVertical_bias="0.0">
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="任务名称"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="源任务名称"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="226dp"
-            android:text="时间"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="源任务ID"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="131dp"
-            android:text="重复"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="时间点"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="52dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="日期"
+            android:textColor="#ff02a496"
+            android:textSize="20sp" />
+
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
             android:text="循环次数"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="52dp"
-            android:text="操作"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="模式"
+            android:textColor="#ff02a496"
+            android:textSize="20sp" />
+
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="删除任务"
             android:textColor="#ff02a496"
             android:textSize="20sp" />
     </com.qmuiteam.qmui.layout.QMUILinearLayout>

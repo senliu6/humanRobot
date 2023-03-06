@@ -6,15 +6,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.dmros.client.RosInit;
-import com.shciri.rosapp.ui.control.ManageTaskDB;
-import com.shciri.rosapp.ui.myview.StatusBarView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class DBUtils {
 
@@ -43,14 +35,16 @@ public class DBUtils {
         RCApplication.db.update("info",values,"my_server_id=?", new String[]{Integer.toString(id)});
     }
 
-    public void DBInsertTimeTask(String taskName, String time, String date, String mapName, String loop) {
+    public int DBInsertTimeTask(String originTaskName, Integer originTaskID, String time, String date, Integer mapID, String loop, String mode) {
         ContentValues values = new ContentValues();
-        values.put("task_name",taskName);
+        values.put("origin_task_name",originTaskName);
+        values.put("origin_task_id",originTaskID);
         values.put("time",time);
         values.put("date",date);
-        values.put("map_name",mapName);
+        values.put("map_id",mapID);
         values.put("loop",Integer.valueOf(loop));
-        RCApplication.db.insert("time_task",null,values);
+        values.put("mode",mode);
+        return (int)RCApplication.db.insert("time_task",null,values);
     }
 
     public int DBQueryInfo() {
@@ -77,5 +71,9 @@ public class DBUtils {
 
     public void deletePathOfMapID(int map_id) {
         RCApplication.db.delete("manual_path","map_id=?", new String[]{Integer.toString(map_id)});
+    }
+
+    public void deleteTimeTask(int id) {
+        RCApplication.db.delete("time_task","id=?", new String[]{Integer.toString(id)});
     }
 }

@@ -1,13 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:gravity="center"
+    android:weightSum="7">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="element_text"/>
+        android:id="@+id/tv_origin_task_name"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="execute_task_1"
+        android:textColor="#ff02fde8"
+        android:textSize="20sp" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_origin_task_id"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="1"
+        android:textColor="#ff02fde8"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="2:00"
+        android:textColor="#ff01ff7f"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="每天"
+        android:textColor="#ff02fde8"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_loop"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="1"
+        android:textColor="#ff02fde8"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_mode"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="消杀与空气净化"
+        android:textColor="#ff01ff7f"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_delete"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="删除"
+        android:textColor="@color/red"
+        android:textSize="20sp" />
+</LinearLayout>

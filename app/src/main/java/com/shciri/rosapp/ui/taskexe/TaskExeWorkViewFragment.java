@@ -66,8 +66,11 @@ public class TaskExeWorkViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(start_pause_btn.isActivated()){
-                    if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("原地空气净化")){
+                    if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("同时开启")){
                         RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 0);
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 0);
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 0);
                         Log.d("adwApiManager", "/sys/class/gpio/gpio39/value = " + 1);
                     }else{
                         if(RosService.coverageMapService != null)
@@ -76,8 +79,11 @@ public class TaskExeWorkViewFragment extends Fragment {
                     start_pause_btn.setActivated(false);
                     exeTime += System.currentTimeMillis() - startMills;
                 }else{
-                    if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("原地空气净化")){
+                    if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("同时开启")){
                         RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 1);
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 1);
+                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 1);
                     }else {
                         if (RosService.coverageMapService != null)
                             RosService.coverageMapService.call(new RobotControlRequest(2));
@@ -98,8 +104,11 @@ public class TaskExeWorkViewFragment extends Fragment {
         stop_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("原地空气净化")){
-                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
+                if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("同时开启")){
+                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
+                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 0);
+                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 0);
+                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 0);
                 }else {
                     if (RosService.coverageMapService != null)
                         RosService.coverageMapService.call(new RobotControlRequest(4));

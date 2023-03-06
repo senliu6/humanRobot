@@ -32,6 +32,7 @@ import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
 import com.shciri.rosapp.ui.myview.BatteryView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
+import com.shciri.rosapp.utils.AlarmManagerUtils;
 import com.shciri.rosapp.utils.MyBroadCastReceiver;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,6 +61,8 @@ public class TaskControlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_control);
 
         EventBus.getDefault().register(this);
+
+        AlarmManagerUtils.getInstance(this);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         findViewById(R.id.drawer_close_ll).setOnClickListener(new View.OnClickListener() {
@@ -90,20 +93,8 @@ public class TaskControlActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
+        filter.addAction(AlarmManagerUtils.ACTION_PERIOD_CLOCK);
         registerReceiver(myTimeReceiver,filter);
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (true) {
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
 
         if(RosInit.isConnect)
             statusBarView.setConnectStatus(true);
@@ -259,14 +250,14 @@ public class TaskControlActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         });
 
-        findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-                navController.navigate(R.id.manageDataFragment);
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
-        });
+//        findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+//                navController.navigate(R.id.manageDataFragment);
+//                drawerLayout.closeDrawer(GravityCompat.START);
+//            }
+//        });
     }
 
     private void backPressedSet() {

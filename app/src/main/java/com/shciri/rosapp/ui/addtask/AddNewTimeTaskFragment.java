@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.ui.control.ChooseTaskFragment;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
@@ -46,12 +48,9 @@ public class AddNewTimeTaskFragment extends Fragment {
     private Spinner originTaskSpinner;
     private Spinner modeSpinner;
     private TextView timeView;
-    private TextView cancelBtn;
     private TextView confirmBtn;
 
     private String date;
-
-    private AlarmManagerUtils alarmManagerUtils;
 
     @Nullable
     @Override
@@ -96,8 +95,6 @@ public class AddNewTimeTaskFragment extends Fragment {
         timePickerDialog = new TimePickerDialog(getContext(), AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Toast.makeText(getContext(), hourOfDay + ":" + minute,
-                        Toast.LENGTH_LONG).show();
                 timeView.setText((String)(" "+hourOfDay+":"+minute));
                 hourOfD = hourOfDay;
                 min = minute;
@@ -133,23 +130,24 @@ public class AddNewTimeTaskFragment extends Fragment {
         modeSpinner = view.findViewById(R.id.add_time_task_mode_spinner);
         modeSpinner.setAdapter(modeAdapter);
 
-        alarmManagerUtils = AlarmManagerUtils.getInstance(getContext());
-        alarmManagerUtils.createGetUpAlarmManager();
-
         confirmBtn = view.findViewById(R.id.add_time_task_confirm_btn);
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditTextDialogBuilder(view);
+                DialogBuilder(view);
+//                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
+//                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 1);
+//                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 1);
+//                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 1);
             }
         });
     }
 
-    private void EditTextDialogBuilder(View view) {
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(getContext());
-        builder.setTitle("定时任务名称")
-                .setPlaceholder("在此输入任务名称")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
+    private void DialogBuilder(View view) {
+         final QMUIDialog.CheckBoxMessageDialogBuilder builder = new QMUIDialog.CheckBoxMessageDialogBuilder(getContext());
+         builder.setMessage("新建定时任务")
+                .setTitle("是否开启消杀灯与空气净化")
+                 .setChecked(true)
                 .addAction("取消", new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
@@ -160,27 +158,26 @@ public class AddNewTimeTaskFragment extends Fragment {
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
-                        CharSequence text = builder.getEditText().getText();
-                        if (text != null && text.length() > 0) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set(Calendar.HOUR_OF_DAY, hourOfD);
-                            calendar.set(Calendar.MINUTE, min);
-                            calendar.set(Calendar.SECOND, 0);
-                            alarmManagerUtils.getUpAlarmManagerStartWork(calendar);
-                            Toast.makeText(getContext(),"设置成功: "+hourOfD+":"+min,Toast.LENGTH_SHORT).show();
 
-                            DBUtils.getInstance().DBInsertTimeTask(
-                                    text.toString(),
-                                    String.format("%02d", hourOfD)+":"+String.format("%02d", min),
-                                    dateSpinner.getSelectedItem().toString(),
-                                    "TEST",//originTaskSpinner.getSelectedItem().toString(),
-                                    loopSpinner.getSelectedItem().toString());
+                        int keyID = DBUtils.getInstance().DBInsertTimeTask(
+                                originTaskSpinner.getSelectedItem().toString(),
+                                ManageTaskDB.taskLists.get(ManageTaskDB.taskNameList.indexOf(originTaskSpinner.getSelectedItem().toString())).ID,
+                                String.format("%02d", hourOfD)+":"+String.format("%02d", min),
+                                dateSpinner.getSelectedItem().toString(),
+                                RosData.currentMapID,
+                                loopSpinner.getSelectedItem().toString(),
+                                modeSpinner.getSelectedItem().toString());
 
-                            dialog.dismiss();
-                            Navigation.findNavController(view).navigateUp();
-                        } else {
-                            Toast.makeText(getContext(), "请输入定时任务名称", Toast.LENGTH_SHORT).show();
-                        }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfD);
+                        calendar.set(Calendar.MINUTE, min);
+                        calendar.set(Calendar.SECOND, 0);
+                        AlarmManagerUtils.getInstance(null).createPeriodAlarmManager(calendar, keyID, builder.isChecked());
+                        Toast.makeText(getContext(),"设置成功: "+hourOfD+":"+min,Toast.LENGTH_SHORT).show();
+                        Log.d("Alarm", "isChecked= " + builder.isChecked());
+
+                        dialog.dismiss();
+                        Navigation.findNavController(view).navigateUp();
                     }
                 })
                 .show();

@@ -41,7 +41,7 @@ public class TaskBtView extends ConstraintLayout{
     public View detailPage;
     ImageView mEditIv;
     ImageView pullIv;
-    private String[] starArray = {"空跑", "消杀","原地空气净化", "空气净化"};
+    private String[] starArray = {"空跑", "消杀", "空气净化", "同时开启"};
     ArrayAdapter<String> starAdapter;
 
     public TaskBtView(Context context) {
