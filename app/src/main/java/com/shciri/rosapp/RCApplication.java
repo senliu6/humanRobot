@@ -10,11 +10,13 @@ import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.BatteryPercentChangeEvent;
+import com.shciri.rosapp.utils.UartVCP;
 
 import org.greenrobot.eventbus.EventBus;
 
 import cn.wch.ch34xuartdriver.CH34xUARTDriver;
 import src.com.jilk.ros.message.custom.EmergencyButton;
+
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class RCApplication extends Application {
@@ -25,10 +27,12 @@ public class RCApplication extends Application {
     public static SQLiteDatabase db;
     public static String Operator;
     public static byte localBattery;
+    public static UartVCP uartVCP;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        uartVCP = new UartVCP();
         adwApiManager = new ADWApiManager(this);
         RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
         RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 0);

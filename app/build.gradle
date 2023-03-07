@@ -86,6 +86,8 @@ dependencies {
     implementation 'log4j:log4j:1.2.17'
     /* 功能 */
     implementation 'com.squareup.okhttp3:okhttp:3.5.0'
+    implementation 'io.github.xmaihh:serialport:2.1.1'
+    implementation 'com.github.mik3y:usb-serial-for-android:3.4.6'
 
     /* 控件 */
     implementation 'devlight.io:navigationtabbar:1.2.5'
