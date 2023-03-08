@@ -38,22 +38,24 @@ public class AlarmManagerUtils {
         return instance;
     }
 
-    public void createPeriodAlarmManager(Calendar calendar, int alarmID, boolean fun_switch) {
+    public void createPeriodAlarmManager(Calendar calendar, int alarmID, boolean fun_switch, boolean led_switch) {
 //        Intent intent = new Intent(context, MyBroadCastReceiver.class);
 //        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         Intent intent = new Intent();
         intent.setAction(ACTION_PERIOD_CLOCK);
         intent.putExtra("alarmID", alarmID); //此处闹钟id = 数据库id, 如果有多个周期组闹钟, 就可以代表唯一性,方便覆盖或者关闭闹钟
         intent.putExtra("fun_switch", fun_switch);
+        intent.putExtra("led_switch", led_switch);
         intent.putExtra("week", calendar.get(Calendar.DAY_OF_WEEK));
         intent.putExtra("hour", calendar.get(Calendar.HOUR_OF_DAY));
         intent.putExtra("minute", calendar.get(Calendar.MINUTE));
+        intent.putExtra("second", 1);
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         //这里也是关键,超过闹钟时间了,代表下周要触发,加7天
         if (System.currentTimeMillis() > calendar.getTimeInMillis()) {
 
         }
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     /**

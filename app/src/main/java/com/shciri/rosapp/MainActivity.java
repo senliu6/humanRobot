@@ -3,8 +3,6 @@ package com.shciri.rosapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
-
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,10 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.hoho.android.usbserial.driver.UsbSerialDriver;
-import com.hoho.android.usbserial.driver.UsbSerialPort;
-import com.hoho.android.usbserial.driver.UsbSerialProber;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
@@ -42,28 +35,11 @@ import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.myview.LoginKeyboardView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
-import com.shciri.rosapp.utils.UartVCP;
-import com.shciri.rosapp.utils.protocol.RequestIPC;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-
-import android_serialport_api.SerialPort;
-import android_serialport_api.SerialPortFinder;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
-import tp.xmaihh.serialport.SerialHelper;
-import tp.xmaihh.serialport.bean.ComBean;
 
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbEndpoint;
-import android.hardware.usb.UsbInterface;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -110,66 +86,8 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeReceiver,filter);
 
-        UsbDevice device = null;
-        int stm32VID = 0x0483, stm32PID = 0x5740;
-//        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-//        HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
-//        Log.e(TAG, "get device list  = " + deviceList.size());
-//        for (UsbDevice usbDevice : deviceList.values()) {
-//            device = usbDevice;
-//            Log.d(TAG, "vid: " + device.getVendorId() + "\t pid: " + device.getProductId());
-//            if (device.getVendorId() == stm32VID && device.getProductId() == stm32PID) {
-//                break;
-//            }
-//        }
-//        if(device!=null && device.getVendorId()==stm32VID && device.getProductId()==stm32PID){
-//            getUsbInfo(device);
-//        }
-//        else{
-//            Log.d(TAG,"未发现支持设备");
-//        }
-
-        // Find all available drivers from attached devices.
         UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
-        if (availableDrivers.isEmpty()) {
-            Log.d(TAG,"Don't find available drivers");
-        }
-        for (final UsbSerialDriver driver : availableDrivers) {
-            UsbSerialPort ports = driver.getPorts().get(0);
-            Log.d(TAG, ports.toString());
-        }
-
-
-        //RCApplication.uartVCP.InitUartVCP();
-    }
-
-    /**
-     * 获得授权USB的基本信息
-     * 1、USB接口，一般是第一个
-     * 2、USB设备的输入输出端
-     * */
-    private void getUsbInfo(UsbDevice usbDevice){
-        StringBuilder sb = new StringBuilder();
-        if(Build.VERSION.SDK_INT >= 23){
-            sb.append(String.format("VID:0x%04X  PID:0x%04X  ManuFN:%s  PN:%s V:%s; DeviceName:%s",
-                    usbDevice.getVendorId(),
-                    usbDevice.getProductId(),
-                    usbDevice.getManufacturerName(),
-                    usbDevice.getProductName(),
-                    usbDevice.getVersion(),
-                    usbDevice.getDeviceName()
-            ));
-        }
-        else {
-            sb.append(String.format("VID:%04X  PID:%04X  ManuFN:%s  PN:%s",
-                    usbDevice.getVendorId(),
-                    usbDevice.getProductId(),
-                    usbDevice.getManufacturerName(),
-                    usbDevice.getProductName()
-            ));
-        }
-        Log.d(TAG, "Find my STM32 USB Serial Device ~ " + sb.toString());
+        RCApplication.uartVCP.InitUartVCP(manager);
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -245,24 +163,22 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                byte[] data = RequestIPC.fanControlRequest((byte)1);
-                RCApplication.uartVCP.sendData(data);
-//                if (password.equals("1")) {
-//                    if(!RosInit.isConnect) {
-//                        if(!alertDialog.isShowing()){
-//                            alertDialog.show();
-//                        }
-//                    }else{
-//                        layConnectingLoading.setVisibility(View.VISIBLE);
-//                        maskView.setVisibility(View.VISIBLE);
-//                        Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
-//                        startActivity(intent);
-//                    }
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "密码错误,请重试!", Toast.LENGTH_SHORT).show();
-//                    password = "";
-//                    passwordEdit.setText(password);
-//                }
+                if (password.equals("1")) {
+                    if(!RosInit.isConnect) {
+                        if(!alertDialog.isShowing()){
+                            alertDialog.show();
+                        }
+                    }else{
+                        layConnectingLoading.setVisibility(View.VISIBLE);
+                        maskView.setVisibility(View.VISIBLE);
+                        Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "密码错误,请重试!", Toast.LENGTH_SHORT).show();
+                    password = "";
+                    passwordEdit.setText(password);
+                }
             }
         });
 

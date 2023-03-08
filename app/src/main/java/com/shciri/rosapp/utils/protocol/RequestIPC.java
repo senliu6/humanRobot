@@ -25,7 +25,7 @@ public class RequestIPC {
         private byte[] struct = new byte[thisLength];
 
         public byte[] setRequest(byte setOpen){
-            handlerProcess(struct, thisLength);
+            handlerProcess(struct, thisLength, Unpack.FAN_CONTROL_REQUEST_CMD);
             String TAG = "FanControlRequest";
             Log.d(TAG, "length = " + thisLength);
             struct[11] = open = setOpen;
@@ -37,4 +37,30 @@ public class RequestIPC {
         FanControlRequest request = new FanControlRequest();
         return request.setRequest(setOpen);
     }
+
+    public static class DisinfectionLedControlRequest extends HandlerInit {
+        public byte open3w;
+        public byte openP6w;
+        public byte openOrnament;
+
+        private final int thisLength = getMyLength(getClass());
+        private byte[] struct = new byte[thisLength];
+
+        public byte[] setRequest(byte setOpen3w, byte setOpenP6w, byte setOpenOrnament){
+            handlerProcess(struct, thisLength, Unpack.DIS_LED_CONTROL_REQUEST_CMD);
+            String TAG = "FanControlRequest";
+            Log.d(TAG, "length = " + thisLength);
+            struct[11] = open3w = setOpen3w;
+            struct[12] = openP6w = setOpenP6w;
+            struct[13] = openOrnament = setOpenOrnament;
+            CRC16.formatFrameBuffer(struct);
+            return  struct;
+        }
+    }
+    public static byte[] disinfectionLedControlRequest(byte setOpen3w, byte setOpenP6w, byte setOpenOrnament) {
+        DisinfectionLedControlRequest request = new DisinfectionLedControlRequest();
+        return request.setRequest(setOpen3w, setOpenP6w, setOpenOrnament);
+    }
+
+
 }

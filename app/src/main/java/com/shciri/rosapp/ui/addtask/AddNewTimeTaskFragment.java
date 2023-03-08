@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -144,10 +145,15 @@ public class AddNewTimeTaskFragment extends Fragment {
     }
 
     private void DialogBuilder(View view) {
-         final QMUIDialog.CheckBoxMessageDialogBuilder builder = new QMUIDialog.CheckBoxMessageDialogBuilder(getContext());
-         builder.setMessage("新建定时任务")
-                .setTitle("是否开启消杀灯与空气净化")
-                 .setChecked(true)
+         final QMUIDialog.MultiCheckableDialogBuilder  builder = new QMUIDialog.MultiCheckableDialogBuilder(getContext());
+         final  String items []=new String[]{"开启空气净化","开启消杀LED"};
+         builder.setTitle("是否开启消杀灯与空气净化")
+                 .addItems(items, new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialog, int which) {
+
+                     }
+                 }).setCheckedItems(new int[]{0})
                 .addAction("取消", new QMUIDialogAction.ActionListener() {
                     @Override
                     public void onClick(QMUIDialog dialog, int index) {
@@ -172,9 +178,9 @@ public class AddNewTimeTaskFragment extends Fragment {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfD);
                         calendar.set(Calendar.MINUTE, min);
                         calendar.set(Calendar.SECOND, 0);
-                        AlarmManagerUtils.getInstance(null).createPeriodAlarmManager(calendar, keyID, builder.isChecked());
+                        AlarmManagerUtils.getInstance(null).createPeriodAlarmManager(calendar, keyID, builder.getCheckedItemRecord().get(0), builder.getCheckedItemRecord().get(1));
                         Toast.makeText(getContext(),"设置成功: "+hourOfD+":"+min,Toast.LENGTH_SHORT).show();
-                        Log.d("Alarm", "isChecked= " + builder.isChecked());
+                        Log.d("Alarm", "fan_switch = " + builder.getCheckedItemRecord().get(0) + "   led_switch = " + builder.getCheckedItemRecord().get(1));
 
                         dialog.dismiss();
                         Navigation.findNavController(view).navigateUp();

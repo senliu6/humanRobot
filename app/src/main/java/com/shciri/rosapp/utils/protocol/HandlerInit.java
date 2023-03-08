@@ -18,10 +18,10 @@ public abstract class HandlerInit {
         header.cmd_set = Unpack.IPC_CMD_SET;
     }
 
-    public void handlerProcess(byte[] struct, int cmdLength) {
+    public void handlerProcess(byte[] struct, int cmdLength, byte cmdID) {
         header.ver_len = (short)(Unpack.FRAME_PROTOCOL_V1 << 10 | cmdLength);
         /* 具体的指令ID */
-        header.cmd_id = Unpack.FAN_CONTROL_REQUEST_CMD;
+        header.cmd_id = cmdID;
         HeaderV1.headerTransfer(header, struct);
     }
 }

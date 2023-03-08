@@ -21,6 +21,7 @@ import com.shciri.rosapp.dmros.client.RosService;
 import com.shciri.rosapp.server.ConnectServer;
 import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
+import com.shciri.rosapp.utils.protocol.RequestIPC;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,11 +68,10 @@ public class TaskExeWorkViewFragment extends Fragment {
             public void onClick(View v) {
                 if(start_pause_btn.isActivated()){
                     if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("同时开启")){
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 0);
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 0);
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 0);
-                        Log.d("adwApiManager", "/sys/class/gpio/gpio39/value = " + 1);
+                        byte[] data = RequestIPC.fanControlRequest((byte)0);
+                        RCApplication.uartVCP.sendData(data);
+                        data = RequestIPC.disinfectionLedControlRequest((byte)0,(byte)0,(byte)0);
+                        RCApplication.uartVCP.sendData(data);
                     }else{
                         if(RosService.coverageMapService != null)
                             RosService.coverageMapService.call(new RobotControlRequest(3));
@@ -80,10 +80,11 @@ public class TaskExeWorkViewFragment extends Fragment {
                     exeTime += System.currentTimeMillis() - startMills;
                 }else{
                     if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("同时开启")){
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 1);
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 1);
-                        RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 1);
+                        Log.d("adwApiManager", " start exe task ");
+                        byte[] data = RequestIPC.fanControlRequest((byte)1);
+                        RCApplication.uartVCP.sendData(data);
+                        data = RequestIPC.disinfectionLedControlRequest((byte)1,(byte)1,(byte)1);
+                        RCApplication.uartVCP.sendData(data);
                     }else {
                         if (RosService.coverageMapService != null)
                             RosService.coverageMapService.call(new RobotControlRequest(2));
@@ -105,10 +106,6 @@ public class TaskExeWorkViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).mode.equals("同时开启")){
-                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
-                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 0);
-                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 0);
-                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 0);
                 }else {
                     if (RosService.coverageMapService != null)
                         RosService.coverageMapService.call(new RobotControlRequest(4));
