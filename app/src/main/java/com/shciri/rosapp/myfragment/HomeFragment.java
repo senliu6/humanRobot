@@ -74,7 +74,6 @@ public class HomeFragment extends Fragment{
         rosMapView = root.findViewById(R.id.ros_map);
 //        ledSwitch = root.findViewById(R.id.led_switch);
 
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RosData.MAP);
         intentFilter.addAction(RosData.TF);

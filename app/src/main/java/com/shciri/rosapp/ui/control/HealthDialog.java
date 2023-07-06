@@ -8,18 +8,20 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.util.Log;
 
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.AirQualityEvent;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.ui.myview.AirStatusView;
+import com.shciri.rosapp.ui.myview.DmSwitchView;
+import com.shciri.rosapp.utils.protocol.RequestIPC;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import src.com.jilk.ros.message.PoseStamped;
 
 public class HealthDialog extends Dialog {
 
@@ -43,6 +45,10 @@ public class HealthDialog extends Dialog {
     private AirStatusView TemperatureView;
     private AirStatusView HumidityView;
 
+    private DmSwitchView ornamental_led_sv;
+    private DmSwitchView uvc_led_sv;
+    private DmSwitchView cooling_fan_sv;
+
     /**
      * @param context 上下文
      */
@@ -63,6 +69,49 @@ public class HealthDialog extends Dialog {
         PM10View = findViewById(R.id.PM10_status_view);
         TemperatureView = findViewById(R.id.T_status_view);
         HumidityView = findViewById(R.id.humidity_status_view);
+
+        ornamental_led_sv = findViewById(R.id.ornamental_led_sv);
+        ornamental_led_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
+            @Override
+            public void onClick(boolean press) {
+                Log.d("ornamental_led", String.valueOf(press));
+                byte[] data;
+                if(press){
+                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 1);
+                }else{
+                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
+                }
+                RCApplication.uartVCP.sendData(data);
+            }
+        });
+
+        uvc_led_sv = findViewById(R.id.uvc_led_sv);
+        uvc_led_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
+            @Override
+            public void onClick(boolean press) {
+                byte[] data;
+                if(press){
+                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 1, (byte) 1);
+                }else{
+                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
+                }
+                RCApplication.uartVCP.sendData(data);
+            }
+        });
+
+        cooling_fan_sv = findViewById(R.id.cooling_fan_sv);
+        cooling_fan_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
+            @Override
+            public void onClick(boolean press) {
+                byte[] data;
+                if(press){
+                    data = RequestIPC.fanControlRequest((byte) 50);
+                }else{
+                    data = RequestIPC.fanControlRequest((byte) 0);
+                }
+                RCApplication.uartVCP.sendData(data);
+            }
+        });
 
         EventBus.getDefault().register(this);
         AirQualityEvent.readyPublish = true;

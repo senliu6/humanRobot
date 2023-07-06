@@ -34,6 +34,8 @@ import com.shciri.rosapp.ui.myview.BatteryView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
 import com.shciri.rosapp.utils.AlarmManagerUtils;
 import com.shciri.rosapp.utils.MyBroadCastReceiver;
+import com.shciri.rosapp.utils.protocol.ReplyIPC;
+import com.shciri.rosapp.utils.protocol.RequestIPC;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,8 +54,6 @@ public class TaskControlActivity extends AppCompatActivity {
 
     public static MediaPlayer mediaPlayer;
     private StatusBarView statusBarView;
-    private BatteryView batteryView;
-    private TextView batteryTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,8 @@ public class TaskControlActivity extends AppCompatActivity {
             statusBarView.setConnectStatus(true);
         else
             statusBarView.setConnectStatus(false);
+
+        statusBarView.setBatteryPercent(RCApplication.replyIPC.batteryReply.getCapacity_percent());
     }
 
     private final BroadcastReceiver myTimeReceiver = new MyBroadCastReceiver() {
@@ -115,6 +117,12 @@ public class TaskControlActivity extends AppCompatActivity {
                     statusBarView.setConnectStatus(true);
                 else
                     statusBarView.setConnectStatus(false);
+
+                byte[] data = RequestIPC.batteryRequest();
+                RCApplication.uartVCP.sendData(data);
+                byte[] response = new byte[100];
+                int len = RCApplication.uartVCP.readData(response);
+                RCApplication.replyIPC.ipc_put_rx_byte(response, len);
             }
         }
     };
@@ -203,9 +211,8 @@ public class TaskControlActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(BatteryEvent event) {
-        batteryView.setProgress(event.percent);
-        batteryTv.setText(Integer.toString(event.percent)+"%");
+    public void onEvent(ReplyIPC.BatteryReply event) {
+        statusBarView.setBatteryPercent(event.getCapacity_percent());
     };
 
     private void windowSet() {

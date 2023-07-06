@@ -205,6 +205,62 @@
             app:layout_constraintBottom_toBottomOf="@+id/health_radar_view"
             app:layout_constraintEnd_toEndOf="@+id/health_radar_view"
             app:layout_constraintStart_toStartOf="@+id/health_radar_view" />
+
+        <TextView
+            android:id="@+id/ornamental_led_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/health_text_status_height"
+            android:text="365nm LED"
+            android:gravity="center"
+            android:textColor="#ff02fde8"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/ornamental_led_sv"
+            app:layout_constraintEnd_toEndOf = "@+id/ornamental_led_sv" />
+        <com.shciri.rosapp.ui.myview.DmSwitchView
+            android:id="@+id/ornamental_led_sv"
+            android:layout_width="169dp"
+            android:layout_height="74dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/ornamental_led_tv"
+            app:layout_constraintStart_toEndOf="@+id/health_camera_view"/>
+
+        <TextView
+            android:id="@+id/uvc_led_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/health_text_status_height"
+            android:text="265nm LED"
+            android:gravity="center"
+            android:textColor="#ff02fde8"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/ornamental_led_sv"
+            app:layout_constraintStart_toStartOf="@+id/uvc_led_sv"
+            app:layout_constraintEnd_toEndOf = "@+id/uvc_led_sv" />
+        <com.shciri.rosapp.ui.myview.DmSwitchView
+            android:id="@+id/uvc_led_sv"
+            android:layout_width="169dp"
+            android:layout_height="74dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/uvc_led_tv"
+            app:layout_constraintStart_toEndOf="@+id/health_camera_view"/>
+
+        <TextView
+            android:id="@+id/cooling_fan_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/health_text_status_height"
+            android:text="散热风扇"
+            android:gravity="center"
+            android:textColor="#ff02fde8"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/uvc_led_sv"
+            app:layout_constraintStart_toStartOf="@+id/cooling_fan_sv"
+            app:layout_constraintEnd_toEndOf = "@+id/cooling_fan_sv" />
+        <com.shciri.rosapp.ui.myview.DmSwitchView
+            android:id="@+id/cooling_fan_sv"
+            android:layout_width="169dp"
+            android:layout_height="74dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/cooling_fan_tv"
+            app:layout_constraintStart_toEndOf="@+id/health_camera_view"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
@@ -212,7 +268,7 @@
         android:layout_marginBottom="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="600dp"
+        android:layout_width="500dp"
         android:layout_height="360dp">
 
         <com.shciri.rosapp.ui.myview.AirStatusView
@@ -273,7 +329,7 @@
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/formaldehyde_status_view"
-            android:layout_width="140dp"
+            android:layout_width="110dp"
             android:layout_height="400dp"
             android:layout_alignParentEnd="true"
             app:titleText="甲醛"

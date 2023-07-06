@@ -11,6 +11,7 @@ import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class UartVCP {
         }
     }
 
-    public void sendData(byte[] data){
+    public void sendData(byte[] data) {
         Log.d(TAG, "data = " + bytesToHexString(data));
         try {
             port.write(data, 100);
@@ -66,6 +67,18 @@ public class UartVCP {
             e.printStackTrace();
         }
     }
+
+    public int readData(byte[] response) {
+        int len = 0;
+        try {
+            len = port.read(response, 100);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "len = " + len + "  response = " + bytesToHexString(Arrays.copyOfRange(response, 0, len)));
+        return len;
+    }
+
 
     public String bytesToHexString(byte[] bArr) {
         StringBuilder sb = new StringBuilder(bArr.length);

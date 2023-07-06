@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.ContentLoadingProgressBar;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ConnectServer;
@@ -35,6 +38,13 @@ import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.myview.LoginKeyboardView;
 import com.shciri.rosapp.ui.myview.StatusBarView;
+import com.shciri.rosapp.utils.protocol.ReplyIPC;
+import com.shciri.rosapp.utils.protocol.RequestIPC;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -86,8 +96,16 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(timeReceiver,filter);
 
+        EventBus.getDefault().register(this);
+
         UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
         RCApplication.uartVCP.InitUartVCP(manager);
+
+        byte[] data = RequestIPC.batteryRequest();
+        RCApplication.uartVCP.sendData(data);
+        byte[] response = new byte[100];
+        int len = RCApplication.uartVCP.readData(response);
+        RCApplication.replyIPC.ipc_put_rx_byte(response, len);
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -98,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 Date date = new Date(System.currentTimeMillis());
                 statusBarView.setTimeView(simpleDateFormat.format(date));
+
+                byte[] data = RequestIPC.batteryRequest();
+                RCApplication.uartVCP.sendData(data);
+                byte[] response = new byte[100];
+                int len = RCApplication.uartVCP.readData(response);
+                RCApplication.replyIPC.ipc_put_rx_byte(response, len);
             }
         }
     };
@@ -209,8 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
         rosInit = new RosInit();
 
-        serverOperation();
-
+//        serverOperation();
     }
 
     private void serverOperation() {
@@ -358,6 +381,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ReplyIPC.BatteryReply event) {
+        statusBarView.setBatteryPercent(event.getCapacity_percent());
+    };
 
     private int getStatusBarHeight(Context baseContext) {
         return 0;

@@ -18,6 +18,7 @@ public class DmSwitchView extends RelativeLayout {
     ImageView shangView;
     ImageView xiaView;
     int ledStatus;
+    private DmSwitchViewListener dmSwitchViewListener;
 
     public DmSwitchView(Context context) {
         super(context);
@@ -38,6 +39,26 @@ public class DmSwitchView extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.view_dm_switch, this, true);
         shangView = (ImageView) findViewById(R.id.shangceng_view);
         xiaView = (ImageView) findViewById(R.id.xiaceng_view);
+        xiaView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(shangView.getX() == 0) {
+                    shangView.setX(110);
+                    dmSwitchViewListener.onClick(true);
+                }else{
+                    shangView.setX(0);
+                    dmSwitchViewListener.onClick(false);
+                }
+            }
+        });
+    }
+
+    public interface DmSwitchViewListener {
+        void onClick(boolean press);
+    }
+
+    public void setDmSwitchListener(DmSwitchViewListener dmSwitchViewListener) {
+        this.dmSwitchViewListener = dmSwitchViewListener;
     }
 
     public void connectLed() {

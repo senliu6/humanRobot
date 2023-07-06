@@ -46,7 +46,7 @@
     <dimen name="health_item_width">145dp</dimen>
     <dimen name="health_item_height">180dp</dimen>
     <dimen name="health_text_status_height">40dp</dimen>
-    <dimen name="air_status_view_width">130dp</dimen>
+    <dimen name="air_status_view_width">110dp</dimen>
     <dimen name="air_status_view_height">165dp</dimen>
     <dimen name="add_time_task_spinner_row_margin">30dp</dimen>
     <dimen name="add_task_spinner_row_margin">30dp</dimen>

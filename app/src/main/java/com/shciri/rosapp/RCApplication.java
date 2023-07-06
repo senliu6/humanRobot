@@ -11,6 +11,7 @@ import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.BatteryPercentChangeEvent;
 import com.shciri.rosapp.utils.UartVCP;
+import com.shciri.rosapp.utils.protocol.ReplyIPC;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,11 +29,13 @@ public class RCApplication extends Application {
     public static String Operator;
     public static byte localBattery;
     public static UartVCP uartVCP;
+    public static ReplyIPC replyIPC;
 
     @Override
     public void onCreate() {
         super.onCreate();
         uartVCP = new UartVCP();
+        replyIPC = new ReplyIPC();
         adwApiManager = new ADWApiManager(this);
         RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 0);
         RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 0);
@@ -45,26 +48,9 @@ public class RCApplication extends Application {
 
         new Thread(() -> {
             while (true) {
-                /*  OUTPUT IO
-                   /sys/class/gpio/gpio39/value
-                   /sys/class/gpio/gpio40/value
-                   /sys/class/gpio/gpio40/value
-                   /sys/class/gpio/gpio41/value
-                 */
-                int l = adwApiManager.GetGpioInputLevel("/sys/devices/virtual/adw/adwdev/adw_human");
-                ///Log.v("RCApplication", Integer.toString(l));
-
-                if(l == 1){
-//                    EmergencyButton emergencyButton = new EmergencyButton();
-//                    emergencyButton.emergency_strike = l == 0;
-//                    RosTopic.emergencyButtonTopic.publish(emergencyButton);
-//                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
-//                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 1);
-//                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 1);
-//                    RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio42/value", 1);
-                }
+                replyIPC.getFullData();
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

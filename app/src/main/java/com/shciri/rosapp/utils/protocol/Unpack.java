@@ -43,4 +43,8 @@ public static final byte IPC_CMD_SET                      =           ((byte)0x0
 public static final byte EMERGENCY_REQUEST_CMD            =           ((byte)0x00);
 public static final byte FAN_CONTROL_REQUEST_CMD          =           ((byte)0x01);
 public static final byte DIS_LED_CONTROL_REQUEST_CMD      =           ((byte)0x02);
+public static final byte ATMOSPHERE_LED_CONTROL_REQUEST_CMD =         ((byte)0x03);
+public static final byte BATTERY_REQUEST_CMD              =           ((byte)0x04);
+public static final byte BATTERY_REPLY_CMD                =           ((byte)0x05);
+
 }
