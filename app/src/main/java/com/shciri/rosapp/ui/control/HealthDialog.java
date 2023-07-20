@@ -99,7 +99,7 @@ public class HealthDialog extends Dialog {
             }
         });
 
-        cooling_fan_sv = findViewById(R.id.cooling_fan_sv);
+       /* cooling_fan_sv = findViewById(R.id.cooling_fan_sv);
         cooling_fan_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
             @Override
             public void onClick(boolean press) {
@@ -111,7 +111,7 @@ public class HealthDialog extends Dialog {
                 }
                 RCApplication.uartVCP.sendData(data);
             }
-        });
+        });*/
 
         EventBus.getDefault().register(this);
         AirQualityEvent.readyPublish = true;

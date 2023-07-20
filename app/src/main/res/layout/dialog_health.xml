@@ -206,23 +206,48 @@
             app:layout_constraintEnd_toEndOf="@+id/health_radar_view"
             app:layout_constraintStart_toStartOf="@+id/health_radar_view" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" >
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:layout_width="300dp"
+            android:layout_height="15dp"
+            tools:ignore="MissingConstraints"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="380dp">
+
+        </androidx.appcompat.widget.AppCompatSeekBar>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
         <TextView
             android:id="@+id/ornamental_led_tv"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/health_text_status_height"
-            android:text="365nm LED"
+            android:layout_marginLeft="410dp"
+            android:layout_marginTop="230dp"
             android:gravity="center"
+            android:text="365nm LED"
             android:textColor="#ff02fde8"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/ornamental_led_sv"
-            app:layout_constraintEnd_toEndOf = "@+id/ornamental_led_sv" />
+            android:textSize="20sp" />
+
         <com.shciri.rosapp.ui.myview.DmSwitchView
             android:id="@+id/ornamental_led_sv"
             android:layout_width="169dp"
             android:layout_height="74dp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/ornamental_led_tv"
-            app:layout_constraintStart_toEndOf="@+id/health_camera_view"/>
+            android:layout_below="@+id/ornamental_led_tv"
+            android:layout_marginLeft="375dp" />
 
         <TextView
             android:id="@+id/uvc_led_tv"
@@ -232,36 +257,21 @@
             android:gravity="center"
             android:textColor="#ff02fde8"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/ornamental_led_sv"
-            app:layout_constraintStart_toStartOf="@+id/uvc_led_sv"
-            app:layout_constraintEnd_toEndOf = "@+id/uvc_led_sv" />
+            android:layout_marginLeft="410dp"
+            android:layout_marginTop="430dp"
+            />
         <com.shciri.rosapp.ui.myview.DmSwitchView
             android:id="@+id/uvc_led_sv"
             android:layout_width="169dp"
             android:layout_height="74dp"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/uvc_led_tv"
-            app:layout_constraintStart_toEndOf="@+id/health_camera_view"/>
+            android:layout_below="@+id/uvc_led_tv"
+            android:layout_marginLeft="375dp"
+            />
 
-        <TextView
-            android:id="@+id/cooling_fan_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/health_text_status_height"
-            android:text="散热风扇"
-            android:gravity="center"
-            android:textColor="#ff02fde8"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/uvc_led_sv"
-            app:layout_constraintStart_toStartOf="@+id/cooling_fan_sv"
-            app:layout_constraintEnd_toEndOf = "@+id/cooling_fan_sv" />
-        <com.shciri.rosapp.ui.myview.DmSwitchView
-            android:id="@+id/cooling_fan_sv"
-            android:layout_width="169dp"
-            android:layout_height="74dp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/cooling_fan_tv"
-            app:layout_constraintStart_toEndOf="@+id/health_camera_view"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_marginEnd="50dp"
