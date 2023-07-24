@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         EventBus.getDefault().register(this);
 
+        //热拔插，如果有的话就去回调下边的代码，监听在哪里就在哪里回调
         UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
         RCApplication.uartVCP.InitUartVCP(manager);
 
