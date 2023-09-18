@@ -13,13 +13,13 @@
         android:layout_width="21dp"
         android:layout_height="21dp"/>
 
-    <ImageView
-        android:id="@+id/wifi_status"
-        android:layout_marginTop="26dp"
-        android:layout_marginStart="28dp"
-        app:srcCompat="@mipmap/wifi5_12"
-        android:layout_width="25dp"
-        android:layout_height="21dp"/>
+        <ImageView
+            android:id="@+id/wifi0_status"
+            android:layout_marginTop="26dp"
+            android:layout_marginStart="28dp"
+            app:srcCompat="@mipmap/wifi_0"
+            android:layout_width="25dp"
+            android:layout_height="21dp"/>
 
     <ImageView
         android:id="@+id/network_status"

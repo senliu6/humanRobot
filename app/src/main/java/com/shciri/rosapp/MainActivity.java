@@ -80,6 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
     private AudioMngHelper audioMngHelper;
 
+    // 广播监测USB的插入与拔出
+    private BroadcastReceiver UsbReceiver = null;
+    private IntentFilter filter = null;
+    // 获取当前usb连接状态
+    private boolean isUSBConnected = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,14 +109,55 @@ public class MainActivity extends AppCompatActivity {
 
         EventBus.getDefault().register(this);
 
-        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        RCApplication.uartVCP.InitUartVCP(manager);
+        //热插拔，如果有的话就去回调下边的代码，监听在哪里就在哪里回调
+       /* UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        RCApplication.uartVCP.InitUartVCP(manager);*/
+
+        // 广播监听热插拔
+        UsbBroadcastReceiver();
+
 
         byte[] data = RequestIPC.batteryRequest();
         RCApplication.uartVCP.sendData(data);
         byte[] response = new byte[100];
         int len = RCApplication.uartVCP.readData(response);
         RCApplication.replyIPC.ipc_put_rx_byte(response, len);
+    }
+
+    // 广播监听热插拔
+    private void UsbBroadcastReceiver(){
+        if (UsbReceiver == null) {
+            UsbReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String action = intent.getAction();
+                    if (action.equals(ACTION_USB_PERMISSION)) {
+                        boolean connected = intent.getExtras().getBoolean("connected");
+                        if (connected) {
+                            if (!isUSBConnected) {
+                                isUSBConnected = true;
+                                UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+                                RCApplication.uartVCP.InitUartVCP(manager);
+                                Toast.makeText(context, "已经连接USB", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            if (isUSBConnected) {
+                                isUSBConnected = false;
+                                UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+                                RCApplication.uartVCP.InitUartVCP(manager);
+                                Toast.makeText(context, "已经断开USB", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        if (filter == null) {
+            filter = new IntentFilter();
+            filter.addAction("android.hardware.usb.action.USB_STATE");
+            // 注册广播
+            registerReceiver(UsbReceiver, filter);
+        }
     }
 
     private final BroadcastReceiver timeReceiver = new BroadcastReceiver() {
@@ -378,6 +426,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // 销毁广播
+        if (UsbReceiver != null) {
+            unregisterReceiver(UsbReceiver);
+        }
     }
 
     protected void setStatusBar() {

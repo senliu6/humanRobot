@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
@@ -23,7 +26,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 public class HealthDialog extends Dialog {
+
 
     //控制点击dialog外部是否dismiss
     private boolean isCancelable = true;
@@ -48,6 +55,10 @@ public class HealthDialog extends Dialog {
     private DmSwitchView ornamental_led_sv;
     private DmSwitchView uvc_led_sv;
     private DmSwitchView cooling_fan_sv;
+    // 风扇进度条控件
+    private final SeekBar seekbar_fan_speed;
+    private final TextView tv_rotate_speed;
+    int number = 0;
 
     /**
      * @param context 上下文
@@ -69,6 +80,41 @@ public class HealthDialog extends Dialog {
         PM10View = findViewById(R.id.PM10_status_view);
         TemperatureView = findViewById(R.id.T_status_view);
         HumidityView = findViewById(R.id.humidity_status_view);
+
+        // 风扇进度条控件
+        seekbar_fan_speed = findViewById(R.id.seekbar_fan_speed);
+        tv_rotate_speed = findViewById(R.id.tv_rotate_speed);
+        //设置最大值（不能设置最小值）
+        seekbar_fan_speed.setMax(100);
+        //风扇转速初始值为10
+        seekbar_fan_speed.setProgress(10);
+
+        // seek bear滑动监听事件
+       seekbar_fan_speed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+           //改变数值
+           @Override
+           public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+               number = progress;
+               tv_rotate_speed.setText(progress+"%");
+               // 如果要设置最小的值的话，我们的最大值要减10（seekbar_fan_speed.setMax(100-10);）
+               // progress+=10;
+           }
+
+           @Override
+           public void onStartTrackingTouch(SeekBar seekBar) {
+                // 监听是何时开始滑动
+           }
+
+           @Override
+           public void onStopTrackingTouch(SeekBar seekBar) {
+                // 监听是何时结束滑动
+               byte[] data;
+               //最后结束时候的的值传给设备
+               data = RequestIPC.fanControlRequest((byte) number);
+               RCApplication.uartVCP.sendData(data);
+           }
+       });
+
 
         ornamental_led_sv = findViewById(R.id.ornamental_led_sv);
         ornamental_led_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
@@ -94,20 +140,6 @@ public class HealthDialog extends Dialog {
                     data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 1, (byte) 1);
                 }else{
                     data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
-                }
-                RCApplication.uartVCP.sendData(data);
-            }
-        });
-
-        cooling_fan_sv = findViewById(R.id.cooling_fan_sv);
-        cooling_fan_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
-            @Override
-            public void onClick(boolean press) {
-                byte[] data;
-                if(press){
-                    data = RequestIPC.fanControlRequest((byte) 100);
-                }else{
-                    data = RequestIPC.fanControlRequest((byte) 0);
                 }
                 RCApplication.uartVCP.sendData(data);
             }

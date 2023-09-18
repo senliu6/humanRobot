@@ -24,6 +24,7 @@ public class UartVCP {
     public void InitUartVCP(UsbManager manager){
         HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
         Log.e(TAG, "get device list  = " + deviceList.size());
+        //遍历当前的设备列表
         for (UsbDevice usbDevice : deviceList.values()) {
             device = usbDevice;
             Log.d(TAG, "vid: " + device.getVendorId() + "\t pid: " + device.getProductId());
@@ -31,6 +32,7 @@ public class UartVCP {
                 break;
             }
         }
+        // 判断设备的ID
         if(device!=null && device.getVendorId()==stm32VID && device.getProductId()==stm32PID){
             getUsbInfo(device);
         }
@@ -61,20 +63,20 @@ public class UartVCP {
 
     public void sendData(byte[] data) {
         Log.d(TAG, "data = " + bytesToHexString(data));
-        try {
+        /*try {
             port.write(data, 100);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public int readData(byte[] response) {
         int len = 0;
-        try {
+        /*try {
             len = port.read(response, 100);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         Log.d(TAG, "len = " + len + "  response = " + bytesToHexString(Arrays.copyOfRange(response, 0, len)));
         return len;
     }

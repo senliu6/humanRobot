@@ -55,6 +55,13 @@
                 android:resource="@xml/device_filter" />
         </activity>
 
+        <receiver android:name=".utils.UsbBroadcastReceiver"
+            android:exported="true">
+            <intent-filter android:priority="800">
+                <action android:name="android.hardware.usb.action.USB_STATE"/>
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.shciri.rosapp.fileprovider"
@@ -65,6 +72,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
     </application>
+
 
 </manifest>
