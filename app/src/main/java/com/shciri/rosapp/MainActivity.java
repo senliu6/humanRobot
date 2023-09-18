@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.AudioMngHelper;
 import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
@@ -45,6 +46,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner identitySpinner;
 
     private TextView ipTv;
+
+    private AudioMngHelper audioMngHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,9 +188,13 @@ public class MainActivity extends AppCompatActivity {
 
         passwordEdit = findViewById(R.id.password_Edit);
 
+        audioMngHelper = new AudioMngHelper(this);
+
         findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                audioMngHelper.setVoice100(100);
+//                RCApplication.mediaPlayer.start();
                 if (password.equals("1")) {
                     if(!RosInit.isConnect) {
                         if(!alertDialog.isShowing()){

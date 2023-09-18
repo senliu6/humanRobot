@@ -9,7 +9,7 @@ static def generateTime() {
 android {
     signingConfigs {
         debug {
-            storeFile file('E:\\AndroidConfig\\APK\\DaimonAPK.jks')
+            storeFile file('D:\\IDE\\Android\\APK\\DaimonAPK.jks')
             storePassword 'daimon666'
             keyAlias 'DaimonAPK'
             keyPassword 'daimon666'

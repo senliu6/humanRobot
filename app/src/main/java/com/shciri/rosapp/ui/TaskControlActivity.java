@@ -51,8 +51,6 @@ public class TaskControlActivity extends AppCompatActivity {
     private RosTopic rosTopic = new RosTopic();
     private RosService rosService = new RosService();
     private ReceiveHandler receiveHandler = new ReceiveHandler();
-
-    public static MediaPlayer mediaPlayer;
     private StatusBarView statusBarView;
 
     @Override
@@ -73,8 +71,7 @@ public class TaskControlActivity extends AppCompatActivity {
             }
         });
 
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer = MediaPlayer.create(this, R.raw.disinfecting_warning);  //无需再调用setDataSource
+
 
         fragmentTrans();
 

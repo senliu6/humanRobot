@@ -105,7 +105,7 @@ public class HealthDialog extends Dialog {
             public void onClick(boolean press) {
                 byte[] data;
                 if(press){
-                    data = RequestIPC.fanControlRequest((byte) 50);
+                    data = RequestIPC.fanControlRequest((byte) 100);
                 }else{
                     data = RequestIPC.fanControlRequest((byte) 0);
                 }

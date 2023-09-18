@@ -3,6 +3,7 @@ package com.shciri.rosapp;
 import android.app.ADWApiManager;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Message;
 import android.util.Log;
 
@@ -30,10 +31,13 @@ public class RCApplication extends Application {
     public static byte localBattery;
     public static UartVCP uartVCP;
     public static ReplyIPC replyIPC;
+    public static MediaPlayer mediaPlayer;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MediaPlayer.create(this, R.raw.disinfecting_warning);  //无需再调用setDataSource
         uartVCP = new UartVCP();
         replyIPC = new ReplyIPC();
         adwApiManager = new ADWApiManager(this);
