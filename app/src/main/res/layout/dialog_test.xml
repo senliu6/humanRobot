@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="30dp"
+    app:shape_radius="30dp"
+    app:shape_solidColor="@color/dialog_background">
+
+    <TextView
+        android:id="@+id/tvX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点序号: "
+        style="@style/WhiteTextTheme.30"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+       />
+
+    <EditText
+        android:id="@+id/editX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入点序号的值"
+        android:inputType="number"
+        android:maxLength="3"
+        style="@style/WhiteTextTheme.30"
+        app:layout_constraintStart_toEndOf="@id/tvX"
+        app:layout_constraintTop_toTopOf="parent" />
+    <com.hjq.shape.view.ShapeImageView
+        android:id="@+id/ivExit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/exit"
+        app:shape_radius="25dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:layout_constraintStart_toEndOf="@id/editX"
+        android:layout_marginStart="140dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_solidPressedColor="@color/red"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/tvY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点模式: "
+        style="@style/WhiteTextTheme.30"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editX" />
+
+    <EditText
+        android:id="@+id/editY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入点模式的值"
+        app:layout_constraintStart_toEndOf="@id/tvY"
+        app:layout_constraintTop_toBottomOf="@id/editX"
+        android:layout_marginTop="20dp"
+        android:inputType="number"
+        style="@style/WhiteTextTheme.30"
+        android:maxLength="3"/>
+
+    <TextView
+        android:id="@+id/tvH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上高度(mm): "
+        style="@style/WhiteTextTheme.30"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editY" />
+
+    <EditText
+        android:id="@+id/editH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入高度"
+        app:layout_constraintStart_toEndOf="@id/tvH"
+        app:layout_constraintTop_toBottomOf="@id/editY"
+        android:inputType="number"
+        style="@style/WhiteTextTheme.30"
+        android:layout_marginTop="20dp"
+        android:maxLength="4"/>
+    <TextView
+        android:id="@+id/tvBottomH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下高度(mm): "
+        style="@style/WhiteTextTheme.30"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editH" />
+
+    <EditText
+        android:id="@+id/editBottomH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入高度"
+        app:layout_constraintStart_toEndOf="@id/tvBottomH"
+        app:layout_constraintTop_toBottomOf="@id/editH"
+        android:inputType="number"
+        style="@style/WhiteTextTheme.30"
+        android:layout_marginTop="20dp"
+        android:maxLength="4"/>
+
+    <RadioGroup
+        android:id="@+id/radioList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/editBottomH">
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/btnClown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="5dp"
+            android:text="抱"
+            style="@style/WhiteTextTheme.30"
+            app:shape_radius="10dp"
+            app:shape_solidCheckedColor="@color/red" />
+
+        <com.hjq.shape.view.ShapeRadioButton
+            android:id="@+id/btnPut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="5dp"
+            android:text="取"
+            style="@style/WhiteTextTheme.30"
+            app:shape_radius="10dp"
+            app:shape_solidCheckedColor="@color/red" />
+    </RadioGroup>
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnStop"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:shape_radius="20dp"
+        style="@style/WhiteTextTheme.30"
+        android:text="急停"
+        android:gravity="center"
+        app:shape_solidColor="@color/red"
+        app:shape_solidPressedColor="@color/button_select_start"
+        app:layout_constraintStart_toEndOf="@id/editBottomH"
+        app:layout_constraintTop_toBottomOf="@id/editX"
+        android:layout_marginStart="50dp"
+        android:paddingVertical="4dp"/>
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnReset"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:shape_radius="20dp"
+        android:text="复位"
+        android:gravity="center"
+        style="@style/WhiteTextTheme.30"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start"
+        app:layout_constraintStart_toEndOf="@id/editBottomH"
+        app:layout_constraintTop_toBottomOf="@id/editH"
+        android:layout_marginStart="50dp"
+        android:paddingVertical="4dp"/>
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"
+        style="@style/RedTextTheme.30"
+        app:layout_constraintTop_toBottomOf="@id/radioList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shape_radius="10dp"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        app:shape_solidColor="@color/button_select_stork"
+        app:shape_solidPressedColor="@color/red"
+        />
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textColor="@color/blue_00a5b7"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@id/radioList"
+        app:layout_constraintStart_toEndOf="@id/tvConfirm"
+        android:layout_marginStart="40dp"
+        app:shape_radius="10dp"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        app:shape_solidColor="@color/button_select_stork"
+        />
+</com.hjq.shape.layout.ShapeConstraintLayout>

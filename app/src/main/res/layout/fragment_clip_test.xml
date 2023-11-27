@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/return_ll"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/clip_manage"
+        app:drawableStartCompat="@mipmap/choose_task_point_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnReset"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="货叉回零"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnClip"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="夹抱"
+        app:layout_constraintEnd_toStartOf="@id/btnAgo"
+        app:layout_constraintTop_toTopOf="@id/btnAgo"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnAgo"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="货叉向前"
+        app:layout_constraintEnd_toStartOf="@id/btnReset"
+        app:layout_constraintTop_toTopOf="@id/btnReset"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnAfter"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="货叉向后"
+        app:layout_constraintStart_toEndOf="@id/btnReset"
+        app:layout_constraintTop_toTopOf="@id/btnReset"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnLoosen"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="松开"
+        app:layout_constraintStart_toEndOf="@id/btnAfter"
+        app:layout_constraintTop_toTopOf="@id/btnReset"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidSelectedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnRise"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="上升"
+        app:layout_constraintBottom_toTopOf="@id/btnReset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnDecline"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="下降"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnReset"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

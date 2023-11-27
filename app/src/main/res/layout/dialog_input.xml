@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingVertical="30dp"
+    app:shape_radius="30dp"
+    app:shape_solidColor="@color/dialog_background">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/WhiteTextTheme.26"
+        android:layout_marginHorizontal="20dp" />
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/WhiteTextTheme.26"
+        android:layout_marginHorizontal="20dp" />
+
+    <EditText
+        android:id="@+id/editInput"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="30dp"
+        style="@style/WhiteTextTheme.26"
+        android:backgroundTint="@color/blue_00a5b7"/>
+
+    <include
+        android:id="@+id/cancel_button"
+        layout="@layout/cancel_confirm_layout" />
+
+</com.hjq.shape.layout.ShapeLinearLayout>

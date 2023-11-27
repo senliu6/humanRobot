@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightsteelblue">
+    <TextView
+        android:id="@+id/tvTest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/GrayTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.shciri.rosapp.ui.myview.MapView
+        android:id="@+id/ros_map"
+        android:layout_width="846dp"
+        android:layout_height="750dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.shciri.rosapp.ui.myview.MyControllerView
+        android:id="@+id/controller_view"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvSaveMap"
+        style="@style/WhiteTextTheme.26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:padding="10dp"
+        android:text="@string/save_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="20dp"
+        app:shape_solidColor="@color/button_select_start"
+        app:shape_solidPressedColor="@color/button_select_end" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvExitMap"
+        style="@style/WhiteTextTheme.26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        android:text="@string/cancel_map"
+        app:layout_constraintEnd_toStartOf="@id/tvSaveMap"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="20dp"
+        app:shape_solidColor="@color/button_select_start"
+        app:shape_solidPressedColor="@color/button_select_end" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

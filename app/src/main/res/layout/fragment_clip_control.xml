@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/return_ll"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/clip_manage"
+        app:drawableStartCompat="@mipmap/choose_task_point_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnRB"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:text="RB 键"
+        app:layout_constraintBottom_toTopOf="@id/btnCloseControl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shape_radius="20dp"
+        app:shape_solidColor="@color/red"
+        app:shape_solidPressedColor="@color/blue_1f4e96" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnCloseControl"
+        style="@style/WhiteTextTheme.40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:text="遥控开"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="60dp"
+        app:shape_radius="20dp"
+        app:shape_solidColor="@color/red"
+        app:shape_solidPressedColor="@color/blue_1f4e96" />
+
+    <com.hjq.shape.layout.ShapeConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:padding="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="30dp"
+        app:shape_solidColor="@color/button_normal_end">
+
+        <TextView
+            android:id="@+id/tvX"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="点序号: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editX"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入点序号的值"
+            android:inputType="number"
+            android:maxLength="3"
+            app:layout_constraintStart_toEndOf="@id/tvX"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvY"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="点模式: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editX" />
+
+        <EditText
+            android:id="@+id/editY"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="请输入点模式的值"
+            android:inputType="number"
+            android:maxLength="3"
+            app:layout_constraintStart_toEndOf="@id/tvY"
+            app:layout_constraintTop_toBottomOf="@id/editX" />
+
+        <TextView
+            android:id="@+id/tvH"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="上高度(mm): "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editY" />
+
+        <EditText
+            android:id="@+id/editH"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="请输入高度"
+            android:inputType="number"
+            android:maxLength="4"
+            app:layout_constraintStart_toEndOf="@id/tvH"
+            app:layout_constraintTop_toBottomOf="@id/editY" />
+
+        <TextView
+            android:id="@+id/tvBottomH"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="下高度(mm): "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editH" />
+
+        <EditText
+            android:id="@+id/editBottomH"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="请输入高度"
+            android:inputType="number"
+            android:maxLength="4"
+            app:layout_constraintStart_toEndOf="@id/tvBottomH"
+            app:layout_constraintTop_toBottomOf="@id/editH" />
+
+        <RadioGroup
+            android:id="@+id/radioList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/editBottomH">
+
+            <com.hjq.shape.view.ShapeRadioButton
+                android:id="@+id/btnClown"
+                style="@style/WhiteTextTheme.28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="5dp"
+                android:text="抱"
+                app:shape_radius="10dp"
+                app:shape_solidCheckedColor="@color/red" />
+
+            <com.hjq.shape.view.ShapeRadioButton
+                android:id="@+id/btnPut"
+                style="@style/WhiteTextTheme.28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="5dp"
+                android:text="取"
+                app:shape_radius="10dp"
+                app:shape_solidCheckedColor="@color/red" />
+        </RadioGroup>
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btnStop"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:gravity="center"
+            android:paddingVertical="4dp"
+            android:text="急停"
+            app:layout_constraintStart_toEndOf="@id/editBottomH"
+            app:layout_constraintTop_toBottomOf="@id/editX"
+            app:shape_radius="20dp"
+            app:shape_solidColor="@color/red"
+            app:shape_solidPressedColor="@color/button_select_start" />
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btnReset"
+            style="@style/WhiteTextTheme.28"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:gravity="center"
+            android:paddingVertical="4dp"
+            android:text="复位"
+            app:layout_constraintStart_toEndOf="@id/editBottomH"
+            app:layout_constraintTop_toBottomOf="@id/editH"
+            app:shape_radius="20dp"
+            app:shape_solidColor="@color/blue_1f4e96"
+            app:shape_solidPressedColor="@color/button_select_start" />
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/tvConfirm"
+            style="@style/RedTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="4dp"
+            android:text="@string/confirm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radioList"
+            app:shape_radius="10dp"
+            app:shape_solidColor="@color/button_select_stork"
+            app:shape_solidPressedColor="@color/red" />
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="4dp"
+            android:text="@string/cancel"
+            android:textColor="@color/blue_00a5b7"
+            android:textSize="30sp"
+            app:layout_constraintStart_toEndOf="@id/tvConfirm"
+            app:layout_constraintTop_toBottomOf="@id/radioList"
+            app:shape_radius="10dp"
+            app:shape_solidColor="@color/button_select_stork" />
+    </com.hjq.shape.layout.ShapeConstraintLayout>
+
+    <com.shciri.rosapp.ui.myview.MyControllerView
+        android:id="@+id/controller_view"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginBottom="25dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
