@@ -1,11 +1,5 @@
 package com.shciri.rosapp.ui.control;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,34 +7,38 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
+import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.databinding.FragmentChooseTaskBinding;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.dmros.tool.ControlMapEvent;
-import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.dmros.tool.StateNotifyHeadEvent;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.datamanagement.MapAdapter;
-import com.shciri.rosapp.ui.myview.MapView;
+import com.shciri.rosapp.ui.dialog.WaitDialog;
 import com.shciri.rosapp.ui.myview.TaskBtView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import src.com.jilk.ros.message.StateNotificationHeartbeat;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -50,7 +48,6 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
 
     private View mOpenDrawer;
     private View mHealthDialog;
-    private TextView mCirculateTv1, mCirculateTv2, mCirculateTv3, mCirculateTv4;
     private TaskBtView mTaskBt1, mTaskBt2, mTaskBt3;
     private FragmentChooseTaskBinding binding;
     private OnBackPressedCallback mBackPressedCallback;
@@ -66,19 +63,18 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
     public List<String> mapNameList;
 
     private ManageTaskDB manageTaskDB;
+    private WaitDialog waitDialog;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentChooseTaskBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
     public void onResume() {
-        if(currentPathID == 0){
+        if (currentPathID == 0) {
             mTaskBt1.requestFocus();
         }
         super.onResume();
@@ -92,26 +88,18 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
 
         mapSpinner = binding.chooseTaskMapSpinner;
         mapText = binding.chooseTaskMapNameTv;
-        mapText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mapSpinner.performClick();
-            }
-        });
+        mapText.setOnClickListener(v -> mapSpinner.performClick());
 
         startTaskTv = binding.startTaskBt;
-        startTaskTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!ManageTaskDB.taskLists.isEmpty()) {
-                    if (ManageTaskDB.currentTaskIndex == 0)
-                        ManageTaskDB.taskLists.get(0).mode = mTaskBt1.getCurrentMode();
-                    else if (ManageTaskDB.currentTaskIndex == 1)
-                        ManageTaskDB.taskLists.get(1).mode = mTaskBt2.getCurrentMode();
-                    else if (ManageTaskDB.currentTaskIndex == 2)
-                        ManageTaskDB.taskLists.get(2).mode = mTaskBt3.getCurrentMode();
-                    Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
-                }
+        startTaskTv.setOnClickListener(v -> {
+            if (!ManageTaskDB.taskLists.isEmpty()) {
+                if (ManageTaskDB.currentTaskIndex == 0)
+                    ManageTaskDB.taskLists.get(0).mode = mTaskBt1.getCurrentMode();
+                else if (ManageTaskDB.currentTaskIndex == 1)
+                    ManageTaskDB.taskLists.get(1).mode = mTaskBt2.getCurrentMode();
+                else if (ManageTaskDB.currentTaskIndex == 2)
+                    ManageTaskDB.taskLists.get(2).mode = mTaskBt3.getCurrentMode();
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
             }
         });
 
@@ -126,33 +114,23 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         InitialCirculationTimeView();
 
         mHealthDialog = binding.healthIv;
-        mHealthDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HealthDialog healthDialog = new HealthDialog(getActivity());
-                healthDialog.setCancelable(false);//是否可以点击DialogView外关闭Dialog
-                healthDialog.setCanceledOnTouchOutside(false);//是否可以按返回按钮关闭Dialog
-                healthDialog.show();
-            }
+        mHealthDialog.setOnClickListener(v -> {
+            HealthDialog healthDialog = new HealthDialog(getActivity());
+            healthDialog.setCancelable(false);//是否可以点击DialogView外关闭Dialog
+            healthDialog.setCanceledOnTouchOutside(false);//是否可以按返回按钮关闭Dialog
+            healthDialog.show();
         });
 
-        binding.taskReportIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskReportActivity);
-            }
-        });
-        binding.manualControlIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_manuaControlFragment);
-            }
-        });
+        binding.taskReportIv.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.taskReportActivity));
+        binding.manualControlIv.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_manuaControlFragment));
 
-        binding.moreTaskLl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_moreTaskFragment);
+        binding.moreTaskLl.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_nav_home_to_moreTaskFragment));
+
+        waitDialog = new WaitDialog.Builder(requireActivity()).setTitle("重定位中").setLoadingDurationMillis(60000).build();
+        //点击重定位按钮
+        binding.btnRetargeting.setOnClickListener(v -> {
+            if (!waitDialog.isShowing()) {
+                waitDialog.show();
             }
         });
 
@@ -164,9 +142,8 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         Cursor cursor = RCApplication.db.query("map", null, null, null, null, null, null);
         MapAdapter.mapLists = new ArrayList<>();
         mapNameList = new ArrayList<>();
-        if(cursor.getCount() > 0)
-        {
-            while(cursor.moveToNext()){
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
                 @SuppressLint("Range") String time = cursor.getString(cursor.getColumnIndex("time"));
@@ -189,24 +166,24 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         mapSpinner.setAdapter(mapAdapter);
         //给下拉框设置选择监听器，一旦用户选中某一项，就触发监听器的onItemSelected方法
         mapSpinner.setOnItemSelectedListener(new MyMapSpinner());
-        if(!MapAdapter.mapLists.isEmpty()){
+        if (!MapAdapter.mapLists.isEmpty()) {
             mapText.setText(mapAdapter.getItem(0));
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath()+
-                    "/RobotLocalMap"+
-                    "/"+mapAdapter.getItem(0)+"_1"+".png");
-            RosData.rosBitmap = bitmap;
+            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath() + "/RobotLocalMap" + "/" + mapAdapter.getItem(0) + "_1" + ".png");
+            if (bitmap != null && bitmap.getByteCount() > 1) {
+                RosData.rosBitmap = bitmap;
+            }
             RosData.currentMapID = MapAdapter.mapLists.get(0).id;
         }
     }
 
-    class MyMapSpinner implements AdapterView.OnItemSelectedListener{
+    class MyMapSpinner implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             mapText.setText(mapAdapter.getItem(position));
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath()+
-                    "/RobotLocalMap"+
-                    "/"+mapAdapter.getItem(position)+"_1"+".png");
-            RosData.rosBitmap = bitmap;
+            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath() + "/RobotLocalMap" + "/" + mapAdapter.getItem(position) + "_1" + ".png");
+            if (bitmap != null && bitmap.getByteCount() > 1) {
+                RosData.rosBitmap = bitmap;
+            }
             RosData.currentMapID = MapAdapter.mapLists.get(position).id;
         }
 
@@ -228,8 +205,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
             mTaskBt3.setTitleTv("空");
             mTaskBt1.setOnClickListener(this);
             ManageTaskDB.currentTaskIndex = 0;
-        }
-        else if (ManageTaskDB.taskLists.size() == 2) {
+        } else if (ManageTaskDB.taskLists.size() == 2) {
             mTaskBt1.setTitleTv(ManageTaskDB.taskLists.get(0).taskName);
             mTaskBt2.setTitleTv(ManageTaskDB.taskLists.get(1).taskName);
             mTaskBt3.setTitleTv("空");
@@ -253,22 +229,25 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    void setNoBackgroundCirculateTv() {
-        mCirculateTv1.setBackgroundResource(0);
-        mCirculateTv2.setBackgroundResource(0);
-        mCirculateTv3.setBackgroundResource(0);
-        mCirculateTv4.setBackgroundResource(0);
-    }
-
+    /**
+     * 设置次数
+     */
     private void InitialCirculationTimeView() {
-        mCirculateTv1 = binding.circulateTv1;
-        mCirculateTv2 = binding.circulateTv2;
-        mCirculateTv3 = binding.circulateTv3;
-        mCirculateTv4 = binding.circulateTv4;
-        mCirculateTv1.setOnClickListener(this);
-        mCirculateTv2.setOnClickListener(this);
-        mCirculateTv3.setOnClickListener(this);
-        mCirculateTv4.setOnClickListener(this);
+        binding.radioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (i == R.id.circulateTv4) {
+                binding.circulateTv4.setChecked(true);
+                taskCycleTimes = 255;
+            } else if (i == R.id.circulateTv3) {
+                binding.circulateTv3.setChecked(true);
+                taskCycleTimes = 3;
+            } else if (i == R.id.circulateTv2) {
+                binding.circulateTv2.setChecked(true);
+                taskCycleTimes = 2;
+            } else if (i == R.id.circulateTv1) {
+                binding.circulateTv1.setChecked(true);
+                taskCycleTimes = 1;
+            }
+        });
     }
 
     @Override
@@ -287,26 +266,6 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.circulateTv1:
-                setNoBackgroundCirculateTv();
-                mCirculateTv1.setBackgroundColor(R.color.red);
-                taskCycleTimes = 1;
-                break;
-            case R.id.circulateTv2:
-                setNoBackgroundCirculateTv();
-                mCirculateTv2.setBackgroundColor(R.color.red);
-                taskCycleTimes = 2;
-                break;
-            case R.id.circulateTv3:
-                setNoBackgroundCirculateTv();
-                mCirculateTv3.setBackgroundColor(R.color.red);
-                taskCycleTimes = 3;
-                break;
-            case R.id.circulateTv4:
-                setNoBackgroundCirculateTv();
-                mCirculateTv4.setBackgroundColor(R.color.red);
-                taskCycleTimes = 255;
-                break;
             case R.id.task_bt1:
                 ManageTaskDB.currentTaskIndex = 0;
                 break;
@@ -320,5 +279,27 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 break;
         }
         System.out.println("taskname = " + currentTaskName);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(StateNotifyHeadEvent event) {
+        StateNotificationHeartbeat stateNotificationHeartbeat = event.getState();
+        switch (stateNotificationHeartbeat.slam_state) {
+            //定位中
+            case 0x01:
+                waitDialog.show();
+                break;
+            //定位成功
+            case 0x02:
+                //定位失败
+            case 0x03:
+                if (waitDialog.isShowing()) {
+                    waitDialog.dismiss();
+                }
+                Toaster.showShort("定位成功");
+                break;
+            default:
+
+        }
     }
 }

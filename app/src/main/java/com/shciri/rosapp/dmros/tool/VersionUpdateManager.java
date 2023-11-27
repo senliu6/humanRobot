@@ -1,36 +1,21 @@
 package com.shciri.rosapp.dmros.tool;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
-
-import android.app.Activity;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
-import android.webkit.DownloadListener;
-import android.webkit.WebView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.FileProvider;
 
+import com.hjq.toast.Toaster;
 import com.qmuiteam.qmui.skin.QMUISkinManager;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.json.JSONObject;
-
-import java.io.File;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -206,7 +191,7 @@ public class VersionUpdateManager extends AppInnerDownLode{
                         dialog.dismiss();
                         Log.d("update ","点击立即更新");
                         if (!haveInstallPermission) {
-                            Toast.makeText(mContext, "请打开安装未知来源应用的权限", Toast.LENGTH_SHORT).show();
+                            Toaster.showShort( "请打开安装未知来源应用的权限");
 
                             Uri packageURI = Uri.parse("package:" + mContext.getPackageName());
                             Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);

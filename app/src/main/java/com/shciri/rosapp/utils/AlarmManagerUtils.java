@@ -5,12 +5,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
-import com.shciri.rosapp.server.TaskTimeService;
-
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AlarmManagerUtils {
 
@@ -50,10 +49,10 @@ public class AlarmManagerUtils {
         intent.putExtra("hour", calendar.get(Calendar.HOUR_OF_DAY));
         intent.putExtra("minute", calendar.get(Calendar.MINUTE));
         intent.putExtra("second", 1);
-        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         //这里也是关键,超过闹钟时间了,代表下周要触发,加7天
         if (System.currentTimeMillis() > calendar.getTimeInMillis()) {
-
+            calendar.add(Calendar.DAY_OF_WEEK, 7);
         }
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
@@ -68,7 +67,7 @@ public class AlarmManagerUtils {
     private void realCancelClock(String action, int clockId) {
         Intent intent = new Intent();
         intent.setAction(action);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, clockId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, clockId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         alarmManager.cancel(pendingIntent);
         Log.d("Alarm", "取消闹钟" + clockId);
     }
@@ -78,5 +77,29 @@ public class AlarmManagerUtils {
 //        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 //        alarmManager.cancel(pendingIntent);
 //    }
+
+    private void getAlarmManagerList() {
+        Intent intent = new Intent(context, MyBroadCastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 322, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        List<AlarmManager.AlarmClockInfo> alarmClockInfos = new ArrayList<>();
+
+    // 获取全部闹钟信息
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            try {
+                AlarmManager.AlarmClockInfo alarmClockInfo = alarmManager.getNextAlarmClock();
+                if (alarmClockInfo != null) {
+                    alarmClockInfos.add(alarmClockInfo);
+                } else {
+                    break; // 没有更多的闹钟信息了
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                break; // 获取失败或发生异常，结束循环
+            }
+        }
+
+
+    }
 }
 

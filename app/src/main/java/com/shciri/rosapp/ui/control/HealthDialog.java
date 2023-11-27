@@ -4,30 +4,26 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.util.Log;
 import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.databinding.DialogHealthBinding;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.AirQualityEvent;
-import com.shciri.rosapp.dmros.tool.PublishEvent;
-import com.shciri.rosapp.ui.myview.AirStatusView;
-import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.utils.protocol.RequestIPC;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import src.com.jilk.ros.message.StateNotificationHeartbeat;
 
 public class HealthDialog extends Dialog {
 
@@ -44,127 +40,142 @@ public class HealthDialog extends Dialog {
     //Dialog弹出位置
     private LocationView locationView = LocationView.CENTER;
 
-    private AirStatusView CO2View;
-    private AirStatusView FormaldehydeView;
-    private AirStatusView TVOCView;
-    private AirStatusView PM2_5View;
-    private AirStatusView PM10View;
-    private AirStatusView TemperatureView;
-    private AirStatusView HumidityView;
-
-    private DmSwitchView ornamental_led_sv;
-    private DmSwitchView uvc_led_sv;
-    private DmSwitchView cooling_fan_sv;
-    // 风扇进度条控件
-    private final SeekBar seekbar_fan_speed;
-    private final TextView tv_rotate_speed;
     int number = 0;
+
+    private final DialogHealthBinding binding;
+
+    private byte normal = 0X01;
 
     /**
      * @param context 上下文
      */
     public HealthDialog(Context context) {
         super(context);
-        setContentView(R.layout.dialog_health);
-        findViewById(R.id.exit_iv).setOnClickListener(new View.OnClickListener() {
+        binding = DialogHealthBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        getWindow().setBackgroundDrawableResource(R.color.f9fcfc_33);
+        binding.conLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        CO2View = findViewById(R.id.co2_view);
-        FormaldehydeView = findViewById(R.id.formaldehyde_status_view);
-        TVOCView = findViewById(R.id.TVOC_status_view);
-        PM2_5View = findViewById(R.id.PM2_5_status_view);
-        PM10View = findViewById(R.id.PM10_status_view);
-        TemperatureView = findViewById(R.id.T_status_view);
-        HumidityView = findViewById(R.id.humidity_status_view);
-
-        // 风扇进度条控件
-        seekbar_fan_speed = findViewById(R.id.seekbar_fan_speed);
-        tv_rotate_speed = findViewById(R.id.tv_rotate_speed);
-        //设置最大值（不能设置最小值）
-        seekbar_fan_speed.setMax(100);
-        //风扇转速初始值为10
-        seekbar_fan_speed.setProgress(10);
-
-        // seek bear滑动监听事件
-       seekbar_fan_speed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-           //改变数值
-           @Override
-           public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-               number = progress;
-               tv_rotate_speed.setText(progress+"%");
-               // 如果要设置最小的值的话，我们的最大值要减10（seekbar_fan_speed.setMax(100-10);）
-               // progress+=10;
-           }
-
-           @Override
-           public void onStartTrackingTouch(SeekBar seekBar) {
-                // 监听是何时开始滑动
-           }
-
-           @Override
-           public void onStopTrackingTouch(SeekBar seekBar) {
-                // 监听是何时结束滑动
-               byte[] data;
-               //最后结束时候的的值传给设备
-               data = RequestIPC.fanControlRequest((byte) number);
-               RCApplication.uartVCP.sendData(data);
-           }
-       });
-
-
-        ornamental_led_sv = findViewById(R.id.ornamental_led_sv);
-        ornamental_led_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
-            @Override
-            public void onClick(boolean press) {
-                Log.d("ornamental_led", String.valueOf(press));
-                byte[] data;
-                if(press){
-                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 1);
-                }else{
-                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
-                }
-                RCApplication.uartVCP.sendData(data);
+            public void onGlobalLayout() {
+                Window dialogWindow = getWindow();
+                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                /**
+                 * 设置这个使dialog全屏
+                 */
+                lp.width =binding.conLayout.getLeft()+binding.conLayout.getWidth();
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                dialogWindow.setAttributes(lp);
+                binding.conLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
-        uvc_led_sv = findViewById(R.id.uvc_led_sv);
-        uvc_led_sv.setDmSwitchListener(new DmSwitchView.DmSwitchViewListener() {
-            @Override
-            public void onClick(boolean press) {
-                byte[] data;
-                if(press){
-                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 1, (byte) 1);
-                }else{
-                    data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
-                }
-                RCApplication.uartVCP.sendData(data);
-            }
-        });
+        //点击外部是否可以关闭Dialog
+        setCancelable(isCancelable);
+        //返回键是否可以关闭Dialog
+        setCanceledOnTouchOutside(isCanceledOnTouchOutside);
+
+        initView();
 
         EventBus.getDefault().register(this);
         AirQualityEvent.readyPublish = true;
     }
 
+    private void initView() {
+        binding.exitIv.setOnClickListener(v -> dismiss());
+
+        //设置最大值（不能设置最小值）
+        binding.seekbarFanSpeed.setMax(100);
+        //风扇转速初始值为10
+        binding.seekbarFanSpeed.setProgress(10);
+
+        // seek bear滑动监听事件
+        binding.seekbarFanSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            //改变数值
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                number = progress;
+                binding.tvRotateSpeed .setText(progress+"%");
+                // 如果要设置最小的值的话，我们的最大值要减10（seekbar_fan_speed.setMax(100-10);）
+                // progress+=10;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // 监听是何时开始滑动
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // 监听是何时结束滑动
+                byte[] data;
+                //最后结束时候的的值传给设备
+                data = RequestIPC.fanControlRequest((byte) number);
+                RCApplication.uartVCP.sendData(data);
+            }
+        });
+
+
+        binding.ornamentalLedSv.setDmSwitchListener(press -> {
+            Log.d("ornamental_led", String.valueOf(press));
+            byte[] data;
+            if(press){
+                data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 1);
+            }else{
+                data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
+            }
+            RCApplication.uartVCP.sendData(data);
+        });
+
+        binding.uvcLedSv.setDmSwitchListener(press -> {
+            byte[] data;
+            if(press){
+                data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 1, (byte) 1);
+            }else{
+                data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
+            }
+            RCApplication.uartVCP.sendData(data);
+        });
+
+        initHardware();
+    }
+
+    private void initHardware() {
+        if (null != RosData.stateNotificationHeartbeat){
+            StateNotificationHeartbeat stateNotificationHeartbeat = RosData.stateNotificationHeartbeat;
+            if (stateNotificationHeartbeat.camera_state == normal){
+                binding.healthCameraTextview.setText(R.string.normal);
+            }else {
+                binding.healthCameraTextview.setText(R.string.noNormal);
+            }
+            if (stateNotificationHeartbeat.lidar_state == normal){
+                binding.healthRadarTextview.setText(R.string.normal);
+            }else {
+                binding.healthRadarTextview.setText(R.string.noNormal);
+            }
+            if (stateNotificationHeartbeat.motor_state == normal){
+                binding.healthMotorTextview.setText(R.string.normal);
+            }else {
+                binding.healthMotorTextview.setText(R.string.noNormal);
+            }
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(AirQualityEvent event) {
         String value = Integer.toString(event.getCO2());
-        CO2View.setValueView(value);
+        binding.co2View.setValueView(value);
         value = Integer.toString(event.getFormaldehyde()/1000);
-        FormaldehydeView.setValueView(value);
+        binding.formaldehydeStatusView.setValueView(value);
         value = Integer.toString(event.getTVOC());
-        TVOCView.setValueView(value);
+        binding.TVOCStatusView.setValueView(value);
         value = Integer.toString(event.getPM2_5());
-        PM2_5View.setValueView(value);
+        binding.PM25StatusView.setValueView(value);
         value = Integer.toString(event.getPM10());
-        PM10View.setValueView(value);
+        binding.PM10StatusView.setValueView(value);
         value = Float.toString(event.getTemperature());
-        TemperatureView.setValueView(value);
+        binding.TStatusView.setValueView(value);
         value = Float.toString(event.getHumidity());
-        HumidityView.setValueView(value);
+        binding.humidityStatusView.setValueView(value);
     };
 
     /**
@@ -206,10 +217,10 @@ public class HealthDialog extends Dialog {
                     window.setGravity(Gravity.CENTER);
                     break;
             }
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.width = WindowManager.LayoutParams.MATCH_PARENT;
-            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            window.setAttributes(params);
+//            WindowManager.LayoutParams params = window.getAttributes();
+//            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+//            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//            window.setAttributes(params);
         }
     }
 

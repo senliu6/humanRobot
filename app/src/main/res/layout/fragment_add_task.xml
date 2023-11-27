@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@mipmap/login_dabeijing4_21"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,15 +20,14 @@
             android:layout_height="@dimen/return_arrows_height"
             android:layout_marginLeft="100dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+            android:src="@mipmap/choose_task_point_left" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/return_arrow_text_margin"
             android:text="定时任务"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/return_text_size" />
+            style="@style/WhiteTextTheme.28"/>
     </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
     <com.qmuiteam.qmui.layout.QMUILinearLayout
@@ -51,63 +49,56 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="源任务名称"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/task_name"
+            style="@style/GrayTextTheme.20"/>
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="源任务ID"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/task_id"
+            style="@style/GrayTextTheme.20" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="时间点"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/times"
+            style="@style/GrayTextTheme.20" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="日期"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/date"
+            style="@style/GrayTextTheme.20" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="循环次数"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/loop_num"
+            style="@style/GrayTextTheme.20" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="模式"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/model"
+            style="@style/GrayTextTheme.20" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="删除任务"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            android:text="@string/delete_task"
+            style="@style/GrayTextTheme.20" />
     </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -130,9 +121,8 @@
         android:layout_marginEnd="280dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="新建任务"
-        android:textSize="24sp"
-        android:textColor="@color/white"
+        android:text="@string/add_task"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintEnd_toEndOf="@+id/qlv_task"
         app:layout_constraintTop_toBottomOf="@+id/qlv_task" />
 
@@ -144,9 +134,8 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="新建定时任务"
-        android:textSize="24sp"
-        android:textColor="@color/white"
+        android:text="@string/add_time_task"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintEnd_toEndOf="@+id/qlv_task"
         app:layout_constraintTop_toBottomOf="@+id/qlv_task" />
 

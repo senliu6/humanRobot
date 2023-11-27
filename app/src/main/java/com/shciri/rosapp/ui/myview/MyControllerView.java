@@ -130,6 +130,7 @@ public class MyControllerView extends RelativeLayout implements View.OnTouchList
                 positionAnimator.setDuration(500);
                 positionAnimator.start();
                 break;
+                default:
         }
         return true;
     }

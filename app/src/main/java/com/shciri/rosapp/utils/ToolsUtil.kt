@@ -7,7 +7,7 @@ import android.media.RingtoneManager
 
 
 /**
- * 功能：
+ * 功能：工具类
  * @author ：liudz
  * 日期：2023年11月08日
  */

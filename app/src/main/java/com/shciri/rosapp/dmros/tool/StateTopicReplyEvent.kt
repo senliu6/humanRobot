@@ -1,5 +1,7 @@
 package com.shciri.rosapp.dmros.tool
 
+import src.com.jilk.ros.message.Pose
+import src.com.jilk.ros.message.RobotLocation
 import src.com.jilk.ros.message.StateMachineReply
 import src.com.jilk.ros.message.StateNotificationHeartbeat
 
@@ -12,3 +14,7 @@ data class StateTopicReplyEvent(val stateMachineReply: StateMachineReply) {
 }
 
 data class StateNotifyHeadEvent(val state: StateNotificationHeartbeat) {}
+
+data class RobotLoginEvent(val robotLocation: RobotLocation) {}
+
+data class RobotPoseEvent(val pose: Pose)

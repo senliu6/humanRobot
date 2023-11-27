@@ -3,7 +3,6 @@ package com.shciri.rosapp.ui.myview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,8 +15,6 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.net.Uri;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,25 +24,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.dmros.client.RosInit;
-import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.DataProcess;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.dmros.tool.MyPGM;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+
+import src.com.jilk.ros.message.Pose;
 
 public class MapView extends View {
-
+    //显示图片
     public Bitmap mBitmap = null;
+    //
     private Bitmap mOriginBitmap = null;
+    //图宽和高
     private int viewWidth, viewHeight;
+    //当前的图片的矩阵参数
     private Matrix mCurrentMatrix = new Matrix();
 
     //robot
@@ -75,9 +68,7 @@ public class MapView extends View {
     private int updateMapNum = 0;
     public static boolean scanning;
 
-
-
-
+    public static Pose pose = new Pose();
 
 
     public MapView(Context context) {
@@ -95,7 +86,9 @@ public class MapView extends View {
         initPaints();
     }
 
+    //擦除画笔
     Paint mErasePaint;
+    //
     Paint mErasePointPaint;
 
     Paint mAddPathPaint;
@@ -189,6 +182,7 @@ public class MapView extends View {
         mVirtualWallUnsavePath.setColor(Color.GRAY);
         mVirtualWallUnsavePath.setStrokeWidth(10);
         mVirtualWallUnsavePath.setPathEffect(new DashPathEffect(new float[]{5, 3}, 1));
+
     }
 
     /**
@@ -197,31 +191,31 @@ public class MapView extends View {
     public void setBitmap(Bitmap map, updateMapID mapId) {
         this.mBitmap = map.copy(Bitmap.Config.ARGB_8888, true);
 
-        if(mapId == updateMapID.SCANNING){
+        if (mapId == updateMapID.SCANNING) {
             float xScale = ((float) viewWidth) / mBitmap.getWidth();
             float yScale = ((float) viewHeight) / mBitmap.getHeight();
             float scale = Math.min(xScale, yScale);
             mCurrentMatrix.setScale(scale, scale);
             if (scale == xScale) {
-                initMapToCenterOffset = (((float) viewHeight) - (mBitmap.getHeight()*scale)) / 2;
+                initMapToCenterOffset = (((float) viewHeight) - (mBitmap.getHeight() * scale)) / 2;
                 mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
             } else {
-                initMapToCenterOffset = (((float) viewWidth) - (mBitmap.getWidth()*scale)) / 2;
+                initMapToCenterOffset = (((float) viewWidth) - (mBitmap.getWidth() * scale)) / 2;
                 mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
             }
-        }else {
+        } else {
             if (getWidth() != 0 && getHeight() != 0) {
-                if(updateMapNum == 0) {
+                if (updateMapNum == 0) {
                     mCurrentMatrix = new Matrix();
                     float xScale = ((float) viewWidth) / mBitmap.getWidth();
                     float yScale = ((float) viewHeight) / mBitmap.getHeight();
                     float scale = Math.min(xScale, yScale);
                     mCurrentMatrix.setScale(scale, scale);
                     if (scale == xScale) {
-                        initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight()*scale) / 2;
+                        initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight() * scale) / 2;
                         mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
                     } else {
-                        initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth()*scale) / 2;
+                        initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth() * scale) / 2;
                         mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
                     }
                 }
@@ -231,16 +225,16 @@ public class MapView extends View {
         postInvalidate();
     }
 
-    public void  reset() {
+    public void reset() {
         float xScale = ((float) viewWidth) / mBitmap.getWidth();
         float yScale = ((float) viewHeight) / mBitmap.getHeight();
         float scale = Math.min(xScale, yScale);
         mCurrentMatrix.setScale(scale, scale);
-        if(scale == xScale) {
-            initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight()*scale) / 2;
+        if (scale == xScale) {
+            initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight() * scale) / 2;
             mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
-        }else {
-            initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth()*scale) / 2;
+        } else {
+            initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth() * scale) / 2;
             mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
         }
         pathPointList.clear();
@@ -255,6 +249,7 @@ public class MapView extends View {
         postInvalidate();
     }
 
+    //推出所有状态
     public void exitAllState() {
         isShowRectState = false;
         isShowRobotState = false;
@@ -271,15 +266,16 @@ public class MapView extends View {
     public ArrayList<PointF> DBPathPointList = new ArrayList<>();
 
     private boolean isShowDBPath;
+
     public void setShowDBPath(boolean show) {
         isShowDBPath = show;
         isAddPathState = !show;
         isShowRectState = !show;
-        if(show) reset();
+        if (show) reset();
     }
 
     private void performShowDBPath(Canvas canvas) {
-        if(isShowDBPath) {
+        if (isShowDBPath) {
             // draw record paths
             float[] transPoint = new float[]{0, 0};
             Path path = new Path();
@@ -474,7 +470,7 @@ public class MapView extends View {
      * 擦除功能
      */
     private PorterDuffXfermode mPorterDuffXfermode;
-    boolean isEraseState = false;
+    boolean isEraseState = false;//是否擦除状态
     Path mErasePath = null;
     PointF mErasePoint = null;
     float mEraseRadius = 24.0f;
@@ -491,6 +487,7 @@ public class MapView extends View {
         return isEraseState;
     }
 
+    //保存修图
     public Bitmap saveErasedMap() {
         if (!isEraseState) {
             return null;
@@ -580,17 +577,17 @@ public class MapView extends View {
             float yScale = ((float) viewHeight) / mBitmap.getHeight();
             float scale = Math.min(xScale, yScale);
             mCurrentMatrix.setScale(scale, scale);
-            if(scale == xScale) {
-                initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight()*scale) / 2;
+            if (scale == xScale) {
+                initMapToCenterOffset = (((float) viewHeight) - mBitmap.getHeight() * scale) / 2;
                 mCurrentMatrix.postTranslate(0, initMapToCenterOffset);
-            }else {
-                initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth()*scale) / 2;
+            } else {
+                initMapToCenterOffset = (((float) viewWidth) - mBitmap.getWidth() * scale) / 2;
                 mCurrentMatrix.postTranslate(initMapToCenterOffset, 0);
             }
         }
         //set robot image
         if (mRobotImage == null) {
-            mRobotImage = BitmapFactory.decodeResource(getResources(), R.drawable.zhixiang);
+            mRobotImage = BitmapFactory.decodeResource(getResources(), R.mipmap.robot_pose);
         }
         scaleRobotImage();
     }
@@ -724,22 +721,20 @@ public class MapView extends View {
         }
 
         if (isShowRobotPath) {
-            if (isShowRobotPath) {
-                Path path = new Path();
-                float[] transPoint = new float[2];
-                for (int i = 0; i < mRobotPath.size(); i++) {
-                    PointF pointf = mRobotPath.get(i);
-                    transPoint[0] = pointf.x;
-                    transPoint[1] = pointf.y;
-                    mCurrentMatrix.mapPoints(transPoint);
-                    if (i == 0) {
-                        path.moveTo(transPoint[0], transPoint[1]);
-                    } else {
-                        path.lineTo(transPoint[0], transPoint[1]);
-                    }
+            Path path = new Path();
+            float[] transPoint = new float[2];
+            for (int i = 0; i < mRobotPath.size(); i++) {
+                PointF pointf = mRobotPath.get(i);
+                transPoint[0] = pointf.x;
+                transPoint[1] = pointf.y;
+                mCurrentMatrix.mapPoints(transPoint);
+                if (i == 0) {
+                    path.moveTo(transPoint[0], transPoint[1]);
+                } else {
+                    path.lineTo(transPoint[0], transPoint[1]);
                 }
-                canvas.drawPath(path, mRobotPathPaint);
             }
+            canvas.drawPath(path, mRobotPathPaint);
             float[] point = new float[]{mRobotPoint.x, mRobotPoint.y};
             Matrix rotationMatrix = new Matrix();
             rotationMatrix.setRotate(mRobotDirection);
@@ -748,7 +743,7 @@ public class MapView extends View {
             canvas.drawBitmap(robotImage, point[0] - mRobotImage.getWidth() / 2, point[1] - mRobotImage.getHeight() / 2, null);
         }
 
-        if(isShowCoveragePath) {
+        if (isShowCoveragePath) {
             Path path = new Path();
             float[] transPoint = new float[2];
             for (int i = 0; i < coveragePath.size(); i++) {
@@ -764,6 +759,12 @@ public class MapView extends View {
             }
             canvas.drawPath(path, mRobotPathPaint);
 //            isShowCoveragePath = false;
+        }
+        if (pose != null && pose.position != null) {
+            @SuppressLint("DrawAllocation") float[] Points = new float[]{(float) RosData.getPixelXY(pose.position.x, pose.position.y).x, (float) RosData.getPixelXY(pose.position.x, pose.position.y).y};
+            mCurrentMatrix.mapPoints(Points);
+            Log.d("CeshiTAG", "位置画布" + Points[0] + "===" + Points[1]);
+            canvas.drawBitmap(mRobotImage, Points[0], Points[1], null);
         }
     }
 
@@ -786,7 +787,7 @@ public class MapView extends View {
         //Log.v("MapView", "onTouchEvent");
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                if(isSetGoal) {
+                if (isSetGoal) {
                     float[] xy = {event.getX(), event.getY()};
                     Matrix matrixInvert = new Matrix();
                     mCurrentMatrix.invert(matrixInvert);
@@ -855,10 +856,8 @@ public class MapView extends View {
         return result;
     }
 
-    public enum updateMapID
-    {
-        RUNNING,
-        SCANNING,
+    public enum updateMapID {
+        RUNNING, SCANNING,
     }
 }
 

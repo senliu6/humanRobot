@@ -8,19 +8,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.mydata.DBUtils;
-import com.shciri.rosapp.ui.control.ManageTaskDB;
-import com.shciri.rosapp.utils.AlarmManagerUtils;
+import com.shciri.rosapp.server.AlarmService;
+import com.shciri.rosapp.utils.SharedPreferencesUtil;
 
 import java.util.List;
 
-import src.com.jilk.ros.message.CoveragePoints;
-
 public class TimeTaskAdapter extends RecyclerView.Adapter<TimeTaskAdapter.ViewHolder> {
 
-    private List<TimeTaskItemList>localDataSet;
+    private List<TimeTaskItemList> localDataSet;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -52,7 +49,7 @@ public class TimeTaskAdapter extends RecyclerView.Adapter<TimeTaskAdapter.ViewHo
      * Initialize the dataset of the Adapter.
      *
      * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView.
+     *                by RecyclerView.
      */
     public TimeTaskAdapter(List<TimeTaskItemList> dataSet) {
         localDataSet = dataSet;
@@ -80,15 +77,17 @@ public class TimeTaskAdapter extends RecyclerView.Adapter<TimeTaskAdapter.ViewHo
         viewHolder.deleteTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    removeData(position);
+                removeData(position, v);
             }
         });
     }
 
     //  删除数据
-    public void removeData(int position) {
+    public void removeData(int position, View view) {
         DBUtils.getInstance().deleteTimeTask(localDataSet.get(position).ID);
-        AlarmManagerUtils.getInstance(null).cancelClockAlarm(localDataSet.get(position).ID);
+        //AlarmManagerUtils.getInstance(null).cancelClockAlarm(localDataSet.get(position).ID);
+        List<AlarmService.Alarm> alarmList = SharedPreferencesUtil.Companion.getAlarmList(view.getContext().getApplicationContext());
+        SharedPreferencesUtil.Companion.removeAlarm(view.getContext().getApplicationContext(), String.valueOf(localDataSet.get(position).ID));
         localDataSet.remove(position);
         //删除动画
         notifyItemRemoved(position);
@@ -110,7 +109,7 @@ public class TimeTaskAdapter extends RecyclerView.Adapter<TimeTaskAdapter.ViewHo
         public Integer loop;
         public String mode;
 
-        public TimeTaskItemList(Integer id, String originTaskName, Integer originTaskId, String time, String date, Integer loop, String mode){
+        public TimeTaskItemList(Integer id, String originTaskName, Integer originTaskId, String time, String date, Integer loop, String mode) {
             this.ID = id;
             this.originTaskId = originTaskId;
             this.originTaskName = originTaskName;

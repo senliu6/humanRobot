@@ -2,6 +2,9 @@ package com.shciri.rosapp.ui.myview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
@@ -9,24 +12,19 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.BatteryPercentChangeEvent;
-import com.shciri.rosapp.dmros.tool.PublishEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import src.com.jilk.ros.message.PoseStamped;
 
 public class StatusBarView extends LinearLayout {
 
@@ -99,15 +97,38 @@ public class StatusBarView extends LinearLayout {
         }
     }
 
+    /**
+     * 判断ifi连接状态
+     * @param context
+     * @return
+     */
+    public static boolean isWifiConnected(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+            Network network = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                network = connectivityManager.getActiveNetwork();
+            }
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+
+            return networkCapabilities != null &&
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+        }
+
+        return false;
+    }
+
     //切换WIFI状态的逻辑初版
     public void setWifi(){
         // 用到了我们的本地的WiFi管理
         WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        boolean isConnectedToWifi = (wifiInfo != null && wifiInfo.getNetworkId() != -1);
+        boolean isConnectedToWifi = isWifiConnected(getContext().getApplicationContext());
         if (isConnectedToWifi) {
             int signalStrength = wifiInfo.getRssi();
-            // 在这里判断信号强度的大小，根据具体需求处理逻辑，取值范围是-50（信号是最好）到-90之间
+            // 在这里判断信号强度的大小，根据具体需求处理逻辑，取值范围是0（信号是最好）到-90之间
             Log.e("wifiinfor","信号值为："+signalStrength);
             if (signalStrength<=-90){
                 // 注意：需要去设置src去动态改变WiFi图片
@@ -116,11 +137,11 @@ public class StatusBarView extends LinearLayout {
                 wifistatus0.setImageResource(R.mipmap.wifi_2);
             }else if(signalStrength<=-70){
                 wifistatus0.setImageResource(R.mipmap.wifi_3);
-            }else if(signalStrength<=-55){
+            }else if(signalStrength<=0){
                 wifistatus0.setImageResource(R.mipmap.wifi_4);
             }else{
                 wifistatus0.setImageResource(R.mipmap.wifi_0);
-                Toast.makeText(getContext(), "Wifi异常，请检查网络是否完好", Toast.LENGTH_SHORT).show();
+                Toaster.showShort( "Wifi异常，请检查网络是否完好");
             }
         }
         // 每隔10秒去重新获取信号值

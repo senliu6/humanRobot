@@ -7,6 +7,7 @@ import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import com.shciri.rosapp.databinding.DialogInputBinding
 import com.shciri.rosapp.utils.regex.LimitInputTextWatcher
 
@@ -26,7 +27,8 @@ class InputDialog(
     private val onConfirmClick: InputDialogListener?,
     private var cancelable: Boolean = false,
     private val regex: String?,
-    private val maxLength: Int
+    private val maxLength: Int,
+    private var editShow: Boolean = true
 ) : Dialog(context) {
     private lateinit var binding: DialogInputBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +71,7 @@ class InputDialog(
         val filters = arrayOf<InputFilter>(LengthFilter(maxLength))
         binding.editInput.filters = filters
         setCanceledOnTouchOutside(cancelable)
+        binding.editInput.isVisible = editShow
     }
 
     class Builder(private val context: Context) {
@@ -81,6 +84,7 @@ class InputDialog(
         private var cancelable: Boolean = false
         private var regex: String? = null
         private var maxLength: Int = 15
+        private var editShow: Boolean = true
 
         fun setTitle(title: String?): Builder {
             this.title = title
@@ -127,6 +131,11 @@ class InputDialog(
             return this
         }
 
+        fun setEditShow(editShow: Boolean): Builder {
+            this.editShow = editShow
+            return this
+        }
+
         fun build(): InputDialog {
             return InputDialog(
                 context,
@@ -138,7 +147,8 @@ class InputDialog(
                 onConfirmClick,
                 cancelable,
                 regex,
-                maxLength
+                maxLength,
+                editShow
             )
         }
 

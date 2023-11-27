@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="280dp"
         android:layout_height="240dp"
-        android:background="@mipmap/choosetask_beijingkuang4_21"
+        android:background="@mipmap/choose_task_background"
         android:orientation="horizontal" >
 
         <TextView
@@ -24,8 +24,7 @@
             android:includeFontPadding="false"
             android:text="execute_task_1"
             android:textAlignment="center"
-            android:textColor="#02fde8"
-            android:textSize="30sp"
+            style="@style/WhiteTextTheme.28"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/task_bt_run_status_view"
             app:layout_constraintHorizontal_bias="0.51"
@@ -51,8 +50,7 @@
                 android:includeFontPadding="false"
                 android:text="详情"
                 android:textAlignment="center"
-                android:textColor="#02fde8"
-                android:textSize="20sp" />
+                style="@style/WhiteTextTheme.20"/>
 
             <ImageView
                 android:id="@+id/task_bt"
@@ -73,29 +71,11 @@
             app:layout_constraintTop_toBottomOf="@+id/task_title"
             app:layout_constraintVertical_bias="0.7" />
 
-        <Spinner
-            android:id="@+id/task_bt_spinner"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:dropDownWidth="200dp"
-            android:dropDownVerticalOffset="30dp"
-            android:entries="@array/spinner_string"
-            android:overlapAnchor="false"
-            android:spinnerMode="dropdown"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/task_bt_run_status_view"
-            app:layout_constraintEnd_toEndOf="@+id/task_bt_run_status_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/task_bt_run_status_view"
-            app:layout_constraintTop_toTopOf="@+id/task_bt_run_status_view"
-            app:layout_constraintVertical_bias="0.5" />
-
         <TextView
             android:id="@+id/task_bt_status_tv"
             android:includeFontPadding="false"
             android:text="@string/task_bt_default_run_state"
-            android:textColor="#ff02fde8"
-            android:textSize="25sp"
+            style="@style/WhiteTextTheme.24"
             app:layout_constraintBottom_toBottomOf="@+id/task_bt_run_status_view"
             app:layout_constraintEnd_toStartOf="@+id/task_bt_pull_iv"
             app:layout_constraintStart_toEndOf="@+id/editIv"
@@ -127,6 +107,23 @@
             app:layout_constraintStart_toStartOf="@+id/task_bt_run_status_view"
             app:layout_constraintTop_toTopOf="@+id/task_bt_status_tv"
             tools:srcCompat="@mipmap/choosetask_bi4_21" />
+
+        <Spinner
+            android:id="@+id/task_bt_spinner"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:dropDownWidth="200dp"
+            android:dropDownVerticalOffset="30dp"
+            android:entries="@array/spinner_string"
+            android:overlapAnchor="false"
+            android:spinnerMode="dropdown"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/task_bt_run_status_view"
+            app:layout_constraintEnd_toEndOf="@+id/task_bt_run_status_view"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/task_bt_run_status_view"
+            app:layout_constraintTop_toTopOf="@+id/task_bt_run_status_view"
+            app:layout_constraintVertical_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

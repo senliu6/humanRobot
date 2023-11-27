@@ -19,14 +19,16 @@
  */
 package src.com.jilk.ros;
 
-import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.dmros.client.RosInit;
-
 import java.util.concurrent.LinkedBlockingQueue;
 
 import src.com.jilk.ros.message.Message;
-import src.com.jilk.ros.rosbridge.operation.*;
 import src.com.jilk.ros.rosbridge.FullMessageHandler;
+import src.com.jilk.ros.rosbridge.operation.Advertise;
+import src.com.jilk.ros.rosbridge.operation.Operation;
+import src.com.jilk.ros.rosbridge.operation.Publish;
+import src.com.jilk.ros.rosbridge.operation.Subscribe;
+import src.com.jilk.ros.rosbridge.operation.Unadvertise;
+import src.com.jilk.ros.rosbridge.operation.Unsubscribe;
 
 
 public class Topic<T extends Message> extends LinkedBlockingQueue<T> implements FullMessageHandler {
@@ -130,6 +132,7 @@ public class Topic<T extends Message> extends LinkedBlockingQueue<T> implements 
         public void run() {
             while (!Thread.interrupted()) {
                 try {
+//                    Log.d("CeshiTAG","handler===="+handler.getClass().toString());
                     handler.onMessage(take());
                 }
                 catch (InterruptedException ex) {

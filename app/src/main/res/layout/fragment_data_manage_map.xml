@@ -22,15 +22,14 @@
             android:layout_width="@dimen/return_arrows_width"
             android:layout_height="@dimen/return_arrows_height"
             android:scaleType="fitXY"
-            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+            android:src="@mipmap/choose_task_point_left" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:text="数据管理"
-            android:textColor="#ff02fde8"
-            android:textSize="22sp" />
+            style="@style/WhiteTextTheme.28" />
     </LinearLayout>
 
     <ImageView
@@ -49,13 +48,13 @@
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/map_manage_swipeList"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/mapView"
         android:layout_width="443dp"
         android:layout_height="450dp"
-        app:layout_constraintVertical_bias="0.625"/>
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/mapView"
+        app:layout_constraintVertical_bias="0.625" />
 
     <TextView
         android:id="@+id/scan_new_map"
@@ -64,9 +63,8 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="+扫描新地图"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
+        android:text="@string/collecion"
+        style="@style/WhiteTextTheme.20"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3" />
@@ -90,13 +88,13 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="开始修图"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/startVirtualWallTv"
-        app:layout_constraintEnd_toStartOf="@+id/undoEraseMapTv"
+        android:text="@string/start_ps"
+        style="@style/WhiteTextTheme.20"
+        app:layout_constraintEnd_toStartOf="@id/scan_new_map"
+        app:layout_constraintTop_toTopOf="@id/scan_new_map"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/imageView3" />
+        android:layout_marginEnd="20dp"
+        />
 
     <TextView
         android:id="@+id/startVirtualWallTv"
@@ -105,97 +103,12 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="开始虚拟墙"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/scan_new_map"
-        app:layout_constraintEnd_toStartOf="@+id/saveVirtualWallTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/imageView3" />
-
-    <TextView
-        android:id="@+id/saveVirtualWallTv"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="保存虚拟墙"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/startVirtualWallTv"
-        app:layout_constraintEnd_toStartOf="@+id/addVirtualWallTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/startVirtualWallTv" />
-
-    <TextView
-        android:id="@+id/addVirtualWallTv"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="添加虚拟点"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/startVirtualWallTv"
-        app:layout_constraintEnd_toStartOf="@+id/exitVirtualWallTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveVirtualWallTv" />
-
-    <TextView
-        android:id="@+id/exitVirtualWallTv"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="退出虚拟墙"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/startVirtualWallTv"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/addVirtualWallTv" />
-
-    <TextView
-        android:id="@+id/undoEraseMapTv"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="撤销操作"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/saveEraseMapTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/startEraseMapTv"
-        app:layout_constraintTop_toTopOf="@+id/startEraseMapTv" />
-
-    <TextView
-        android:id="@+id/endEraseMapTv"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="退出修图"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/saveEraseMapTv"
-        app:layout_constraintTop_toTopOf="@+id/startEraseMapTv" />
-
-    <TextView
-        android:id="@+id/saveEraseMapTv"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="保存修图"
-        android:textColor="#F4F1F1"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/endEraseMapTv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/undoEraseMapTv"
-        app:layout_constraintTop_toTopOf="@+id/startEraseMapTv" />
+        android:text="@string/start_v_wall"
+        style="@style/WhiteTextTheme.20"
+        app:layout_constraintStart_toEndOf="@id/scan_new_map"
+        app:layout_constraintTop_toTopOf="@id/scan_new_map"
+        android:layout_marginStart="20dp"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <ImageView
         android:id="@+id/imageView13"
@@ -240,4 +153,52 @@
         app:layout_constraintBottom_toBottomOf="@+id/map_create_time_tv"
         app:layout_constraintStart_toEndOf="@+id/map_create_time_tv"
         app:layout_constraintTop_toTopOf="@+id/map_create_time_tv" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="撤销"
+        style="@style/WhiteTextTheme.28"
+        app:layout_constraintEnd_toStartOf="@id/btnSave"
+        app:layout_constraintTop_toTopOf="@id/btnSave"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="保存"
+        style="@style/WhiteTextTheme.28"
+        app:layout_constraintEnd_toStartOf="@id/btnQuit"
+        app:layout_constraintTop_toTopOf="@id/btnQuit"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnQuit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="退出"
+        style="@style/WhiteTextTheme.28"
+        app:layout_constraintBottom_toBottomOf="@id/mapView"
+        app:layout_constraintEnd_toEndOf="@id/mapView"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

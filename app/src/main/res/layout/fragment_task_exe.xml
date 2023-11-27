@@ -1,43 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ImageView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="70dp"
-        android:id="@+id/task_exe_head_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:srcCompat="@mipmap/tou4_21" />
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/return_ll"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="120dp"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/task_exe_head_view">-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="@dimen/return_arrows_width"-->
-<!--            android:layout_height="@dimen/return_arrows_height"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:src="@mipmap/choosetask_jiantouzuo4_21" />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/return_arrow_text_margin"-->
-<!--            android:text="任务列表"-->
-<!--            android:textColor="#ff02fde8"-->
-<!--            android:textSize="@dimen/return_text_size" />-->
-<!--    </LinearLayout>-->
 
     <ImageView
         android:id="@+id/imageView19"
@@ -45,15 +11,17 @@
         android:layout_height="63dp"
         android:background="@mipmap/performmap_xiacengkuang4_21"
         android:scaleType="fitXY"
-        app:layout_constraintTop_toBottomOf="@+id/task_exe_head_view"
         app:layout_constraintBottom_toTopOf="@+id/task_exe_view_pager"
         app:layout_constraintEnd_toEndOf="@+id/task_exe_view_pager"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="@+id/task_exe_view_pager"
-        app:srcCompat="@mipmap/performmap_xiacengkuang4_21" />
+        app:layout_constraintTop_toBottomOf="@+id/parent"
+        app:srcCompat="@mipmap/performmap_xiacengkuang4_21"
+        tools:ignore="UnknownIdInLayout" />
 
     <TextView
         android:id="@+id/tabLeftIv"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="166dp"
         android:layout_height="0dp"
         android:layout_marginStart="-4dp"
@@ -61,22 +29,19 @@
         android:gravity="center"
         android:scaleType="fitXY"
         android:text="工作视图"
-        android:textColor="#fff3f3f3"
-        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView19"
         app:layout_constraintStart_toStartOf="@+id/imageView19"
         app:layout_constraintTop_toTopOf="@+id/imageView19" />
 
     <TextView
         android:id="@+id/tabRightIv"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="166dp"
         android:layout_height="0dp"
         android:layout_marginEnd="-4dp"
-        android:scaleType="fitXY"
         android:gravity="center"
+        android:scaleType="fitXY"
         android:text="地图视图"
-        android:textColor="#fff3f3f3"
-        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView19"
         app:layout_constraintEnd_toEndOf="@+id/imageView19"
         app:layout_constraintTop_toTopOf="@+id/imageView19"

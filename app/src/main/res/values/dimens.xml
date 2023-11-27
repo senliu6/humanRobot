@@ -28,8 +28,8 @@
     <dimen name="add_new_task_text_margin_bottom">10dp</dimen>
     <!-- choose task size -->
     <dimen name="choose_task_icon_size_width">35dp</dimen>
-    <dimen name="choose_task_icon_size_height">35dp</dimen>
-    <dimen name="choose_task_icon_margin_top">54dp</dimen>
+    <dimen name="choose_task_icon_size_height">45dp</dimen>
+    <dimen name="choose_task_icon_margin_top">44dp</dimen>
     <dimen name="choose_task_icon_margin_left">42dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="task_bt_margin">100dp</dimen>

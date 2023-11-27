@@ -1,20 +1,18 @@
 package com.shciri.rosapp.dmros.data;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.media.MediaPlayer;
-import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
 
-import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.shciri.rosapp.dmros.tool.RobotPoseEvent;
+import com.shciri.rosapp.dmros.tool.StateNotifyHeadEvent;
+import com.shciri.rosapp.dmros.tool.StateTopicReplyEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
-import com.shciri.rosapp.ui.TaskControlActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,34 +22,42 @@ import src.com.jilk.ros.message.CoverageMap;
 import src.com.jilk.ros.message.CoveragePath;
 import src.com.jilk.ros.message.MapMsg;
 import src.com.jilk.ros.message.Message;
+import src.com.jilk.ros.message.Pose;
+import src.com.jilk.ros.message.StateMachineReply;
+import src.com.jilk.ros.message.StateNotificationHeartbeat;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformsMsg;
-import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.custom.Battery;
 import src.com.jilk.ros.message.sensor_msgs.Range;
 
 public class ReceiveHandler {
 
-    MapTopicHandler mapTopicHandler;
-    CmdValTopicHandler cmdValTopicHandler;
-    TFTopicHandler tfTopicHandler;
-    GoalTopicHandler goalTopicHandler;
-    CoverageMapHandler coverageMapHandler;
-    CoveragePathHandler coveragePathHandler;
-    UltrasonicHandler ultrasonicHandler;
-    BatteryHandler batteryHandler;
+    MapTopicHandler mapTopicHandler = new MapTopicHandler();
+    CmdValTopicHandler cmdValTopicHandler = new CmdValTopicHandler();
+    TFTopicHandler tfTopicHandler = new TFTopicHandler();
+    GoalTopicHandler goalTopicHandler = new GoalTopicHandler();
+    CoverageMapHandler coverageMapHandler = new CoverageMapHandler();
+    CoveragePathHandler coveragePathHandler = new CoveragePathHandler();
+    UltrasonicHandler ultrasonicHandler = new UltrasonicHandler();
+    BatteryHandler batteryHandler = new BatteryHandler();
+    StatesReplyHandler statesReplyHandler = new StatesReplyHandler();
+    StateNotifyHandler stateNotifyHandler = new StateNotifyHandler();
+    WatchMapHandler watchMapHandler = new WatchMapHandler();
+    RobotPoseHandler robotPoseHandler = new RobotPoseHandler();
+
 
     private class MapTopicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            RosData.map = (MapMsg)message;
+            RosData.map = (MapMsg) message;
             RosData.MapData.fastConversion();
-            analysisMap();
+            analysisMap(false);
         }
     }
 
-    private void analysisMap() {
-        if(RosInit.isConnect) {
+    private void analysisMap(boolean collect) {
+        if (RosInit.isConnect) {
+            Log.d("CeshiTAG", "---获取地图信息" + PublishEvent.readyPublish);
             MyPGM pgm = new MyPGM();
             int[] pix;
             pix = pgm.readData(RosData.map.info.width, RosData.map.info.height, 5, RosData.map.data, RosData.MapData.poseX, RosData.MapData.poseY);   //P5-Gray image
@@ -59,12 +65,19 @@ public class ReceiveHandler {
             bitmap.setPixels(pix, 0, RosData.map.info.width, 0, 0, RosData.map.info.width, RosData.map.info.height);
             Matrix invert = new Matrix();
             invert.setScale(1, -1); //镜像翻转以与真实地图对应
-//            RosData.rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert ,true);
+            RosData.rosBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), invert, true);
 
 //            System.out.println("MapOK");
+            if (collect) {
+                if (PublishEvent.readyPublish) {
+                    EventBus.getDefault().post(new PublishEvent("/watch/carto_map"));
+                }
+            } else {
+                if (PublishEvent.readyPublish) {
+                    EventBus.getDefault().post(new PublishEvent("/map"));
+                }
+            }
 
-            if(PublishEvent.readyPublish)
-                EventBus.getDefault().post(new PublishEvent("/map"));
         }
     }
 
@@ -79,15 +92,14 @@ public class ReceiveHandler {
         @Override
         public void onMessage(Message message) {
             RosData.tf = (TFTopic) message;
-            for (TransformsMsg trans :
-                    RosData.tf.transforms) {
+            for (TransformsMsg trans : RosData.tf.transforms) {
                 if (trans.child_frame_id.equals("base_link")) {
                     RosData.BaseLink.transform = trans.transform;
                     RosData.BaseLink.fastConversion();
                 }
             }
-            if(PublishEvent.readyPublish)
-                EventBus.getDefault().post(new PublishEvent("/tf"));
+            if (PublishEvent.readyPublish) EventBus.getDefault().post(new PublishEvent("/tf"));
+
         }
     }
 
@@ -107,10 +119,10 @@ public class ReceiveHandler {
     private class CoveragePathHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            RosData.coveragePath = (CoveragePath) message ;
+            RosData.coveragePath = (CoveragePath) message;
             //System.out.println("coveragePath coveragePath coveragePath coveragePath coveragePath coveragePath  ." + RosData.coveragePath.poses[1].header.seq);
             //, (int)(RosData.coveragePath.poseStamped.pose.position.x/0.05f), (int)(RosData.coveragePath.poseStamped.pose.position.x/0.05f))
-            if(PublishEvent.readyPublish)
+            if (PublishEvent.readyPublish)
                 EventBus.getDefault().post(new PublishEvent("/coverage_path"));
         }
     }
@@ -118,9 +130,9 @@ public class ReceiveHandler {
     private class UltrasonicHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            Range ultrasonic = (Range) message ;
+            Range ultrasonic = (Range) message;
 //            Log.i("xxx",Float.toString(ultrasonic.range));
-            if(ultrasonic.range < 0.3) {
+            if (ultrasonic.range < 0.3) {
                 EventBus.getDefault().post(new UltrasonicEvent("warning"));
             }
         }
@@ -129,49 +141,97 @@ public class ReceiveHandler {
     private class BatteryHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            Battery battery = (Battery) message ;
+            Battery battery = (Battery) message;
             EventBus.getDefault().post(new BatteryEvent(battery.battery_percent, battery.current));
+        }
+    }
+
+    private class StatesReplyHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            StateMachineReply stateMachineReply = (StateMachineReply) message;
+            Log.d("CeshiTAG", "statereply" + stateMachineReply.hardware_control + "==" + stateMachineReply.map_control + "==" + stateMachineReply.navigation_task);
+            RosData.stateMachineReply = stateMachineReply;
+            EventBus.getDefault().post(new StateTopicReplyEvent(stateMachineReply));
+        }
+    }
+
+    private class StateNotifyHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            StateNotificationHeartbeat stateNotificationHeartbeat = (StateNotificationHeartbeat) message;
+//            Log.d("CeshiTAG", "state"+ stateNotificationHeartbeat.motor_state +stateNotificationHeartbeat.camera_state+"=="+ stateNotificationHeartbeat.lidar_state+"="+stateNotificationHeartbeat.navigation_state+"=="+stateNotificationHeartbeat.slam_state);
+            RosData.stateNotificationHeartbeat = stateNotificationHeartbeat;
+            EventBus.getDefault().post(new StateNotifyHeadEvent(stateNotificationHeartbeat));
+
+        }
+    }
+
+    public class WatchMapHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            RosData.map = (MapMsg) message;
+            RosData.MapData.fastConversion();
+            analysisMap(true);
+        }
+    }
+
+    public class RobotPoseHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            Pose pose = (Pose) message;
+            postDelayed(() -> EventBus.getDefault().post(new RobotPoseEvent(pose)),500);
+
         }
     }
 
 
     public MessageHandler getMapTopicHandler() {
-        mapTopicHandler = new MapTopicHandler();
         return mapTopicHandler;
     }
 
     public MessageHandler getCmdValTopicHandler() {
-        cmdValTopicHandler = new CmdValTopicHandler();
         return cmdValTopicHandler;
     }
 
     public MessageHandler getTFTopicHandler() {
-        tfTopicHandler = new TFTopicHandler();
         return tfTopicHandler;
     }
 
     public MessageHandler getGoalTopicHandler() {
-        goalTopicHandler = new GoalTopicHandler();
         return goalTopicHandler;
     }
 
     public MessageHandler getCoverageMapTopicHandler() {
-        coverageMapHandler = new CoverageMapHandler();
         return coverageMapHandler;
     }
 
     public MessageHandler getCoveragePathTopicHandler() {
-        coveragePathHandler = new CoveragePathHandler();
         return coveragePathHandler;
     }
 
     public MessageHandler getUltrasonicTopicHandler() {
-        ultrasonicHandler = new UltrasonicHandler();
         return ultrasonicHandler;
     }
 
     public MessageHandler getBatteryHandler() {
-        batteryHandler = new BatteryHandler();
         return batteryHandler;
     }
+
+    public MessageHandler getStatusHandler() {
+        return statesReplyHandler;
+    }
+
+    public MessageHandler getStatusNotifyHandler() {
+        return stateNotifyHandler;
+    }
+
+    public MessageHandler getWatchMapHandler() {
+        return watchMapHandler;
+    }
+
+    public MessageHandler getRobotPoseHandler() {
+        return robotPoseHandler;
+    }
+
 }

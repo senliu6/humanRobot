@@ -1,14 +1,8 @@
 package com.shciri.rosapp.utils.protocol;
 
-import android.provider.ContactsContract;
-
-import com.shciri.rosapp.dmros.tool.BatteryEvent;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import src.com.jilk.ros.message.custom.Battery;
 
 public class ReplyIPC {
     final byte SOF_DETECTED = 0;                /* 起始标志检测 */
@@ -131,6 +125,8 @@ public class ReplyIPC {
                         frame_received_handler_v1(unpack_buf);
                     }
                 }
+                break;
+            default:
         }
     }
 

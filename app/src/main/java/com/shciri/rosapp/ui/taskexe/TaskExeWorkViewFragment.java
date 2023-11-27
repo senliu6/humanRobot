@@ -1,6 +1,5 @@
 package com.shciri.rosapp.ui.taskexe;
 
-import android.app.ADWApiManager;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;

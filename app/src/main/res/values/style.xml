@@ -27,4 +27,72 @@
         <item name="colorControlNormal">#e6e6e6</item>
     </style>
 
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- 颜色 -->
+    <style name="WhiteTextTheme">
+        <item name="android:textColor">@color/white_f4f1f1</item>
+    </style>
+
+    <style name="WhiteTextTheme.20" parent="WhiteTextTheme">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="WhiteTextTheme.22" parent="WhiteTextTheme">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="WhiteTextTheme.24" parent="WhiteTextTheme">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="WhiteTextTheme.26" parent="WhiteTextTheme">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="WhiteTextTheme.28" parent="WhiteTextTheme">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="WhiteTextTheme.30" parent="WhiteTextTheme">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="WhiteTextTheme.40" parent="WhiteTextTheme">
+        <item name="android:textSize">40sp</item>
+    </style>
+
+
+    <style name="GrayTextTheme">
+        <item name="android:textColor">@color/gray_02a496</item>
+    </style>
+
+    <style name="GrayTextTheme.20" parent="GrayTextTheme">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="GrayTextTheme.26" parent="GrayTextTheme">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="GrayTextTheme.30" parent="GrayTextTheme">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="RedTextTheme">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="RedTextTheme.20" parent="RedTextTheme">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="RedTextTheme.30" parent="RedTextTheme">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+
 </resources>

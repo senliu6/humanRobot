@@ -1,36 +1,32 @@
 package com.shciri.rosapp.ui;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.databinding.ActivityTaskControlBinding;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosService;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.dmros.tool.BatteryEvent;
-import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
-import com.shciri.rosapp.ui.myview.BatteryView;
+import com.shciri.rosapp.server.AlarmService;
 import com.shciri.rosapp.ui.myview.StatusBarView;
 import com.shciri.rosapp.utils.AlarmManagerUtils;
 import com.shciri.rosapp.utils.MyBroadCastReceiver;
@@ -42,35 +38,40 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
 
+import src.com.jilk.ros.message.StateMachineRequest;
+
+/**
+ * @author
+ */
 public class TaskControlActivity extends AppCompatActivity {
-    private DrawerLayout drawerLayout;
     private OnBackPressedCallback mBackPressedCallback;
     private RosTopic rosTopic = new RosTopic();
     private RosService rosService = new RosService();
     private ReceiveHandler receiveHandler = new ReceiveHandler();
     private StatusBarView statusBarView;
 
+    private ActivityTaskControlBinding binding;
+
+    private ExecutorService executorService = RCApplication.getExecutorService();
+
+    private List<String> topicingList = new ArrayList<String>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_control);
+        binding = ActivityTaskControlBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         EventBus.getDefault().register(this);
 
         AlarmManagerUtils.getInstance(this);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        findViewById(R.id.drawer_close_ll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawer(GravityCompat.START);
-                finish();
-            }
-        });
-
 
 
         fragmentTrans();
@@ -81,6 +82,8 @@ public class TaskControlActivity extends AppCompatActivity {
 
         rosSubscribe();
         rosServiceInit();
+        Intent intent = new Intent(this, AlarmService.class);
+        startService(intent);
 
         statusBarView = findViewById(R.id.statusBar);
 
@@ -91,14 +94,13 @@ public class TaskControlActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         filter.addAction(AlarmManagerUtils.ACTION_PERIOD_CLOCK);
-        registerReceiver(myTimeReceiver,filter);
+        registerReceiver(myTimeReceiver, filter);
 
-        if(RosInit.isConnect)
-            statusBarView.setConnectStatus(true);
-        else
-            statusBarView.setConnectStatus(false);
+        statusBarView.setConnectStatus(RosInit.isConnect);
 
         statusBarView.setBatteryPercent(RCApplication.replyIPC.batteryReply.getCapacity_percent());
+
+
     }
 
     private final BroadcastReceiver myTimeReceiver = new MyBroadCastReceiver() {
@@ -110,10 +112,7 @@ public class TaskControlActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 Date date = new Date(System.currentTimeMillis());
                 statusBarView.setTimeView(simpleDateFormat.format(date));
-                if(RosInit.isConnect)
-                    statusBarView.setConnectStatus(true);
-                else
-                    statusBarView.setConnectStatus(false);
+                statusBarView.setConnectStatus(RosInit.isConnect);
 
                 byte[] data = RequestIPC.batteryRequest();
                 RCApplication.uartVCP.sendData(data);
@@ -125,80 +124,115 @@ public class TaskControlActivity extends AppCompatActivity {
     };
 
     public void openDrawerLayout() {
-        drawerLayout.openDrawer(GravityCompat.START);
+        binding.drawerLayout.openDrawer(GravityCompat.START);
     }
 
     private void rosSubscribe() {
-        if(RosInit.isConnect) {
-            try{
-                for(String s : RCApplication.client.getTopics()) {
-                    for (int i=0; i<rosTopic.TopicName.length; i++) {
-//                        Log.d("TOPIC", rosTopic.TopicName[i]);
-                        if(s.equals(rosTopic.TopicName[i])){
-                            rosTopic.TopicMatch[i] = true;
-                            switch (i){
-                                case 0:
-                                    rosTopic.subscribeMapTopic(receiveHandler.getMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 1:
-                                    rosTopic.subscribeCmdVelTopic(receiveHandler.getCmdValTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 2:
-                                    rosTopic.subscribeTFTopic(receiveHandler.getTFTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 3:
-                                    rosTopic.initGoalTopic(receiveHandler.getGoalTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 4:
-                                    rosTopic.initCoveragePointsTopic(((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 5:
-                                    rosTopic.initCoveragePathTopic(receiveHandler.getCoveragePathTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 6:
-                                    rosTopic.subscribeStartMappingTopic(((RCApplication) getApplication()).getRosClient());
-                                    break;
-                                case 12:
-                                    rosTopic.subscribeJointVelocityTopic(((RCApplication) getApplication()).getRosClient());
-                                    break;
-
-                                case 13:
-                                    rosTopic.subscribeEmergencyTopic(((RCApplication) getApplication()).getRosClient());
-                                    break;
-
-                                case 14:
-                                    rosTopic.subscribeBatteryTopic(receiveHandler.getBatteryHandler(), ((RCApplication) getApplication()).getRosClient());
-                                    break;
-
-//                                case 10:
-//                                    rosTopic.subscribeUltrasonicTopic2(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-//                                    break;
-//                                case 11:
-//                                    rosTopic.subscribeUltrasonicTopic3(receiveHandler.getUltrasonicTopicHandler(), ((RCApplication) getApplication()).getRosClient());
-//                                    break;
+        if (RosInit.isConnect) {
+            executorService.submit(() -> {
+                try {
+                    long start = System.currentTimeMillis();
+                    Log.d("CeshiTAG", "topicList" + RCApplication.client.getTopics().length);
+                    rosTopic.subscribeMapTopic(receiveHandler.getMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                    topicingList.clear();
+                    for (String s : RCApplication.client.getTopics()) {
+                        for (int i = 0; i < RosTopic.TopicName.size(); i++) {
+//                            Log.d("CeshiTAG", "可订阅的topic==" + s);
+                            if (s.equals(RosTopic.TopicName.get(i))) {
+                                topicingList.add(RosTopic.TopicName.get(i));
+                                Log.d("CeshiTAG", "已订阅的topic" + RosTopic.TopicName.get(i));
+                                rosTopic.TopicMatch[i] = true;
+                                switch (i) {
+                                    case 0:
+                                        rosTopic.subscribeMapTopic(receiveHandler.getMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 1:
+                                        rosTopic.subscribeCmdVelTopic(receiveHandler.getCmdValTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 2:
+                                        rosTopic.subscribeTFTopic(receiveHandler.getTFTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 3:
+                                        rosTopic.initGoalTopic(receiveHandler.getGoalTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 4:
+                                        rosTopic.initCoveragePointsTopic(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 5:
+                                        rosTopic.initCoveragePathTopic(receiveHandler.getCoveragePathTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 6:
+                                        rosTopic.subscribeJointVelocityTopic(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 7:
+                                        rosTopic.subscribeEmergencyTopic(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 8:
+                                        rosTopic.subscribeBatteryTopic(receiveHandler.getBatteryHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 9:
+                                        rosTopic.subscribeStatesReplyTopic(receiveHandler.getStatusHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 10:
+                                        rosTopic.subscribeStatesRequestTopic(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 11:
+                                        rosTopic.subscribeStatesNotificationTopic(receiveHandler.getStatusNotifyHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 12:
+                                        rosTopic.subscribeMapPathTopic(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 13:
+                                        rosTopic.subscribeControlPathTopic(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 14:
+                                        rosTopic.subscribeClampControl(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 15:
+                                        rosTopic.subscribeClampHardwareControl(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 16:
+                                        rosTopic.subscribeEnterManual(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 17:
+                                        rosTopic.subscribeRobotPose(receiveHandler.getRobotPoseHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 18:
+                                        rosTopic.subscribeWatchMap(receiveHandler.getWatchMapHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    default:
+                                }
                             }
                         }
                     }
+
+                    long end = System.currentTimeMillis();
+                    Log.d("CeshiTAG", "订阅耗时" + (end - start));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            });
         }
+        initHardware();
     }
 
     private void rosServiceInit() {
-        if(RosInit.isConnect) {
-            try {
-                for (String s : RCApplication.client.getServices()) {
-                    if(s.equals(rosService.ServiceName[0])) {
-                        rosService.initCoverageMapService(((RCApplication) getApplication()).getRosClient());
-                        return;
+        executorService.submit(() -> {
+            if (RosInit.isConnect) {
+                try {
+                    for (String s : RCApplication.client.getServices()) {
+                        if (s.equals(rosService.ServiceName[0])) {
+                            rosService.initCoverageMapService(((RCApplication) getApplication()).getRosClient());
+                            return;
+                        }
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-        }
+        });
+
+
     }
 
     @Override
@@ -210,7 +244,9 @@ public class TaskControlActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReplyIPC.BatteryReply event) {
         statusBarView.setBatteryPercent(event.getCapacity_percent());
-    };
+    }
+
+    ;
 
     private void windowSet() {
         Window window = getWindow();
@@ -220,49 +256,49 @@ public class TaskControlActivity extends AppCompatActivity {
         }
     }
 
+    //点击事件
     private void fragmentTrans() {
-        findViewById(R.id.system_set_ll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-                navController.navigate(R.id.systemSetFragment);
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
+        binding.drawerCloseLl.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            finish();
         });
 
-        findViewById(R.id.time_task_ll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-                navController.navigate(R.id.addTaskFragment);
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
+        binding.systemSetLl.setOnClickListener(v -> {
+            navigateTo(R.id.systemSetFragment);
         });
 
-        findViewById(R.id.manager_data_ll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-                navController.navigate(R.id.manageDataFragment);
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
+        binding.timeTaskLl.setOnClickListener(v -> {
+            navigateTo(R.id.addTaskFragment);
         });
 
-        findViewById(R.id.location_ll).setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-            navController.navigate(R.id.nav_home);
-            drawerLayout.closeDrawer(GravityCompat.START);
+        binding.managerDataLl.setOnClickListener(v -> {
+            navigateTo(R.id.manageDataFragment);
         });
 
-//        findViewById(R.id.tasks_view).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-//                navController.navigate(R.id.manageDataFragment);
-//                drawerLayout.closeDrawer(GravityCompat.START);
-//            }
-//        });
+        binding.locationLl.setOnClickListener(v -> {
+            navigateTo(R.id.nav_home);
+        });
+
+        binding.tvTaskReport.setOnClickListener(v -> {
+            navigateTo(R.id.taskReportActivity);
+        });
+
+        binding.tvInternal.setOnClickListener(v -> {
+            navigateTo(R.id.netWorkFragment);
+        });
     }
+
+    /**
+     * 跳转界面
+     *
+     * @param name 跳转地址
+     */
+    private void navigateTo(int name) {
+        NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
+        navController.navigate(name);
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
 
     private void backPressedSet() {
         mBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -270,14 +306,25 @@ public class TaskControlActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 NavController navController = Navigation.findNavController(TaskControlActivity.this, R.id.fragment_control_main);
-                if(navController.getBackStack().size() <= 2){
+                if (navController.getBackStack().size() <= 2) {
                     finish();
-                }else{
+                } else {
                     navController.navigateUp();
                 }
             }
         };
 
         getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
+    }
+
+    private void initHardware() {
+        if (topicingList.size() > 0) {
+            executorService.submit(() -> {
+                StateMachineRequest stateMachineRequest = new StateMachineRequest();
+                //开机初始化全部开关
+                stateMachineRequest.hardware_control = 11;
+                RosTopic.publishStateMachineRequest(stateMachineRequest);
+            });
+        }
     }
 }

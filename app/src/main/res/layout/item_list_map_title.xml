@@ -19,6 +19,5 @@
         android:layout_marginStart="25dp"
         android:layout_toEndOf="@+id/iv_icon"
         android:text="Daimon"
-        android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        style="@style/WhiteTextTheme.30" />
 </RelativeLayout>

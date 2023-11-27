@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,16 +43,16 @@ public class DataManageFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_manageDataFragment_to_mapFragment);
             }
         });
-        view.findViewById(R.id.manager_path_info_iv).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.manager_path_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(view).navigate(R.id.action_manageDataFragment_to_managePathInfoFragment);
             }
         });
-        view.findViewById(R.id.setting_iv).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.tv_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "click setting!!", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).navigate(R.id.action_manageDataFragment_mapSetFragment);
             }
         });
     }

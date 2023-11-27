@@ -30,11 +30,10 @@
 
     <TextView
         android:id="@+id/task_exe_name"
+        style="@style/WhiteTextTheme.40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="execute_task_1"
-        android:textColor="#ff02fde8"
-        android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/textView14"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
@@ -42,12 +41,11 @@
 
     <TextView
         android:id="@+id/textView14"
+        style="@style/WhiteTextTheme.26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="1  作业中 "
-        android:textColor="#ff02fde8"
-        android:textSize="23sp"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -66,11 +64,10 @@
 
         <TextView
             android:id="@+id/textView22"
+            style="@style/GrayTextTheme.26"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22%"
-            android:textColor="#ff05737f"
-            android:textSize="23sp" />
+            android:text="22%" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,23 +80,21 @@
 
     <TextView
         android:id="@+id/textView23"
+        style="@style/GrayTextTheme.26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="2  正在等待"
-        android:textColor="#ff05737f"
-        android:textSize="23sp"
         app:layout_constraintStart_toStartOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
     <TextView
+        style="@style/GrayTextTheme.26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="导航"
-        android:textColor="#ff05737f"
-        android:textSize="23sp"
         app:layout_constraintStart_toStartOf="@+id/textView23"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="1100dp"
-    android:layout_height="600dp"
-    android:background="@mipmap/health_8beijing4_21">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@mipmap/health_8beijing4_21"
+    android:theme="@style/CustomDialogTheme">
 
     <ImageView
         android:id="@+id/health_icon_view"
@@ -20,66 +21,61 @@
 
     <TextView
         android:id="@+id/textView2"
+        style="@style/WhiteTextTheme.28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-20dp"
         android:layout_marginTop="25dp"
-        android:text="健康"
-        android:textColor="#fff8fafd"
-        android:textSize="28sp"
+        android:text="@string/health"
         app:layout_constraintStart_toEndOf="@+id/health_icon_view"
         app:layout_constraintTop_toTopOf="@+id/health_icon_view" />
-
-    <SeekBar
-        android:id="@+id/seekbar_fan_speed"
-        android:layout_width="300dp"
-        android:layout_height="25dp"
-        android:progressBackgroundTint="#ffffff"
-
-        tools:ignore="MissingConstraints"
-        android:layout_marginLeft="440dp"
-        android:layout_marginTop="150dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        >
-    </SeekBar>
-
-    <TextView
-        android:id="@+id/tv_fan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        android:text="风扇转速"
-        android:textSize="20sp"
-        android:textColor="#ff02fde8"
-        app:layout_constraintBottom_toTopOf="@+id/seekbar_fan_speed"
-        app:layout_constraintStart_toStartOf="@+id/seekbar_fan_speed"
-        app:layout_constraintEnd_toEndOf="@+id/seekbar_fan_speed"/>
-
-    <TextView
-        android:id="@+id/tv_rotate_speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10%"
-        android:textSize="20sp"
-        android:textColor="#ff02fde8"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_fan"
-        app:layout_constraintBaseline_toBottomOf="@id/tv_fan"
-        app:layout_constraintLeft_toRightOf="@+id/tv_fan"
-        app:layout_constraintStart_toEndOf="@+id/tv_fan"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_fan"
-        tools:ignore="MissingConstraints"/>
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="查看详情"
-        android:textColor="#ff1f4e96"
+        android:text="@string/watch_detail"
+        android:textColor="@color/blue_1f4e96"
         android:textSize="23sp"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <SeekBar
+        android:id="@+id/seekbar_fan_speed"
+        android:layout_width="300dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="150dp"
+        android:progressBackgroundTint="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"></SeekBar>
+
+    <TextView
+        android:id="@+id/tv_fan"
+        style="@style/WhiteTextTheme.20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fan_speed"
+        app:layout_constraintBottom_toTopOf="@+id/seekbar_fan_speed"
+        app:layout_constraintEnd_toEndOf="@+id/seekbar_fan_speed"
+        app:layout_constraintStart_toStartOf="@+id/seekbar_fan_speed"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tv_rotate_speed"
+        style="@style/WhiteTextTheme.20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="10%"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_fan"
+        app:layout_constraintBaseline_toBottomOf="@id/tv_fan"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_fan"
+        app:layout_constraintLeft_toRightOf="@+id/tv_fan"
+        app:layout_constraintStart_toEndOf="@+id/tv_fan"
+        tools:ignore="MissingConstraints" />
+
 
     <TextView
         android:id="@+id/exit_iv"
@@ -88,9 +84,8 @@
         android:background="@drawable/button_background_selector"
         android:gravity="center"
         android:scaleType="fitXY"
-        android:text="确认"
-        android:textColor="#F4F1F1"
-        android:textSize="24sp"
+        android:text="@string/confirm"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
@@ -99,12 +94,13 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="-30dp"
-        android:layout_marginStart="50dp"
+        android:id="@+id/statusContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/health_icon_view"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="-30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/health_icon_view">
 
         <ImageView
             android:id="@+id/health_imu_view"
@@ -112,40 +108,38 @@
             android:layout_height="@dimen/health_item_height"
             android:layout_marginBottom="44dp"
             android:scaleType="fitXY"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/health_imu4_21" />
 
         <TextView
-            android:layout_marginBottom="8dp"
             android:id="@+id/textViewIMU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="IMU"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/health_title_textsize"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toTopOf="@+id/health_yaw_textview"
             app:layout_constraintEnd_toEndOf="@+id/health_yaw_textview"
             app:layout_constraintStart_toStartOf="@+id/health_yaw_textview" />
 
         <TextView
-            android:background="@drawable/button_background_selector"
             android:id="@+id/health_yaw_textview"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:text="Yaw:"
+            android:background="@drawable/button_background_selector"
             android:gravity="center"
-            android:textColor="#F4F1F1"
-            android:textSize="18sp"
+            android:text="@string/normal"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toBottomOf="@+id/health_imu_view"
             app:layout_constraintEnd_toEndOf="@+id/health_imu_view"
             app:layout_constraintStart_toStartOf="@+id/health_imu_view" />
 
         <ImageView
-            android:layout_marginStart="30dp"
             android:id="@+id/health_camera_view"
             android:layout_width="@dimen/health_item_width"
             android:layout_height="@dimen/health_item_height"
+            android:layout_marginStart="30dp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@+id/health_imu_view"
             app:layout_constraintStart_toEndOf="@+id/health_imu_view"
@@ -157,8 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="摄像头"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/health_title_textsize"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintEnd_toEndOf="@+id/health_camera_textview"
             app:layout_constraintStart_toStartOf="@+id/health_camera_textview"
             app:layout_constraintTop_toTopOf="@+id/textViewIMU" />
@@ -168,58 +161,55 @@
             android:id="@+id/health_camera_textview"
             android:layout_width="100dp"
             android:layout_height="@dimen/health_text_status_height"
-            android:text="正常"
-            android:gravity="center"
-            android:textColor="#F4F1F1"
             android:background="@drawable/button_background_selector"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:text="@string/normal"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toBottomOf="@+id/health_camera_view"
             app:layout_constraintEnd_toEndOf="@+id/health_camera_view"
             app:layout_constraintStart_toStartOf="@+id/health_camera_view" />
 
         <ImageView
             android:id="@+id/health_motor_view"
-            android:layout_marginTop="10dp"
             android:layout_width="@dimen/health_item_width"
             android:layout_height="@dimen/health_item_height"
+            android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="@+id/health_imu_view"
             app:layout_constraintTop_toBottomOf="@+id/health_imu_view"
             app:srcCompat="@mipmap/dianji4_21" />
 
         <TextView
-            android:layout_marginBottom="8dp"
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="电机"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/health_title_textsize"
+            style="@style/WhiteTextTheme.20"
+            app:layout_constraintBottom_toTopOf="@+id/health_motor_textview"
             app:layout_constraintEnd_toEndOf="@+id/health_motor_textview"
-            app:layout_constraintStart_toStartOf="@+id/health_motor_textview"
-            app:layout_constraintBottom_toTopOf="@+id/health_motor_textview" />
+            app:layout_constraintStart_toStartOf="@+id/health_motor_textview" />
 
         <TextView
             android:id="@+id/health_motor_textview"
             android:layout_width="100dp"
             android:layout_height="@dimen/health_text_status_height"
-            android:text="正常"
-            android:gravity="center"
-            android:textColor="#F4F1F1"
             android:background="@drawable/button_background_selector"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:text="@string/normal"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toBottomOf="@+id/health_motor_view"
             app:layout_constraintEnd_toEndOf="@+id/health_motor_view"
             app:layout_constraintStart_toStartOf="@+id/health_motor_view" />
 
         <ImageView
-            android:layout_marginTop="10dp"
             android:id="@+id/health_radar_view"
             android:layout_width="@dimen/health_item_width"
             android:layout_height="@dimen/health_item_height"
+            android:layout_marginTop="10dp"
             android:scaleType="fitXY"
-            app:layout_constraintTop_toBottomOf="@+id/health_camera_textview"
             app:layout_constraintStart_toStartOf="@+id/health_camera_view"
+            app:layout_constraintTop_toBottomOf="@+id/health_camera_textview"
             app:srcCompat="@mipmap/health_jiguangleida4_21" />
 
         <TextView
@@ -227,8 +217,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="雷达"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/health_title_textsize"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="@+id/health_radar_textview"
             app:layout_constraintStart_toStartOf="@+id/health_radar_textview"
@@ -238,11 +227,10 @@
             android:id="@+id/health_radar_textview"
             android:layout_width="100dp"
             android:layout_height="@dimen/health_text_status_height"
-            android:text="正常"
-            android:gravity="center"
-            android:textColor="#F4F1F1"
             android:background="@drawable/button_background_selector"
-            android:textSize="18sp"
+            android:gravity="center"
+            android:text="@string/normal"
+            style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toBottomOf="@+id/health_radar_view"
             app:layout_constraintEnd_toEndOf="@+id/health_radar_view"
             app:layout_constraintStart_toStartOf="@+id/health_radar_view" />
@@ -250,60 +238,54 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/switchLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/statusContainer"
+        app:layout_constraintTop_toBottomOf="@+id/health_icon_view"
         tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/ornamental_led_tv"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/health_text_status_height"
-            android:layout_marginLeft="410dp"
-            android:layout_marginTop="230dp"
             android:gravity="center"
             android:text="365nm LED"
-            android:textColor="#ff02fde8"
-            android:textSize="20sp" />
+            style="@style/WhiteTextTheme.20" />
 
         <com.shciri.rosapp.ui.myview.DmSwitchView
             android:id="@+id/ornamental_led_sv"
             android:layout_width="169dp"
-            android:layout_height="74dp"
-            android:layout_below="@+id/ornamental_led_tv"
-            android:layout_marginLeft="375dp" />
+            android:layout_height="74dp" />
 
         <TextView
             android:id="@+id/uvc_led_tv"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/health_text_status_height"
-            android:text="265nm LED"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textColor="#ff02fde8"
-            android:textSize="20sp"
-            android:layout_marginLeft="410dp"
-            android:layout_marginTop="430dp"
-            />
+            android:text="265nm LED"
+            style="@style/WhiteTextTheme.20" />
+
         <com.shciri.rosapp.ui.myview.DmSwitchView
             android:id="@+id/uvc_led_sv"
             android:layout_width="169dp"
             android:layout_height="74dp"
-            android:gravity="center"
-            android:layout_below="@+id/uvc_led_tv"
-            android:layout_marginLeft="375dp"
-            />
-
-
-    </RelativeLayout>
+            android:gravity="center" />
+    </LinearLayout>
 
 
     <RelativeLayout
-        android:layout_marginEnd="50dp"
+        android:id="@+id/conLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="360dp"
+        android:layout_marginTop="28dp"
         android:layout_marginBottom="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="500dp"
-        android:layout_height="360dp">
+        app:layout_constraintStart_toEndOf="@+id/switchLayout"
+        app:layout_constraintTop_toBottomOf="@+id/seekbar_fan_speed">
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/co2_view"
@@ -311,7 +293,6 @@
             android:layout_height="@dimen/air_status_view_height"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
             app:titleText="CO2"
             app:unitText="ppm" />
 
@@ -321,8 +302,8 @@
             android:layout_height="@dimen/air_status_view_height"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/co2_view"
-            app:unitText="ug/m³"
-            app:titleText="TVOC" />
+            app:titleText="TVOC"
+            app:unitText="ug/m³" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/PM2.5_status_view"
@@ -330,26 +311,26 @@
             android:layout_height="@dimen/air_status_view_height"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/TVOC_status_view"
-            app:unitText="ug/m³"
-            app:titleText="PM2.5"/>
+            app:titleText="PM2.5"
+            app:unitText="ug/m³" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/T_status_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
             android:layout_alignParentBottom="true"
-            app:unitText="℃"
-            app:titleText="温度"/>
+            app:titleText="温度"
+            app:unitText="℃" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/humidity_status_view"
-            android:layout_toEndOf="@+id/T_status_view"
-            android:layout_alignTop="@+id/T_status_view"
-            android:layout_marginStart="20dp"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
-            app:unitText="%"
-            app:titleText="湿度"/>
+            android:layout_alignTop="@+id/T_status_view"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/T_status_view"
+            app:titleText="湿度"
+            app:unitText="%" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/PM10_status_view"
@@ -358,17 +339,24 @@
             android:layout_alignTop="@+id/humidity_status_view"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/humidity_status_view"
-            app:unitText="ug/m³"
-            app:titleText="PM10"/>
+            app:titleText="PM10"
+            app:unitText="ug/m³" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
             android:id="@+id/formaldehyde_status_view"
             android:layout_width="110dp"
             android:layout_height="400dp"
-            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toEndOf="@id/PM2.5_status_view"
             app:titleText="甲醛"
             app:unitText="mg/m³" />
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/conLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.peripheral.DisinfectLed;
 import com.shciri.rosapp.peripheral.DisinfectLedStatus;
@@ -70,7 +70,7 @@ public class DmSwitchView extends RelativeLayout {
         disinfectLedStatus.open();
 
         if(led.LedOpen() == -1)
-            Toast.makeText(getContext(), "设备打开失败！ ", Toast.LENGTH_SHORT).show();
+            Toaster.showShort( "设备打开失败！ ");
         else
             led.LedIoctl(1,1);
 

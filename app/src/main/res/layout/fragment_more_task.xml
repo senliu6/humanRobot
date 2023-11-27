@@ -21,15 +21,14 @@
             android:layout_height="@dimen/return_arrows_height"
             android:layout_marginLeft="100dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+            android:src="@mipmap/choose_task_point_left" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/return_arrow_text_margin"
             android:text="更多任务"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/return_text_size" />
+            style="@style/WhiteTextTheme.28" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,8 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="任务名称"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            style="@style/GrayTextTheme.20"/>
 
         <TextView
             app:layout_constraintHorizontal_bias="0.5"
@@ -62,8 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="循环次数"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            style="@style/GrayTextTheme.20" />
 
         <TextView
             app:layout_constraintHorizontal_bias="0.8"
@@ -74,8 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="消杀模式"
-            android:textColor="#ff02a496"
-            android:textSize="20sp" />
+            style="@style/GrayTextTheme.20" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
@@ -99,8 +95,7 @@
         android:background="@drawable/button_background_selector"
         android:gravity="center"
         android:text="删除"
-        android:textSize="24sp"
-        android:textColor="@color/white"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/detail_task_bt"
         app:layout_constraintTop_toBottomOf="@+id/more_task_lv" />
@@ -113,8 +108,7 @@
         android:background="@drawable/button_background_selector"
         android:gravity="center"
         android:text="详情"
-        android:textSize="24sp"
-        android:textColor="@color/white"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/start_task_bt"
         app:layout_constraintTop_toBottomOf="@+id/more_task_lv" />
@@ -127,8 +121,7 @@
         android:background="@drawable/button_background_selector"
         android:gravity="center"
         android:text="开始任务"
-        android:textSize="24sp"
-        android:textColor="@color/white"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/more_task_lv"
         app:layout_constraintTop_toBottomOf="@+id/more_task_lv" />

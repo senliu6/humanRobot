@@ -16,13 +16,13 @@ import com.shciri.rosapp.dmros.client.RosTopic;
 import src.com.jilk.ros.message.requestparam.ClampControl;
 
 /**
- * 功能：
+ * 功能：抱夹测试弹窗
  *
  * @author ：liudz
  * 日期：2023年10月20日
  */
 public final class TestDialog {
-    public static final class Builder extends MyDialog.Builder<Builder> {
+    public static final class Builder extends BuildDialog.Builder<Builder> {
         private EditText editX, editY, editH, editBottomH;
         private RadioGroup radioGroup;
         private ShapeRadioButton radioButtonClown, radioButtonPut;

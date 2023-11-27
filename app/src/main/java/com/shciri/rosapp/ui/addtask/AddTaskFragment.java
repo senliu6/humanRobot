@@ -3,6 +3,7 @@ package com.shciri.rosapp.ui.addtask;
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +15,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.ui.taskshistory.TaskHistoryAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -102,6 +99,7 @@ public class AddTaskFragment extends Fragment {
                 @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex("date"));
                 @SuppressLint("Range") int loop = cursor.getInt(cursor.getColumnIndex("loop"));
                 @SuppressLint("Range") String mode = cursor.getString(cursor.getColumnIndex("mode"));
+                Log.d("CeshiTAG", "task"+origin_task_id+"name"+origin_task_name+"id"+id);
                 timeTaskItemList.add(new TimeTaskAdapter.TimeTaskItemList(id, origin_task_name, origin_task_id, time, date, loop, mode));
             }
         }

@@ -8,13 +8,12 @@
 
     <TextView
         android:id="@+id/tv_origin_task_name"
-        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_weight="1"
+        android:gravity="center"
         android:text="execute_task_1"
-        android:textColor="#ff02fde8"
-        android:textSize="20sp" />
+        style="@style/WhiteTextTheme.20"/>
 
     <TextView
         android:id="@+id/tv_origin_task_id"
@@ -23,8 +22,7 @@
         android:layout_height="45dp"
         android:layout_weight="1"
         android:text="1"
-        android:textColor="#ff02fde8"
-        android:textSize="20sp" />
+        style="@style/WhiteTextTheme.20" />
 
     <TextView
         android:id="@+id/tv_time"
@@ -43,8 +41,7 @@
         android:layout_height="45dp"
         android:layout_weight="1"
         android:text="每天"
-        android:textColor="#ff02fde8"
-        android:textSize="20sp" />
+        style="@style/WhiteTextTheme.20" />
 
     <TextView
         android:id="@+id/tv_loop"
@@ -53,14 +50,13 @@
         android:layout_height="45dp"
         android:layout_weight="1"
         android:text="1"
-        android:textColor="#ff02fde8"
-        android:textSize="20sp" />
+        style="@style/WhiteTextTheme.20" />
 
     <TextView
         android:id="@+id/tv_mode"
         android:gravity="center"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="消杀与空气净化"
         android:textColor="#ff01ff7f"
@@ -73,6 +69,5 @@
         android:layout_height="45dp"
         android:layout_weight="1"
         android:text="删除"
-        android:textColor="@color/red"
-        android:textSize="20sp" />
+        style="@style/RedTextTheme.20" />
 </LinearLayout>

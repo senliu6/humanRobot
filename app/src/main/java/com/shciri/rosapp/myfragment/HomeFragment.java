@@ -11,24 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.shciri.rosapp.dmros.client.RosTopic;
-import com.shciri.rosapp.dmros.tool.MyPGM;
+import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.dmros.client.RosInit;
-import com.shciri.rosapp.ui.myview.ControlFaceplateView;
-import com.shciri.rosapp.ui.myview.DmSwitchView;
-import com.shciri.rosapp.ui.myview.RosMapView;
+import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.MyPGM;
+import com.shciri.rosapp.ui.myview.DmSwitchView;
 import com.shciri.rosapp.ui.myview.MyControllerView;
+import com.shciri.rosapp.ui.myview.RosMapView;
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
 
     View root;
 
@@ -60,7 +59,7 @@ public class HomeFragment extends Fragment{
         MyControllerView.MoveListener moveListener = new MyControllerView.MoveListener() {
             @Override
             public void move(float dx, float dy) {
-                if(RosInit.isConnect) {
+                if (RosInit.isConnect) {
                     RosData.cmd_vel.linear.x = dy / 1.5f;
                     RosData.cmd_vel.angular.z = -dx / 1.5f;
                     RosTopic.cmd_velTopic.publish(RosData.cmd_vel);
@@ -88,29 +87,29 @@ public class HomeFragment extends Fragment{
     }
 
 
-    private void plotRoute(int x, int y){
+    private void plotRoute(int x, int y) {
         int tX = RosData.MapData.poseX + x;
         int tY = RosData.MapData.poseY + y;
 
-        bitmap.setPixel(tX-1, tY-1, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX, tY-1, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX-1, tY+1, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX-1, tY, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX - 1, tY - 1, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX, tY - 1, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX - 1, tY + 1, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX - 1, tY, Color.argb(100, 0, 150, 0));
         bitmap.setPixel(tX, tY, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX+1, tY, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX+1, tY-1, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX, tY+1, Color.argb(100, 0, 150, 0));
-        bitmap.setPixel(tX+1, tY+1, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX + 1, tY, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX + 1, tY - 1, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX, tY + 1, Color.argb(100, 0, 150, 0));
+        bitmap.setPixel(tX + 1, tY + 1, Color.argb(100, 0, 150, 0));
         rosMapView.moveLocalView(tX, tY);
     }
 
-    private void plotMap(){
+    private void plotMap() {
         System.out.println("look x=" + RosData.MapData.poseX + "  y=" + RosData.MapData.poseY);
         MyPGM pgm = new MyPGM();
         int[] pix;
         pix = pgm.readData(RosData.map.info.width, RosData.map.info.height, 5, RosData.map.data, RosData.MapData.poseX, RosData.MapData.poseY);   //P5-Gray image
         bitmap = Bitmap.createBitmap(RosData.map.info.width, RosData.map.info.height, Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pix,0,RosData.map.info.width,0,0,RosData.map.info.width,RosData.map.info.height);
+        bitmap.setPixels(pix, 0, RosData.map.info.width, 0, 0, RosData.map.info.width, RosData.map.info.height);
         rosMapView.setHeaderView(bitmap);
     }
 
@@ -123,7 +122,7 @@ public class HomeFragment extends Fragment{
     public class LocalReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()){
+            switch (intent.getAction()) {
                 case RosData.TF:
                     plotRoute(RosData.BaseLink.x, RosData.BaseLink.y);
                     break;
@@ -134,7 +133,7 @@ public class HomeFragment extends Fragment{
 
                 case RosData.TOAST:
                     String hint = intent.getStringExtra("Hint");
-                    Toast.makeText(getContext(), hint, Toast.LENGTH_SHORT).show();
+                    Toaster.showShort(hint);
                     break;
             }
         }

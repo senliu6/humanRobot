@@ -19,30 +19,25 @@
  */
 package src.com.jilk.ros.rosbridge.implementation;
 
-import com.shciri.rosapp.dmros.tool.PublishEvent;
+import com.hjq.toast.Toaster;
+import com.shciri.rosapp.R;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.greenrobot.eventbus.EventBus;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.framing.CloseFrame;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.lang.reflect.Field;
+import java.net.Socket;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.channels.SocketChannel;
+
+import src.com.jilk.ros.ROSClient;
+import src.com.jilk.ros.message.Message;
 import src.com.jilk.ros.rosbridge.FullMessageHandler;
 import src.com.jilk.ros.rosbridge.operation.Operation;
-import src.com.jilk.ros.message.Message;
 import src.com.jilk.ros.rosbridge.operation.Publish;
 import src.com.jilk.ros.rosbridge.operation.ServiceResponse;
-import src.com.jilk.ros.ROSClient;
-import org.java_websocket.framing.CloseFrame;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.lang.reflect.Field;
-import java.nio.channels.SocketChannel;
-import java.net.Socket;
 
 
 public class ROSBridgeWebSocketClient extends WebSocketClient {
@@ -83,29 +78,34 @@ public class ROSBridgeWebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        if (debug) System.out.println("<ROS " + message);
-        //System.out.println("ROSBridgeWebSocketClient.onMessage (message): " + message);
-        Operation operation = Operation.toOperation(message, classes);
-        //System.out.println("ROSBridgeWebSocketClient.onMessage (operation): ");
-        //operation.print();
-        
-        FullMessageHandler handler = null;
-        Message msg = null;
-        if (operation instanceof Publish) {
-            Publish p = (Publish) operation;
-            handler = handlers.lookup(Publish.class, p.topic);
-            msg = p.msg;
-        }
-        else if (operation instanceof ServiceResponse) {
-            ServiceResponse r = ((ServiceResponse) operation);
-            handler = handlers.lookup(ServiceResponse.class, r.service);
-            msg = r.values;
-        }
-        // later we will add clauses for Fragment, PNG, and Status. When rosbridge has it, we'll have one for service requests.
+        try {
+            if (debug) System.out.println("<ROS " + message);
+//            Log.d("CeshiTAG","ROSBridgeWebSocketClient.onMessage (message): " + message);
+            Operation operation = Operation.toOperation(message, classes);
+            if (null == operation){
+                Toaster.showLong(R.string.service_close_please_exit);
+                return;
+            }
+//            Log.d("CeshiTAG","ROSBridgeWebSocketClient.onMessage (operation): "+operation.id+operation.op);
+            //operation.print();
 
-        // need to handle "result: null" possibility for ROSBridge service responses
-        // this is probably some sort of call to the operation for "validation." Do it
-        // as part of error handling.
+            FullMessageHandler handler = null;
+            Message msg = null;
+            if (operation instanceof Publish) {
+                Publish p = (Publish) operation;
+                handler = handlers.lookup(Publish.class, p.topic);
+                msg = p.msg;
+            }
+            else if (operation instanceof ServiceResponse) {
+                ServiceResponse r = ((ServiceResponse) operation);
+                handler = handlers.lookup(ServiceResponse.class, r.service);
+                msg = r.values;
+            }
+            // later we will add clauses for Fragment, PNG, and Status. When rosbridge has it, we'll have one for service requests.
+
+            // need to handle "result: null" possibility for ROSBridge service responses
+            // this is probably some sort of call to the operation for "validation." Do it
+            // as part of error handling.
 
 //        if (handler != null && message.contains("\"id\":"))
 //            handler.onMessage(operation.id, msg);
@@ -138,16 +138,20 @@ public class ROSBridgeWebSocketClient extends WebSocketClient {
 //                System.out.println("Service Response " + serviceResponse.service);
 //            }
 //        }
-        if (handler != null)
-            handler.onMessage(operation.id, msg);
-        else if (debug) {
-            System.out.print("No handler: id# " + operation.id + ", ");
-            if (operation instanceof Publish)
-                System.out.println("Publish " + ((Publish) operation).topic);
-            else if (operation instanceof ServiceResponse)
-                System.out.println("Service Response " + ((ServiceResponse) operation).service);
-            //operation.print();
+            if (handler != null)
+                handler.onMessage(operation.id, msg);
+            else if (debug) {
+                System.out.print("No handler: id# " + operation.id + ", ");
+                if (operation instanceof Publish)
+                    System.out.println("Publish " + ((Publish) operation).topic);
+                else if (operation instanceof ServiceResponse)
+                    System.out.println("Service Response " + ((ServiceResponse) operation).service);
+                //operation.print();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
        
     @Override

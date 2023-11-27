@@ -5,6 +5,7 @@ package com.shciri.rosapp.server
  * @author ：liudz
  * 日期：2023年11月08日
  */
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.os.Handler
@@ -16,6 +17,7 @@ import com.shciri.rosapp.dmros.client.RosTopic
 import com.shciri.rosapp.mydata.DBUtils
 import com.shciri.rosapp.utils.SharedPreferencesUtil
 import com.shciri.rosapp.utils.ToolsUtil
+import src.com.jilk.ros.message.Point
 import src.com.jilk.ros.message.StateMachineRequest
 import src.com.jilk.ros.message.requestparam.ManualPathParameter
 import java.text.SimpleDateFormat
@@ -28,9 +30,15 @@ class AlarmService : Service() {
     private var alarmMap = mutableListOf<Alarm>()
     private val stateMachineRequest = StateMachineRequest()
     private val manualPathParameter = ManualPathParameter()
+    private var serviceStatus = false
 
 
-    data class Alarm(val taskId: String, val alarmTime: String)
+    data class Alarm(
+        val taskId: String,
+        val alarmTime: String,
+        val week: String,
+        val loopNum: Short,
+    )
 
     override fun onCreate() {
         super.onCreate()
@@ -41,21 +49,26 @@ class AlarmService : Service() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
+        startAlarmClock()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        intent?.let {
+        intent?.let { it ->
             val taskId = it.getStringExtra("taskId") ?: ""
             val alarmTime = it.getStringExtra("alarmTime") ?: ""
-            Toaster.showShort(taskId)
+            val week = it.getStringExtra("week") ?: ""
+            val loopNum = it.getShortExtra("loopNum", 0.toShort())
+
             if (taskId.isNotEmpty() && alarmTime.isNotEmpty()) {
-                addAlarm(taskId, alarmTime)
+                addAlarm(taskId, alarmTime, week, loopNum)
+
             }
         }
 
         startAlarmClock()
         return START_STICKY
+
+
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -67,19 +80,29 @@ class AlarmService : Service() {
         stopAlarmClock()
     }
 
-    fun addAlarm(taskId: String, alarmTime: String) {
-        alarmMap.add(Alarm(taskId, alarmTime))
+    fun addAlarm(
+        taskId: String,
+        alarmTime: String,
+        week: String,
+        loopNum: Short
+    ) {
+        alarmMap.add(Alarm(taskId, alarmTime, week, loopNum))
         SharedPreferencesUtil.saveAlarmList(applicationContext, alarmMap)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun startAlarmClock() {
-        val handler = Handler()
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                checkAlarmTimes()
-                handler.postDelayed(this, 1100) // 每隔一秒检查一次
-            }
-        }, 0)
+        if (!serviceStatus){
+            val handler = Handler()
+            handler.postDelayed(object : Runnable {
+                override fun run() {
+                    checkAlarmTimes()
+                    handler.postDelayed(this, 1000) // 每隔一秒检查一次
+                }
+            }, 1000)
+        }
+        serviceStatus = true
+
     }
 
     private fun stopAlarmClock() {
@@ -99,21 +122,40 @@ class AlarmService : Service() {
         if (alarmMap.isNotEmpty()) {
             for (alarm in alarmMap) {
                 //任务触发
-                if (currentTime == alarm.alarmTime) {
-                    stateMachineRequest.navigation_task = 1
-                    RosTopic.publishStateMachineRequest(stateMachineRequest)
-                    manualPathParameter.point = DBUtils.getInstance().getPointS(alarm.taskId)
-                    manualPathParameter.loop_num =
-                        DBUtils.getInstance().getLoopNum(alarm.taskId).toShort()
-                    RosTopic.publishManualPathParameterTopic(manualPathParameter)
-                    stateMachineRequest.navigation_task = 3
-                    RosTopic.publishStateMachineRequest(stateMachineRequest)
-                    Toaster.showLong("触发定时任务${alarm.taskId}")
-                    ToolsUtil.playRingtone(this)
+//                Log.d(
+//                    "CeshiTAG",
+//                    "任务周" + alarm.week + "转换后" + stringToIntList(alarm.week).size + "---" + getCurrentDayOfWeek()
+//                );
+                if (stringToIntList(alarm.week).containsCurrentDay()) {
+                    if (currentTime == alarm.alarmTime) {
+                        stateMachineRequest.navigation_task = 1
+                        RosTopic.publishStateMachineRequest(stateMachineRequest)
+                        manualPathParameter.point = DBUtils.getInstance().getPointS(alarm.taskId)
+                        manualPathParameter.loop_num = alarm.loopNum
+                        RosTopic.publishManualPathParameterTopic(manualPathParameter)
+                        stateMachineRequest.navigation_task = 3
+                        Toaster.showLong("触发定时任务${alarm.taskId}")
+                        RosTopic.publishStateMachineRequest(stateMachineRequest)
+                        ToolsUtil.playRingtone(this)
+                    }
                 }
             }
         }
+    }
 
+    private fun stringToIntList(input: String): List<Int> {
+        return input.split(",").map { it.toInt() }
+    }
+
+
+    private fun List<Int>.containsCurrentDay(): Boolean {
+        val currentDay = getCurrentDayOfWeek()
+        return contains(currentDay)
+    }
+
+    private fun getCurrentDayOfWeek(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.DAY_OF_WEEK)
     }
 }
 

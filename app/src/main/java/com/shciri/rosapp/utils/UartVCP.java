@@ -62,22 +62,26 @@ public class UartVCP {
     }
 
     public void sendData(byte[] data) {
-        Log.d(TAG, "data = " + bytesToHexString(data));
-        /*try {
-            port.write(data, 100);
-        } catch (IOException e) {
+        try {
+            Log.d(TAG, "data = " + bytesToHexString(data));
+            if (null != port){
+                port.write(data, 100);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public int readData(byte[] response) {
         int len = 0;
-        /*try {
-            len = port.read(response, 100);
-        } catch (IOException e) {
+        try {
+            if (null != port){
+                len = port.read(response, 100);
+            }
+            Log.d(TAG, "len = " + len + "  response = " + bytesToHexString(Arrays.copyOfRange(response, 0, len)));
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
-        Log.d(TAG, "len = " + len + "  response = " + bytesToHexString(Arrays.copyOfRange(response, 0, len)));
+        }
         return len;
     }
 

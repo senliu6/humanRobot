@@ -1,13 +1,8 @@
 package com.shciri.rosapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.ContentLoadingProgressBar;
-import android.app.AlertDialog;
-import android.app.Application;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -16,67 +11,68 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.hjq.toast.Toaster;
+import com.shciri.rosapp.base.BaseDialog;
+import com.shciri.rosapp.databinding.ActivityLoginBinding;
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.data.Settings;
+import com.shciri.rosapp.dmros.data.UserList;
 import com.shciri.rosapp.dmros.tool.AudioMngHelper;
-import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ConnectServer;
 import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.TaskControlActivity;
-import com.shciri.rosapp.ui.myview.LoginKeyboardView;
-import com.shciri.rosapp.ui.myview.StatusBarView;
+import com.shciri.rosapp.ui.dialog.InputDialog;
+import com.shciri.rosapp.ui.dialog.WaitDialog;
+import com.shciri.rosapp.utils.SharedPreferencesUtil;
+import com.shciri.rosapp.utils.ToolsUtil;
 import com.shciri.rosapp.utils.protocol.ReplyIPC;
 import com.shciri.rosapp.utils.protocol.RequestIPC;
+import com.shciri.rosapp.utils.regex.LimitInputTextWatcher;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+
+import src.com.jilk.ros.message.custom.Battery;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 
+/**
+ * @author asus
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String ACTION_USB_PERMISSION ="cn.wch.wchusbdriver.USB_PERMISSION";
+    private static final String ACTION_USB_PERMISSION = "cn.wch.wchusbdriver.USB_PERMISSION";
     private String TAG = MainActivity.class.getSimpleName();
 
-    private EditText passwordEdit;
-
-    private String password;
+    private String password = "";
+    private String passwordDef = "1";
 
     private RosInit rosInit;
 
     private Handler handler;
 
-    private AlertDialog alertDialog;
+    private BaseDialog intentDialog;
 
-    private LinearLayout layConnectingLoading;
-
-    private ImageView maskView;
-
-    private StatusBarView statusBarView;
-
-    private Spinner identitySpinner;
-
-    private TextView ipTv;
 
     private AudioMngHelper audioMngHelper;
 
@@ -86,32 +82,42 @@ public class MainActivity extends AppCompatActivity {
     // 获取当前usb连接状态
     private boolean isUSBConnected = false;
 
+    private ActivityLoginBinding binding;
+
+    private WaitDialog waitDialog;
+
+    private ExecutorService executorService = RCApplication.getExecutorService();
+
+    private InputDialog inputDialog;
+    private String robotIp = "11.11.11.111";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-
-        //getBaseContext().deleteDatabase("test");
-        DBOpenHelper dbOpenHelper = new DBOpenHelper(this,"test",null,9); //如果修改db的表内容，则需要在此提高db的version
+        //如果修改db的表内容，则需要在此提高db的version
+        DBOpenHelper dbOpenHelper = new DBOpenHelper(this, "test", null, 9);
         RCApplication.db = dbOpenHelper.getWritableDatabase();
 //        RCApplication.db.delete("map","id=?",new String[]{"1"});
 //        ContentValues values = new ContentValues();
 //        values.put("name", "DAMon");
 //        RCApplication.db.update("map", values, "name = ?", new String[]{"TT"});
 
-        InitUI();
+        initView();
+        initData();
 
-        IntentFilter filter=new IntentFilter();
+        IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
-        registerReceiver(timeReceiver,filter);
+        registerReceiver(timeReceiver, filter);
 
         EventBus.getDefault().register(this);
 
         //热插拔，如果有的话就去回调下边的代码，监听在哪里就在哪里回调
-       /* UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-        RCApplication.uartVCP.InitUartVCP(manager);*/
+        UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+        RCApplication.uartVCP.InitUartVCP(manager);
 
         // 广播监听热插拔
         UsbBroadcastReceiver();
@@ -124,8 +130,56 @@ public class MainActivity extends AppCompatActivity {
         RCApplication.replyIPC.ipc_put_rx_byte(response, len);
     }
 
+    private void initData() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
+        Date date = new Date(System.currentTimeMillis());
+        binding.loginStatusBar.setTimeView(simpleDateFormat.format(date));
+        binding.loginStatusBar.setBatteryPercent((byte) (RCApplication.localBattery * 100));
+
+        robotIp = SharedPreferencesUtil.Companion.getValue(this.getApplicationContext(),
+                Settings.ROBOT_IP, "11.11.11.111", String.class);
+
+        String[] idOption = UserList.INSTANCE.getArray();
+        ArrayAdapter<String> idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
+        //设置数组适配器的布局样式
+        idAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
+        binding.identitySelect.setAdapter(idAdapter);
+        RCApplication.Operator = idOption[0];
+
+        audioMngHelper = new AudioMngHelper(this);
+        waitDialog = new WaitDialog.Builder(this)
+                .setLoadingText(getString(R.string.loading))
+                .setCancelText(getResources().getString(R.string.cancel))
+                .build();
+
+        handler = new myHandler();
+        intentDialog = new BaseDialog.Builder(this)
+                .setTitle("Warning")
+                .setContent(getString(R.string.please_check_intent))
+                .setCancelText(getString(R.string.retry))
+                .setConfirmText(getString(R.string.enter_offline_mode))
+                .setCanceledOnTouchOutside(false)
+                .setOnCancelClick(view -> {
+                    Toaster.showShort(R.string.retrying);
+                    executorService.submit(() -> {
+                        ROSBridgeClient client = rosInit.rosConnect(robotIp, RCApplication.rosPort);
+                        ((RCApplication) getApplication()).setRosClient(client);
+                    });
+
+                })
+                .setOnConfirmClick(view -> {
+                    waitDialog.show();
+                    RosInit.offLineMode = true;
+                    Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
+                    startActivity(intent);
+                })
+                .build();
+        rosInit = new RosInit();
+
+    }
+
     // 广播监听热插拔
-    private void UsbBroadcastReceiver(){
+    private void UsbBroadcastReceiver() {
         if (UsbReceiver == null) {
             UsbReceiver = new BroadcastReceiver() {
                 @Override
@@ -138,14 +192,14 @@ public class MainActivity extends AppCompatActivity {
                                 isUSBConnected = true;
                                 UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
                                 RCApplication.uartVCP.InitUartVCP(manager);
-                                Toast.makeText(context, "已经连接USB", Toast.LENGTH_SHORT).show();
+                                Toaster.showShort("已经连接USB");
                             }
                         } else {
                             if (isUSBConnected) {
                                 isUSBConnected = false;
                                 UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
                                 RCApplication.uartVCP.InitUartVCP(manager);
-                                Toast.makeText(context, "已经断开USB", Toast.LENGTH_SHORT).show();
+                                Toaster.showShort("已经断开USB");
                             }
                         }
                     }
@@ -167,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
             if (action.equals(Intent.ACTION_TIME_TICK)) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
                 Date date = new Date(System.currentTimeMillis());
-                statusBarView.setTimeView(simpleDateFormat.format(date));
+                binding.loginStatusBar.setTimeView(simpleDateFormat.format(date));
 
                 byte[] data = RequestIPC.batteryRequest();
                 RCApplication.uartVCP.sendData(data);
@@ -178,41 +232,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void InitUI() {
-        ipTv = findViewById(R.id.tv_ip);
-
-        statusBarView = findViewById(R.id.login_statusBar);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
-        Date date = new Date(System.currentTimeMillis());
-        statusBarView.setTimeView(simpleDateFormat.format(date));
-        statusBarView.setBatteryPercent((byte)(RCApplication.localBattery * 100));
-
-        ContentLoadingProgressBar connectingProgressBar = findViewById(R.id.connecting_progress_bar);
-        connectingProgressBar.setVisibility(View.VISIBLE);
-
-        layConnectingLoading = findViewById(R.id.lay_connecting_loading);
-        maskView = findViewById(R.id.login_mask);
-        maskView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* 拦截点击事件 */
-            }
-        });
-
+    private void initView() {
         /* 防止软键盘自动弹出 */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-
-        String[] idOption = {"User","Admin"};
-        ArrayAdapter<String> idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
-        //设置数组适配器的布局样式
-        idAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
-        identitySpinner = findViewById(R.id.identity_select);
-        identitySpinner.setAdapter(idAdapter);
-        RCApplication.Operator = idOption[0];
-        identitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.identitySelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                RCApplication.Operator = identitySpinner.getSelectedItem().toString();
+                RCApplication.Operator = binding.identitySelect.getSelectedItem().toString();
             }
 
             @Override
@@ -220,118 +246,92 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        password = new String("");
-        LoginKeyboardView loginKeyboardView = findViewById(R.id.loginKeyboard);
-        loginKeyboardView.setLoginKeyboardListener(new LoginKeyboardView.LoginKeyboardListener() {
-            @Override
-            public void KeyInput(int key) {
-                if (password.length() >= 12) {
-                    Toast.makeText(getApplicationContext(), "密码超出最大长度!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                passwordSet(key);
+        binding.loginKeyboard.setLoginKeyboardListener(result -> {
+            if (result.length() >= binding.loginKeyboard.getLimit()) {
+                Toaster.show(R.string.password_outIndex);
             }
+            password = result;
+            setLoginBackGround();
+            binding.passwordEdit.setSelection(result.length());
+
         });
 
-        passwordEdit = findViewById(R.id.password_Edit);
-
-        audioMngHelper = new AudioMngHelper(this);
-
-        findViewById(R.id.loginBt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.buttonLogin.setOnClickListener(v -> {
 //                audioMngHelper.setVoice100(100);
 //                RCApplication.mediaPlayer.start();
-                if (password.equals("1")) {
-                    if(!RosInit.isConnect) {
-                        if(!alertDialog.isShowing()){
-                            alertDialog.show();
-                        }
-                    }else{
-                        layConnectingLoading.setVisibility(View.VISIBLE);
-                        maskView.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
-                        startActivity(intent);
+            if (UserList.INSTANCE.isValidUser(RCApplication.Operator, password)) {
+                if (!RosInit.isConnect) {
+                    if (!intentDialog.isShowing()) {
+                        intentDialog.show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "密码错误,请重试!", Toast.LENGTH_SHORT).show();
-                    password = "";
-                    passwordEdit.setText(password);
+                    waitDialog.show();
+                    Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
+                    startActivity(intent);
                 }
+            } else {
+                Toaster.showLong(R.string.password_error);
+                password = "";
+                binding.loginKeyboard.clearResult();
+                setLoginBackGround();
             }
         });
-
-        handler = new myHandler();
-
-        alertDialog = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT)
-                .setTitle("Warning")
-                .setMessage("请检查机器人底盘网络，或者进入离线模式？")
-                .setIcon(R.mipmap.choosetask_duankailianjie4_21)
-                .setCancelable(false)
-                .setPositiveButton("进入离线模式", new DialogInterface.OnClickListener() {//添加"Yes"按钮
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        RosInit.offLineMode = true;
-                        layConnectingLoading.setVisibility(View.VISIBLE);
-                        maskView.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent(MainActivity.this, TaskControlActivity.class);
-                        startActivity(intent);
-                    }
-                })
-
-                .setNegativeButton("重试", new DialogInterface.OnClickListener() {//添加取消
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getBaseContext(), "重试中", Toast.LENGTH_SHORT).show();
-                    }
-                }).create();
-
-        rosInit = new RosInit();
-
 //        serverOperation();
+
+        inputDialog = new InputDialog.Builder(this)
+                .setTitle(getString(R.string.please_input_ip))
+                .setOnCancelClick(v -> inputDialog.dismiss())
+                .setOnConfirmClick(inputText -> {
+                    if (inputText.matches(LimitInputTextWatcher.REGEX_IP)) {
+                        DBUtils.getInstance().DBUpdateInfo(ServerInfoTab.id, inputText);
+                        SharedPreferencesUtil.Companion.saveValue(this.getApplicationContext(), Settings.ROBOT_IP, inputText);
+                        Toaster.showShort(getString(R.string.ip_set_success) + inputText);
+                        binding.tvIp.setText(String.format(getResources().getString(R.string.robot_id), inputText));
+                        inputDialog.dismiss();
+                    } else {
+                        Toaster.showShort(R.string.input_format);
+                    }
+
+                })
+                .build();
+        binding.tvIp.setOnClickListener(v -> inputDialog.show());
     }
 
     private void serverOperation() {
         ConnectServer connectServer = new ConnectServer();
         ServerInfoTab.id = DBUtils.getInstance().DBQueryInfo();
-        if(ServerInfoTab.id == 0) {
+        if (ServerInfoTab.id == 0) {
             connectServer.addInfo();
-        }else{
+        } else {
             connectServer.queryInfo();
 //            connectServer.updateInfo();
         }
 
     }
 
-    private class myHandler extends Handler{
+    private class myHandler extends Handler {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if(msg.arg1 == 1)
-                statusBarView.setConnectStatus(true);
-            else
-                statusBarView.setConnectStatus(false);
+            binding.loginStatusBar.setConnectStatus(msg.arg1 == 1);
         }
     }
 
     public void rosConnectAndInit() {
-        new Thread(() -> {
+        executorService.execute(() -> {
             while (true) {
-                if(RosInit.isConnect || RosInit.offLineMode) {
+                if (RosInit.isConnect || RosInit.offLineMode) {
                     return;
                 }
-//                if(ipTv != null)
-//                    ipTv.setText(RCApplication.rosIP);
-                ROSBridgeClient client = rosInit.rosConnect(((RCApplication)getApplication()).rosIP,((RCApplication)getApplication()).rosPort);
-                ((RCApplication)getApplication()).setRosClient(client);
+                ROSBridgeClient client = rosInit.rosConnect(robotIp, RCApplication.rosPort);
+                ((RCApplication) getApplication()).setRosClient(client);
 
                 Message message = Message.obtain();
-                if(RosInit.isConnect || RosInit.offLineMode){
+                if (RosInit.isConnect || RosInit.offLineMode) {
                     message.arg1 = 1;
                     handler.sendMessage(message);
                     return;
-                }else{
+                } else {
                     message.arg1 = 0;
                     handler.sendMessage(message);
                 }
@@ -342,51 +342,16 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }).start();
-    }
-
-    private void passwordSet(int key) {
-        switch (key) {
-            case 10:
-                password = "";
-                passwordEdit.setText(password);
-                passwordEdit.setSelection(password.length());
-                break;
-
-            case 11:
-                password += String.valueOf(0);
-                passwordEdit.setText(password);
-                passwordEdit.setSelection(password.length());
-                break;
-
-            case 12:
-                if (password.length() >= 1) {
-                    password = password.substring(0, password.length() - 1);
-                    passwordEdit.setText(password);
-                    passwordEdit.setSelection(password.length());
-                }
-                break;
-
-            default:
-                password += String.valueOf(key);
-                passwordEdit.setText(password);
-                passwordEdit.setSelection(password.length());
-                break;
-        }
-
-        if (password.length() > 0) {
-            findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.login_denglu4_21);
-        } else {
-            findViewById(R.id.loginBt).setBackgroundResource(R.mipmap.denglu);
-        }
+        });
+        runOnUiThread(() -> binding.tvIp.setText(String.format(getResources().getString(R.string.robot_id), robotIp)));
     }
 
     /**
      * 重设 view 的宽高
      */
     public static void setViewLayoutParams(View view, int nWidth, int nHeight) {
-        int theW = dip2px(view.getContext(), nWidth);
-        int theH = dip2px(view.getContext(), nHeight);
+        int theW = ToolsUtil.INSTANCE.dip2px(view.getContext().getApplicationContext(), nWidth);
+        int theH = ToolsUtil.INSTANCE.dip2px(view.getContext().getApplicationContext(), nHeight);
 
         ViewGroup.LayoutParams lp = view.getLayoutParams();
         if (lp.height != theH || lp.width != theW) {
@@ -396,31 +361,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 将dip或dp值转换为px值，保证尺寸大小不变
-     */
-    public static int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         requestFullscreen();
-        if(RosInit.isConnect) {
+        if (RosInit.isConnect) {
 //            RCApplication.client.disconnect();
             RosInit.isConnect = false;
-            System.out.println("onDestroy onDestroy onDestroyonDestroyonDestroy onDestroy ");
+            System.out.println("onDestroy onDestroy onDestroyDestroyDestroy onDestroy ");
         }
         RosInit.offLineMode = false;
-        layConnectingLoading.setVisibility(View.INVISIBLE);
-        maskView.setVisibility(View.INVISIBLE);
         rosConnectAndInit();
         System.out.println("onResume onResume onResume onResume onResume ");
 //        setStatusBar();
-        passwordEdit.setText("");
         password = "";
+        binding.loginKeyboard.clearResult();
+        setLoginBackGround();
     }
 
     @Override
@@ -429,6 +385,15 @@ public class MainActivity extends AppCompatActivity {
         // 销毁广播
         if (UsbReceiver != null) {
             unregisterReceiver(UsbReceiver);
+        }
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (waitDialog != null) {
+            waitDialog.dismiss();
         }
     }
 
@@ -444,8 +409,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReplyIPC.BatteryReply event) {
-        statusBarView.setBatteryPercent(event.getCapacity_percent());
-    };
+        binding.loginStatusBar.setBatteryPercent(event.getCapacity_percent());
+        Battery battery = new Battery();
+        battery.battery_percent = (byte) event.getCapacity_percent();
+        battery.current = (short) event.getCurrent();
+        if (null != RosTopic.batteryTopic) {
+            RosTopic.batteryTopic.publish(battery);
+        }
+    }
+
+    ;
 
     private int getStatusBarHeight(Context baseContext) {
         return 0;
@@ -459,5 +432,22 @@ public class MainActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION /* content doesn't resize when the system bars hide and show. */
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+
+    //设置登录按钮的背景
+    @SuppressLint("ResourceType")
+    private void setLoginBackGround() {
+        binding.passwordEdit.setText(password);
+        if (TextUtils.isEmpty(password)) {
+            binding.buttonLogin.getShapeDrawableBuilder()
+                    .setSolidColor(Color.parseColor(getResources().getString(R.color.f9fcfc_33))).intoBackground();
+            binding.buttonLogin.setTextColor(getResources().getColor(R.color.gray_02a496));
+        } else {
+            binding.buttonLogin.getShapeDrawableBuilder()
+                    .setSolidColor(Color.parseColor(getResources().getString(R.color.blue_00a5b7)))
+                    .setSolidGradientColors(ToolsUtil.INSTANCE.intToColorInt(getApplicationContext(), R.color.white_00fdfa), ToolsUtil.INSTANCE.intToColorInt(getApplicationContext(), R.color.gray_00899c))
+                    .setSolidGradientOrientation(270).intoBackground();
+            binding.buttonLogin.setTextColor(Color.WHITE);
+        }
     }
 }

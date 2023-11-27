@@ -19,14 +19,25 @@
  */
 package src.com.jilk.ros.rosbridge;
 
+import com.hjq.toast.Toaster;
+import com.shciri.rosapp.R;
+
+import java.lang.reflect.Field;
+
+import src.com.jilk.ros.ROSClient;
 import src.com.jilk.ros.Service;
 import src.com.jilk.ros.message.Message;
-import src.com.jilk.ros.ROSClient;
-import src.com.jilk.ros.rosapi.message.*;
-import src.com.jilk.ros.rosbridge.implementation.*;
-import src.com.jilk.ros.rosbridge.operation.*;
-import java.lang.reflect.Field;
 import src.com.jilk.ros.message.MessageType;
+import src.com.jilk.ros.rosapi.message.Empty;
+import src.com.jilk.ros.rosapi.message.MessageDetails;
+import src.com.jilk.ros.rosapi.message.Nodes;
+import src.com.jilk.ros.rosapi.message.Services;
+import src.com.jilk.ros.rosapi.message.Topic;
+import src.com.jilk.ros.rosapi.message.Topics;
+import src.com.jilk.ros.rosapi.message.Type;
+import src.com.jilk.ros.rosapi.message.TypeDef;
+import src.com.jilk.ros.rosbridge.implementation.ROSBridgeWebSocketClient;
+import src.com.jilk.ros.rosbridge.operation.Operation;
 
 public class ROSBridgeClient extends ROSClient {
     String uriString;
@@ -65,7 +76,11 @@ public class ROSBridgeClient extends ROSClient {
     
     @Override
     public void send(Operation operation) {
-        client.send(operation);
+        if (client.isOpen()){
+            client.send(operation);
+        }else {
+            Toaster.showShort(R.string.network_failed_exit);
+        }
     }
     
     @Override

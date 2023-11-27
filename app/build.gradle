@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id("org.jetbrains.kotlin.android")
 }
 
 static def generateTime() {
@@ -9,11 +10,7 @@ static def generateTime() {
 android {
     signingConfigs {
         debug {
-<<<<<<< HEAD
-            storeFile file('D:\\IDE\\Android\\APK\\DaimonAPK.jks')
-=======
-            storeFile file('D:\\AndroidConfig\\APK\\DaimonAPK.jks')
->>>>>>> 05b3cd38ae9e158e636e6e8b4bf9e356378d80f1
+            storeFile file('D:\\Android Work\\APK\\DaimonAPK.jks')
             storePassword 'daimon666'
             keyAlias 'DaimonAPK'
             keyPassword 'daimon666'
@@ -82,8 +79,8 @@ dependencies {
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.preference:preference:1.2.0'
-    implementation files('libs\\CH34xUARTDriver.jar')
-    implementation files('libs\\adw_api.jar')
+    implementation files('libs/CH34xUARTDriver.jar')
+    implementation files('libs/adw_api.jar')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -102,6 +99,25 @@ dependencies {
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'
     implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
+
+    /* 屏幕适配 https://github.com/JessYanCoding/AndroidAutoSize.git */
+    implementation 'com.github.JessYanCoding:AndroidAutoSize:v1.2.1'
+
+    /* 路由 */
+
+    // 吐司框架：https://github.com/getActivity/Toaster
+    implementation 'com.github.getActivity:Toaster:12.3'
+
+    // ShapeView：https://github.com/getActivity/ShapeView
+    implementation 'com.github.getActivity:ShapeView:9.0'
+    // ShapeDrawable：https://github.com/getActivity/ShapeDrawable
+    implementation 'com.github.getActivity:ShapeDrawable:3.0'
+
+    //粒子动画效果
+    implementation 'com.github.hoomanmmd:fadeoutparticle:1.0.0'
+
+    //内存泄漏框架集成 https://github.com/square/leakcanary
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 
 
 }

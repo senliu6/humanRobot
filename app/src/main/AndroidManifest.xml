@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
 
+
     <uses-feature android:name="android.hardware.usb.host" />
 
 
@@ -28,7 +29,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RosApp.NoActionBar"
-        android:windowSoftInputMode="stateHidden">
+        android:windowSoftInputMode="stateHidden"
+        android:hardwareAccelerated="true">
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="1280" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="800" />
 
         <activity
             android:name=".ui.taskshistory.TasksHistoryReportActivity"
@@ -55,10 +63,11 @@
                 android:resource="@xml/device_filter" />
         </activity>
 
-        <receiver android:name=".utils.UsbBroadcastReceiver"
+        <receiver
+            android:name=".utils.UsbBroadcastReceiver"
             android:exported="true">
             <intent-filter android:priority="800">
-                <action android:name="android.hardware.usb.action.USB_STATE"/>
+                <action android:name="android.hardware.usb.action.USB_STATE" />
             </intent-filter>
         </receiver>
 
@@ -72,6 +81,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <service
+            android:name=".server.AlarmService"
+            android:exported="false" />
 
     </application>
 

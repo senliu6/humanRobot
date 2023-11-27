@@ -18,15 +18,14 @@
             android:layout_width="@dimen/return_arrows_width"
             android:layout_height="@dimen/return_arrows_height"
             android:scaleType="fitXY"
-            android:src="@mipmap/choosetask_jiantouzuo4_21" />
+            android:src="@mipmap/choose_task_point_left" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/return_arrow_text_margin"
             android:text="任务详情"
-            android:textColor="#ff02fde8"
-            android:textSize="@dimen/return_text_size" />
+            style="@style/WhiteTextTheme.28" />
     </LinearLayout>
 
     <ImageView
@@ -56,8 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="execute_task_1"
-        android:textColor="#ff02fde8"
-        android:textSize="35sp"
+        style="@style/WhiteTextTheme.40"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintEnd_toEndOf="@id/task_detail_board"
         app:layout_constraintBottom_toBottomOf="@+id/task_detail_board"
@@ -71,8 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="step 1:    路径一"
-        android:textColor="#ff02fde8"
-        android:textSize="23sp"
+        style="@style/WhiteTextTheme.24"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/task_detail_name"
         app:layout_constraintTop_toBottomOf="@+id/task_detail_name" />
@@ -88,8 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="预计用时"
-        android:textColor="#ff05737f"
-        android:textSize="23sp" />
+        style="@style/GrayTextTheme.26" />
 
     <TextView
         app:layout_constraintBottom_toBottomOf="@id/task_path_name"

@@ -31,8 +31,7 @@
             android:autoSizeStepGranularity="2sp"
             android:background="@drawable/tasks_report_text_shape"
             android:text="空跑"
-            android:textColor="#ff02fde8"
-            android:textSize="16sp"
+            style="@style/WhiteTextTheme.20"
             tools:layout_editor_absoluteX="14dp"
             tools:layout_editor_absoluteY="443dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
