@@ -255,7 +255,7 @@ public class DataManageMapFragment extends Fragment {
 
         binding.mapManageSwipeList.setOnItemClickListener((parent, view, position, id) -> {
             if (mapAdapter.getCount() != 0) {
-//                    currentPosition = position;
+//                    切换地图
                 Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath() +
                         "/RobotLocalMap" +
                         "/" + mapAdapter.getItem(position).name + "_1" + ".png");

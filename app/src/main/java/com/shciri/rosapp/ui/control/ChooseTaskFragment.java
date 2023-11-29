@@ -221,10 +221,11 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
             mTaskBt3.setOnClickListener(this);
             ManageTaskDB.currentTaskIndex = 0;
         }
-        mTaskBt1.detailPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mTaskBt1.detailPage.setOnClickListener(v -> {
+            if (!ManageTaskDB.taskLists.isEmpty()) {
                 Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
+            } else {
+                Toaster.showShort(getString(R.string.please_create_new_task));
             }
         });
     }

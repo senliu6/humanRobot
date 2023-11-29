@@ -11,38 +11,71 @@ public class RosInit {
     public static boolean isConnect;
     public static boolean offLineMode;
 
+    private OnRosConnectListener connectListener;
+
+    private static RosInit instance;
+
+
+    public void setOnRosConnectListener(OnRosConnectListener listener) {
+        this.connectListener = listener;
+    }
+
+
+    private RosInit() {
+        // 私有构造函数，防止外部直接实例化
+    }
+
+    public static synchronized RosInit getInstance() {
+        if (instance == null) {
+            instance = new RosInit();
+        }
+        return instance;
+    }
+
+
     public ROSBridgeClient rosConnect(String ip, String port) {
-        if(isConnect) {
+        if (isConnect) {
             return null;
         }
         ConnectionStatus connectionStatus = new ConnectionStatus();
         client = new ROSBridgeClient("ws://" + ip + ":" + port);
         isConnect = client.connect(connectionStatus);
-        if(isConnect) {
+        if (isConnect) {
             return client;
         } else {
             return null;
         }
     }
 
-    public static class ConnectionStatus implements ROSClient.ConnectionStatusListener {
+    public class ConnectionStatus implements ROSClient.ConnectionStatusListener {
 
         @Override
         public void onConnect() {
             isConnect = true;
-            Log.d("CeshiTAG","Connected on on on!!!");
+            if (connectListener != null) {
+                connectListener.onRosConnected(true);
+            }
+            Log.d("CeshiTAG", "Connected on on on!!!");
         }
 
         @Override
         public void onDisconnect(boolean normal, String reason, int code) {
             isConnect = false;
-            Log.d("CeshiTAG","DisConnected !!!" + normal + "  reason:" + reason + "  code:" + code);
+            if (connectListener != null) {
+                connectListener.onRosConnected(false);
+            }
+            Log.d("CeshiTAG", "DisConnected !!!" + normal + "  reason:" + reason + "  code:" + code);
         }
 
         @Override
         public void onError(Exception ex) {
             ex.printStackTrace();
-            Log.d("CeshiTAG","Connect Error on on on!!!");
+            Log.d("CeshiTAG", "Connect Error on on on!!!");
         }
     }
+
+    public interface OnRosConnectListener {
+        void onRosConnected(boolean connected);
+    }
+
 }

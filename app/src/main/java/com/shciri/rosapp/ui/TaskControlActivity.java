@@ -18,6 +18,7 @@ import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.databinding.ActivityTaskControlBinding;
@@ -62,6 +63,8 @@ public class TaskControlActivity extends AppCompatActivity {
 
     private List<String> topicingList = new ArrayList<String>();
 
+    private static RosInit rosInit = RosInit.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,12 @@ public class TaskControlActivity extends AppCompatActivity {
 
         statusBarView.setBatteryPercent(RCApplication.replyIPC.batteryReply.getCapacity_percent());
 
+        rosInit.setOnRosConnectListener(connected -> {
+            if (!isFinishing()) {
+                Toaster.showShort(getString(R.string.ros_connect_fail));
+                runOnUiThread(() -> statusBarView.setConnectStatus(connected));
+            }
+        });
 
     }
 
@@ -246,7 +255,6 @@ public class TaskControlActivity extends AppCompatActivity {
         statusBarView.setBatteryPercent(event.getCapacity_percent());
     }
 
-    ;
 
     private void windowSet() {
         Window window = getWindow();

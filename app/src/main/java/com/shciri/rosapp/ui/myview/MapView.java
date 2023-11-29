@@ -16,7 +16,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -763,7 +762,7 @@ public class MapView extends View {
         if (pose != null && pose.position != null) {
             @SuppressLint("DrawAllocation") float[] Points = new float[]{(float) RosData.getPixelXY(pose.position.x, pose.position.y).x, (float) RosData.getPixelXY(pose.position.x, pose.position.y).y};
             mCurrentMatrix.mapPoints(Points);
-            Log.d("CeshiTAG", "位置画布" + Points[0] + "===" + Points[1]);
+//            Log.d("CeshiTAG", "位置画布" + Points[0] + "===" + Points[1]);
             canvas.drawBitmap(mRobotImage, Points[0], Points[1], null);
         }
     }

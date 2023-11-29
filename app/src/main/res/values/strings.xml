@@ -211,5 +211,9 @@
     <string name="not_select_control">未选择操作类型</string>
     <string name="retargeting">重定位</string>
     <string name="no_permission">该账户无权限</string>
+    <string name="ros_connect_fail">ROS连接断开</string>
+    <string name="clip">抱夹功能</string>
+    <string name="user_manager">用户管理</string>
+    <string name="please_create_new_task">暂无任务，请新建定时任务</string>
 
 </resources>

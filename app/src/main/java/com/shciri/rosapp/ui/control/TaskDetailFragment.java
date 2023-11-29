@@ -64,13 +64,19 @@ public class TaskDetailFragment extends Fragment {
         queryManualPath();
 
         taskName = view.findViewById(R.id.task_detail_name);
-        taskName.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).taskName);
+        dateCreatedTv = view.findViewById(R.id.creation_time_tv);
+
+        if (!ManageTaskDB.taskLists.isEmpty()) {
+            taskName.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).taskName);
+            dateCreatedTv.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).dateCreated);
+        }
+
 
         pathName = view.findViewById(R.id.task_path_name);
         pathName.setText(String.format(getResources().getString(R.string.task_detail_path), dbPathName));
 
-        dateCreatedTv = view.findViewById(R.id.creation_time_tv);
-        dateCreatedTv.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).dateCreated);
+
+
     }
 
     private void queryManualPath() {

@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private String password = "";
     private String passwordDef = "1";
 
-    private RosInit rosInit;
+    private RosInit rosInit = RosInit.getInstance();
 
     private Handler handler;
 
@@ -174,7 +174,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 })
                 .build();
-        rosInit = new RosInit();
+        rosInit.setOnRosConnectListener(connected -> {
+            runOnUiThread(() -> binding.loginStatusBar.setConnectStatus(connected));
+        });
 
     }
 
@@ -259,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonLogin.setOnClickListener(v -> {
 //                audioMngHelper.setVoice100(100);
 //                RCApplication.mediaPlayer.start();
+            binding.loginStatusBar.setConnectStatus(RosInit.isConnect);
             if (UserList.INSTANCE.isValidUser(RCApplication.Operator, password)) {
                 if (!RosInit.isConnect) {
                     if (!intentDialog.isShowing()) {
