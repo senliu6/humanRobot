@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.hjq.toast.Toaster;
+import com.shciri.rosapp.ui.CrashActivity;
 import com.shciri.rosapp.utils.UartVCP;
 import com.shciri.rosapp.utils.protocol.ReplyIPC;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cat.ereza.customactivityoncrash.config.CaocConfig;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class RCApplication extends Application {
@@ -72,6 +74,20 @@ public class RCApplication extends Application {
             }
         }).start();
         Toaster.init(this);
+
+        // Crash 捕捉界面
+        CaocConfig.Builder.create()
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM)
+                .enabled(true)
+                .trackActivities(true)
+                .minTimeBetweenCrashesMs(2000)
+                // 重启的 Activity
+                .restartActivity(MainActivity.class)
+                // 错误的 Activity
+                .errorActivity(CrashActivity.class)
+                // 设置监听器
+                //.eventListener(new YourCustomEventListener())
+                .apply();
     }
 
     private void pushMessageToIPC() {

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,15 @@ import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.databinding.FragmentChooseTaskBinding;
+import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.StateNotifyHeadEvent;
+import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.datamanagement.MapAdapter;
 import com.shciri.rosapp.ui.dialog.WaitDialog;
 import com.shciri.rosapp.ui.myview.TaskBtView;
+import com.shciri.rosapp.utils.ToolsUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,7 +42,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.com.jilk.ros.message.StateMachineRequest;
 import src.com.jilk.ros.message.StateNotificationHeartbeat;
+import src.com.jilk.ros.message.requestparam.ManualPathParameter;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -64,6 +70,9 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
 
     private ManageTaskDB manageTaskDB;
     private WaitDialog waitDialog;
+
+    private StateMachineRequest stateMachineRequest = new StateMachineRequest();
+    private ManualPathParameter manualPathParameter = new ManualPathParameter();
 
     @Nullable
     @Override
@@ -93,13 +102,27 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         startTaskTv = binding.startTaskBt;
         startTaskTv.setOnClickListener(v -> {
             if (!ManageTaskDB.taskLists.isEmpty()) {
-                if (ManageTaskDB.currentTaskIndex == 0)
+                if (ManageTaskDB.currentTaskIndex == 0) {
                     ManageTaskDB.taskLists.get(0).mode = mTaskBt1.getCurrentMode();
-                else if (ManageTaskDB.currentTaskIndex == 1)
+                } else if (ManageTaskDB.currentTaskIndex == 1) {
                     ManageTaskDB.taskLists.get(1).mode = mTaskBt2.getCurrentMode();
-                else if (ManageTaskDB.currentTaskIndex == 2)
+                } else if (ManageTaskDB.currentTaskIndex == 2) {
                     ManageTaskDB.taskLists.get(2).mode = mTaskBt3.getCurrentMode();
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
+                }
+                if (DBUtils.getInstance().getPointS(Integer.toString(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).pathID), true) != null) {
+                    stateMachineRequest.navigation_task = 1;
+                    RosTopic.publishStateMachineRequest(stateMachineRequest);
+                    manualPathParameter.point = DBUtils.getInstance().getPointS(Integer.toString(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).pathID), true);
+                    manualPathParameter.loop_num = (short) taskCycleTimes;
+                    RosTopic.publishManualPathParameterTopic(manualPathParameter);
+                    stateMachineRequest.navigation_task = 3;
+                    Toaster.showLong("触发定时任务${alarm.taskId}");
+                    RosTopic.publishStateMachineRequest(stateMachineRequest);
+                    ToolsUtil.INSTANCE.playRingtone(getActivity());
+                    Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
+                }
+            }else {
+                Toaster.showShort(R.string.no_task);
             }
         });
 
@@ -221,19 +244,17 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
             mTaskBt3.setOnClickListener(this);
             ManageTaskDB.currentTaskIndex = 0;
         }
-        mTaskBt1.detailPage.setOnClickListener(v -> {
-            if (!ManageTaskDB.taskLists.isEmpty()) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
-            } else {
-                Toaster.showShort(getString(R.string.please_create_new_task));
-            }
-        });
+        mTaskBt1.detailPage.setOnClickListener(this::navToTaskDetailFragment);
+        mTaskBt2.detailPage.setOnClickListener(this::navToTaskDetailFragment);
+        mTaskBt3.detailPage.setOnClickListener(this::navToTaskDetailFragment);
     }
 
     /**
      * 设置次数
      */
     private void InitialCirculationTimeView() {
+        binding.circulateTv1.setChecked(true);
+        taskCycleTimes = 1;
         binding.radioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.circulateTv4) {
                 binding.circulateTv4.setChecked(true);
@@ -263,7 +284,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         binding = null;
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "NonConstantResourceId"})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -279,6 +300,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
             default:
                 break;
         }
+        Log.d("CeshiTAG", "下标----" + ManageTaskDB.currentTaskIndex);
         System.out.println("taskname = " + currentTaskName);
     }
 
@@ -301,6 +323,14 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 break;
             default:
 
+        }
+    }
+
+    private void navToTaskDetailFragment(View view) {
+        if (!ManageTaskDB.taskLists.isEmpty()) {
+            Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
+        } else {
+            Toaster.showShort(getString(R.string.please_create_new_task));
         }
     }
 }

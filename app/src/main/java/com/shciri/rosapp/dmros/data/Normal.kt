@@ -35,3 +35,5 @@ object UserList {
 
     val array: Array<String> = users.map { it.username }.toTypedArray()
 }
+
+// User.kt

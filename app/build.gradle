@@ -119,6 +119,9 @@ dependencies {
     //内存泄漏框架集成 https://github.com/square/leakcanary
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
 
+    // 本地异常捕捉框架：https://github.com/Ereza/CustomActivityOnCrash
+    implementation 'cat.ereza:customactivityoncrash:2.2.0'
+
 
 }
 

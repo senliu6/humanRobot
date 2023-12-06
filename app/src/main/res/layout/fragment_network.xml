@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/return_arrow_text_margin"
-        android:text="@string/network_set"
+        android:text="@string/clip"
         style="@style/WhiteTextTheme.28"
         android:layout_marginTop="100dp"
         android:layout_marginStart="12dp"

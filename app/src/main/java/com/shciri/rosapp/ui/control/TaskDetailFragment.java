@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,11 +77,11 @@ public class TaskDetailFragment extends Fragment {
         pathName.setText(String.format(getResources().getString(R.string.task_detail_path), dbPathName));
 
 
-
     }
 
     private void queryManualPath() {
         if (ManageTaskDB.taskLists != null && !ManageTaskDB.taskLists.isEmpty()) {
+            Log.d("CeshiTAG", "下标" + ManageTaskDB.currentTaskIndex);
             Cursor cursor = RCApplication.db.query("manual_path", null, "id=?", new String[]{Integer.toString(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).pathID)}, null, null, null);
             Gson gson = new Gson();
 

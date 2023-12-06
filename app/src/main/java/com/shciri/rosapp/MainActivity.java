@@ -28,8 +28,8 @@ import com.shciri.rosapp.databinding.ActivityLoginBinding;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.Settings;
-import com.shciri.rosapp.dmros.data.UserList;
 import com.shciri.rosapp.dmros.tool.AudioMngHelper;
+import com.shciri.rosapp.dmros.tool.UserRepository;
 import com.shciri.rosapp.mydata.DBOpenHelper;
 import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.ConnectServer;
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
     private InputDialog inputDialog;
     private String robotIp = "11.11.11.111";
+    private String[] idOption;
+    private ArrayAdapter<String> idAdapter;
 
 
     @Override
@@ -139,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
         robotIp = SharedPreferencesUtil.Companion.getValue(this.getApplicationContext(),
                 Settings.ROBOT_IP, "11.11.11.111", String.class);
 
-        String[] idOption = UserList.INSTANCE.getArray();
-        ArrayAdapter<String> idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
+        idOption = UserRepository.INSTANCE.getUserNameArray();
+        idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
         //设置数组适配器的布局样式
         idAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
         binding.identitySelect.setAdapter(idAdapter);
@@ -262,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 //                audioMngHelper.setVoice100(100);
 //                RCApplication.mediaPlayer.start();
             binding.loginStatusBar.setConnectStatus(RosInit.isConnect);
-            if (UserList.INSTANCE.isValidUser(RCApplication.Operator, password)) {
+            if (UserRepository.INSTANCE.isValidUser(RCApplication.Operator, password)) {
                 if (!RosInit.isConnect) {
                     if (!intentDialog.isShowing()) {
                         intentDialog.show();
@@ -289,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
                         DBUtils.getInstance().DBUpdateInfo(ServerInfoTab.id, inputText);
                         SharedPreferencesUtil.Companion.saveValue(this.getApplicationContext(), Settings.ROBOT_IP, inputText);
                         Toaster.showShort(getString(R.string.ip_set_success) + inputText);
+                        robotIp = inputText;
                         binding.tvIp.setText(String.format(getResources().getString(R.string.robot_id), inputText));
                         inputDialog.dismiss();
                     } else {
@@ -380,6 +383,15 @@ public class MainActivity extends AppCompatActivity {
         password = "";
         binding.loginKeyboard.clearResult();
         setLoginBackGround();
+        if (idOption != null) {
+            idOption = UserRepository.INSTANCE.getUserNameArray();
+
+        }
+        if (idAdapter != null) {
+            idAdapter.notifyDataSetChanged();
+        }
+
+
     }
 
     @Override

@@ -4,6 +4,7 @@ import src.com.jilk.ros.message.Pose
 import src.com.jilk.ros.message.RobotLocation
 import src.com.jilk.ros.message.StateMachineReply
 import src.com.jilk.ros.message.StateNotificationHeartbeat
+import src.com.jilk.ros.message.custom.NavPace
 
 /**
  * 功能：返回类型
@@ -18,3 +19,5 @@ data class StateNotifyHeadEvent(val state: StateNotificationHeartbeat) {}
 data class RobotLoginEvent(val robotLocation: RobotLocation) {}
 
 data class RobotPoseEvent(val pose: Pose)
+
+data class NavPaceEvent(val navPace: NavPace)

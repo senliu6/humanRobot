@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@mipmap/health_8beijing4_21"
+    android:gravity="center"
     android:orientation="vertical"
     android:scaleType="fitXY">
 
     <TextView
         android:id="@+id/textView3"
+        style="@style/WhiteTextTheme.30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="任务进度"
-        style="@style/WhiteTextTheme.30"
-        app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintBottom_toTopOf="@+id/task_detail_percent"
+        app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintStart_toStartOf="@+id/task_detail_percent" />
 
     <TextView
         android:id="@+id/task_detail_percent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="false"
         android:text="0"
         android:textColor="#ff02fde8"
         android:textSize="200sp"
-        android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.23"
@@ -45,75 +45,39 @@
 
     <TextView
         android:id="@+id/task_exe_name"
+        style="@style/WhiteTextTheme.40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="execute_task_1"
-        style="@style/WhiteTextTheme.40"
-        app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView13"
         app:layout_constraintStart_toStartOf="@+id/task_detail_percent"
         app:layout_constraintTop_toBottomOf="@+id/task_detail_percent" />
-
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:text="作业中..."-->
-<!--        android:textColor="#ff02fde8"-->
-<!--        android:textSize="30sp"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/task_exe_name"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/task_exe_name" />-->
 
     <ImageView
         android:id="@+id/task_detail_stop_view"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:background="@mipmap/hongseanniu"
-        android:focusable="true"
         android:clickable="true"
-        app:layout_constraintHorizontal_bias="0.9"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/task_detail_percent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/task_detail_percent" />
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView25"-->
-<!--        android:layout_width="113dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:background="@drawable/button_background_selector"-->
-<!--        android:gravity="center"-->
-<!--        android:text="清洁设置"-->
-<!--        android:textColor="#fff8fafd"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/imageCleanIv"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/imageCleanIv"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/imageCleanIv" />-->
-
 
     <ImageView
         android:id="@+id/task_detail_exe_view"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:background="@drawable/start_and_pause_selector"
-        android:focusable="true"
         android:clickable="true"
-        app:layout_constraintHorizontal_bias="0.65"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/task_detail_percent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/task_detail_percent" />
 
-<!--    <TextView-->
-<!--        android:layout_width="113dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:background="@drawable/button_background_selector"-->
-<!--        android:gravity="center"-->
-<!--        android:text="定位"-->
-<!--        android:textColor="#fff8fafd"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/task_detail_exe_view"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/task_detail_exe_view"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/task_detail_exe_view" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

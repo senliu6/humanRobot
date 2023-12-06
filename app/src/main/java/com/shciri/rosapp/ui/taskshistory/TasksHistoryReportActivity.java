@@ -1,31 +1,35 @@
 package com.shciri.rosapp.ui.taskshistory;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-
-import com.google.android.material.tabs.TabLayout;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.ui.TaskControlActivity;
+import com.shciri.rosapp.databinding.ActivityTaskHistroyReportBinding;
 
-public class TasksHistoryReportActivity extends AppCompatActivity {
-    ViewPager viewPager;
-    TextView tabLeftIv;
-    TextView tabMidIv;
-    TextView tabRightIv;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+public class TasksHistoryReportActivity extends Fragment {
+    private ActivityTaskHistroyReportBinding binding;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_histroy_report);
+        binding = ActivityTaskHistroyReportBinding.inflate(inflater, container, false);
+        initView();
+        initData();
+        return binding.getRoot();
+    }
 
-        viewPager = findViewById(R.id.report_view_pager_ac);
-        TasksHistoryReportPagerAdapter tasksPagerAdapter = new TasksHistoryReportPagerAdapter( getSupportFragmentManager());
-        viewPager.setAdapter(tasksPagerAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    private void initData() {
+
+        TasksHistoryReportPagerAdapter tasksPagerAdapter = new TasksHistoryReportPagerAdapter(getParentFragmentManager());
+        binding.reportViewPagerAc.setAdapter(tasksPagerAdapter);
+        binding.reportViewPagerAc.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -33,11 +37,11 @@ public class TasksHistoryReportActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0){
+                if (position == 0) {
                     selectTabLeft();
-                }else if(position == 1){
+                } else if (position == 1) {
                     selectTabMid();
-                }else{
+                } else {
                     selectTabRight();
                 }
             }
@@ -47,61 +51,46 @@ public class TasksHistoryReportActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        findViewById(R.id.return_ll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(TasksHistoryReportActivity.this, TaskControlActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+    private void initView() {
 
-        tabLeftIv =findViewById(R.id.tabLeftIv);
-        tabLeftIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTabLeft();
-                viewPager.setCurrentItem(0);
-            }
-        });
-        tabMidIv =findViewById(R.id.tabMidIv);
-        tabMidIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTabMid();
-                viewPager.setCurrentItem(1);
-            }
-        });
-        tabRightIv =findViewById(R.id.tabRightIv);
-        tabRightIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectTabRight();
-                viewPager.setCurrentItem(2);
-            }
+        binding.returnLl.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
+
+
+        binding.tabLeftIv.setOnClickListener(v -> {
+            selectTabLeft();
+            binding.reportViewPagerAc.setCurrentItem(0);
         });
 
+        binding.tabMidIv.setOnClickListener(v -> {
+            selectTabMid();
+            binding.reportViewPagerAc.setCurrentItem(1);
+        });
+
+        binding.tabRightIv.setOnClickListener(v -> {
+            selectTabRight();
+            binding.reportViewPagerAc.setCurrentItem(2);
+        });
         selectTabLeft();
+
     }
 
-    private void selectTabLeft(){
-        tabLeftIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
-        tabMidIv.setBackgroundResource(0);
-        tabRightIv.setBackgroundResource(0);
+    private void selectTabLeft() {
+        binding.tabLeftIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
+        binding.tabMidIv.setBackgroundResource(0);
+        binding.tabRightIv.setBackgroundResource(0);
     }
 
-    private void selectTabMid(){
-        tabLeftIv.setBackgroundResource(0);
-        tabMidIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
-        tabRightIv.setBackgroundResource(0);
+    private void selectTabMid() {
+        binding.tabLeftIv.setBackgroundResource(0);
+        binding.tabMidIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
+        binding.tabRightIv.setBackgroundResource(0);
     }
 
-    private void selectTabRight(){
-        tabLeftIv.setBackgroundResource(0);
-        tabMidIv.setBackgroundResource(0);
-        tabRightIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
+    private void selectTabRight() {
+        binding.tabLeftIv.setBackgroundResource(0);
+        binding.tabMidIv.setBackgroundResource(0);
+        binding.tabRightIv.setBackgroundResource(R.mipmap.choosetask_kaishianniu4_21);
     }
 }

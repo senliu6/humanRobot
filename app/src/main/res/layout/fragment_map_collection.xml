@@ -4,13 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightsteelblue">
-    <TextView
-        android:id="@+id/tvTest"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/GrayTextTheme.30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <com.shciri.rosapp.ui.myview.MapView
         android:id="@+id/ros_map"

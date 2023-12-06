@@ -130,7 +130,7 @@ class AlarmService : Service() {
                     if (currentTime == alarm.alarmTime) {
                         stateMachineRequest.navigation_task = 1
                         RosTopic.publishStateMachineRequest(stateMachineRequest)
-                        manualPathParameter.point = DBUtils.getInstance().getPointS(alarm.taskId)
+                        manualPathParameter.point = DBUtils.getInstance().getPointS(alarm.taskId,false)
                         manualPathParameter.loop_num = alarm.loopNum
                         RosTopic.publishManualPathParameterTopic(manualPathParameter)
                         stateMachineRequest.navigation_task = 3

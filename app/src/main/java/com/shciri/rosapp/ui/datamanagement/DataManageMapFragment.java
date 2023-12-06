@@ -21,7 +21,6 @@ import androidx.navigation.Navigation;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
@@ -223,34 +222,32 @@ public class DataManageMapFragment extends Fragment {
         binding.mapManageSwipeList.setMenuCreator(creator);
         mapAdapter = new MapAdapter(getContext());
         binding.mapManageSwipeList.setAdapter(mapAdapter);
-        binding.mapManageSwipeList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        // open
-                        break;
-                    case 1:
-                        // delete 删除单个地图
-                        if (BitmapUtils.deleteMap(mapAdapter.getItem(position).name, mapAdapter.getItem(position).id)) {
-                            DBUtils.getInstance().deleteMap(mapAdapter.getItem(position).id);
-                            DBUtils.getInstance().deletePathOfMapID(mapAdapter.getItem(position).id);
-                            mapAdapter.removeItem(position);
-                        }
-                        RequestMapControlParameter requestMapControlParameter = new RequestMapControlParameter();
-                        requestMapControlParameter.map_id = mapAdapter.getItem(position).name;
-                        RosTopic.publishControlParameterTopic(requestMapControlParameter);
+        binding.mapManageSwipeList.setOnMenuItemClickListener((position, menu, index) -> {
+            switch (index) {
+                case 0:
+                    // open
+                    break;
+                case 1:
+                    // delete 删除单个地图
+                    if (BitmapUtils.deleteMap(mapAdapter.getItem(position).name, mapAdapter.getItem(position).id)) {
+                        DBUtils.getInstance().deleteMap(mapAdapter.getItem(position).id);
+                        DBUtils.getInstance().deletePathOfMapID(mapAdapter.getItem(position).id);
+                        mapAdapter.removeItem(position);
+                        mapAdapter.notifyDataSetChanged();
+                    }
+                    RequestMapControlParameter requestMapControlParameter = new RequestMapControlParameter();
+                    requestMapControlParameter.map_id = mapAdapter.getItem(position).name;
+                    RosTopic.publishControlParameterTopic(requestMapControlParameter);
 
-                        StateMachineRequest request = new StateMachineRequest();
-                        request.map_control = 6;
-                        RosTopic.publishStateMachineRequest(request);
+                    StateMachineRequest request = new StateMachineRequest();
+                    request.map_control = 6;
+                    RosTopic.publishStateMachineRequest(request);
 
-                        break;
-                    default:
-                }
-                // false : close the menu; true : not close the menu
-                return false;
+                    break;
+                default:
             }
+            // false : close the menu; true : not close the menu
+            return false;
         });
 
         binding.mapManageSwipeList.setOnItemClickListener((parent, view, position, id) -> {

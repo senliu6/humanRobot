@@ -24,6 +24,7 @@ import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.custom.Battery;
 import src.com.jilk.ros.message.custom.EmergencyButton;
+import src.com.jilk.ros.message.custom.NavPace;
 import src.com.jilk.ros.message.goal.MoveGoal;
 import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
 import src.com.jilk.ros.message.requestparam.ClampControl;
@@ -66,6 +67,7 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<MapMsg> watchMapTopic;
 
     public static src.com.jilk.ros.Topic<Pose> robotPoseTopic;
+    public static src.com.jilk.ros.Topic<NavPace> navPaceTopic;
 
     public static List<String> TopicName = new ArrayList<>();
 
@@ -90,6 +92,7 @@ public class RosTopic {
         TopicName.add("/enter_manual_clamp");
         TopicName.add("/robot_location");
         TopicName.add("/watch/carto_map");
+        TopicName.add("/nav_pace");
     }
 
 
@@ -233,6 +236,11 @@ public class RosTopic {
     public void subscribeRobotPose(MessageHandler handler, ROSBridgeClient client){
         robotPoseTopic = new Topic<Pose>("/robot_location", Pose.class, client);
         robotPoseTopic.subscribe(handler);
+    }
+
+    public void subscribeNavPace(MessageHandler handler, ROSBridgeClient client){
+        navPaceTopic = new Topic<NavPace>("/nav_pace", NavPace.class, client);
+        navPaceTopic.subscribe(handler);
     }
 
     public static void publishStateMachineRequest(StateMachineRequest stateMachineRequest) {

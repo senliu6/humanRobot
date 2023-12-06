@@ -9,15 +9,15 @@
         android:id="@+id/nav_home"
         android:name="com.shciri.rosapp.ui.control.ChooseTaskFragment"
         android:label="first_fragment"
-        tools:layout="@layout/fragment_choose_task" >
+        tools:layout="@layout/fragment_choose_task">
         <action
             android:id="@+id/action_nav_home_to_taskReportActivity"
             app:destination="@id/taskReportActivity"
-            app:launchSingleTop="true"/>
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_nav_home_to_manageDataFragment"
             app:destination="@id/manageDataFragment"
-            app:launchSingleTop="true"/>
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_nav_home_to_manuaControlFragment"
             app:destination="@id/manuaControlFragment"
@@ -40,11 +40,11 @@
             app:destination="@id/systemSetFragment" />
         <action
             android:id="@+id/action_nav_home_to_networkFragment"
-            app:destination="@+id/netWorkFragment"/>
+            app:destination="@+id/netWorkFragment" />
     </fragment>
 
 
-    <activity
+    <fragment
         android:id="@+id/taskReportActivity"
         android:name="com.shciri.rosapp.ui.taskshistory.TasksHistoryReportActivity"
         android:label="TaskReportActivity" />
@@ -52,7 +52,7 @@
     <fragment
         android:id="@+id/manageDataFragment"
         android:name="com.shciri.rosapp.ui.datamanagement.DataManageFragment"
-        android:label="ManageDataFragment" >
+        android:label="ManageDataFragment">
         <action
             android:id="@+id/action_manageDataFragment_to_mapFragment"
             app:destination="@id/mapFragment"
@@ -64,7 +64,7 @@
         <action
             android:id="@+id/action_manageDataFragment_mapSetFragment"
             app:destination="@+id/mapSetFragment"
-            app:launchSingleTop="true"/>
+            app:launchSingleTop="true" />
     </fragment>
 
     <fragment
@@ -78,8 +78,7 @@
     <fragment
         android:id="@+id/manuaControlFragment"
         android:name="com.shciri.rosapp.ui.manualcontrol.ManuaControlFragment"
-        android:label="ManuaControlFragment" >
-    </fragment>
+        android:label="ManuaControlFragment"></fragment>
     <fragment
         android:id="@+id/taskExeFragment"
         android:name="com.shciri.rosapp.ui.taskexe.TaskExeFragment"
@@ -91,7 +90,7 @@
     <fragment
         android:id="@+id/moreTaskFragment"
         android:name="com.shciri.rosapp.ui.control.MoreTaskFragment"
-        android:label="MoreTaskFragment" >
+        android:label="MoreTaskFragment">
         <action
             android:id="@+id/action_nav_home_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment" />
@@ -104,20 +103,20 @@
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.shciri.rosapp.ui.addtask.AddTaskFragment"
-        android:label="AddTaskFragment" >
+        android:label="AddTaskFragment">
         <action
             android:id="@+id/action_addTaskFragment_to_addNewTaskFragment"
-            app:destination="@id/addNewTaskFragment"/>
+            app:destination="@id/addNewTaskFragment" />
         <action
             android:id="@+id/action_addTaskFragment_to_addNewTimeTaskFragment"
-            app:destination="@id/addNewTimeTaskFragment"/>
+            app:destination="@id/addNewTimeTaskFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/systemSetFragment"
         android:name="com.shciri.rosapp.ui.set.SystemSetFragment"
         android:label="SystemSetFragment"
-        tools:layout="@layout/fragment_system_set"/>
+        tools:layout="@layout/fragment_system_set" />
 
     <fragment
         android:id="@+id/addNewTaskFragment"
@@ -133,22 +132,30 @@
         android:label="NetworkFragment">
         <action
             android:id="@+id/action_nav_home_to_clipFragment"
-            app:destination="@+id/clipFragment"
-            />
-        <action android:id="@+id/action_nav_home_to_clipControlFragment"
-            app:destination="@+id/clipControlFragment"/>
+            app:destination="@+id/clipFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_clipControlFragment"
+            app:destination="@+id/clipControlFragment" />
     </fragment>
-    <fragment android:id="@+id/clipFragment"
+    <fragment
+        android:id="@+id/clipFragment"
         android:name="com.shciri.rosapp.myfragment.ClipFragment"
-        android:label="ClipFragment"/>
-    <fragment android:id="@+id/mapSetFragment"
+        android:label="ClipFragment" />
+    <fragment
+        android:id="@+id/mapSetFragment"
         android:name="com.shciri.rosapp.myfragment.MapSetFragment" />
-    <fragment android:id="@+id/clipControlFragment"
+    <fragment
+        android:id="@+id/clipControlFragment"
         android:name="com.shciri.rosapp.myfragment.ClipControlFragment"
-        android:label="ClipFragment"/>
+        android:label="ClipFragment" />
 
-    <fragment android:id="@+id/collectionFragment"
+    <fragment
+        android:id="@+id/collectionFragment"
         android:name="com.shciri.rosapp.ui.manualcontrol.CollectionFragment"
-        android:label="CollectionFragment"/>
+        android:label="CollectionFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.shciri.rosapp.myfragment.UserManagerFragment"
+        android:label="UserManagerFragment" />
 
 </navigation>

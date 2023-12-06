@@ -133,7 +133,11 @@ public class AddNewTimeTaskFragment extends Fragment {
         binding.addTimeTaskModeSpinner.setAdapter(modeAdapter);
 
         binding.addTimeTaskConfirmBtn.setOnClickListener(v -> {
-            DialogBuilder(view);
+            if (binding.addOriginTaskMapSpinner.getSelectedItem() != null) {
+                DialogBuilder(view);
+            } else {
+                Toaster.showShort(R.string.no_task);
+            }
 //                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
 //                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 1);
 //                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio41/value", 1);

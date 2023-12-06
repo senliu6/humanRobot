@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.hjq.toast.Toaster;
+import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.dmros.client.RosTopic;
@@ -107,9 +108,7 @@ public class SystemSetFragment extends Fragment {
                         StateMachineRequest request = new StateMachineRequest();
                         request.map_control = 7;
                         RosTopic.publishStateMachineRequest(request);
-                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-                        homeIntent.addCategory(Intent.CATEGORY_HOME);
-                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent homeIntent = new Intent(getActivity(), MainActivity.class);
                         startActivity(homeIntent);
                         requireActivity().finish();
                         break;

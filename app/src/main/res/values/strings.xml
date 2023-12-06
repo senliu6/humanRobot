@@ -215,5 +215,16 @@
     <string name="clip">抱夹功能</string>
     <string name="user_manager">用户管理</string>
     <string name="please_create_new_task">暂无任务，请新建定时任务</string>
+    <string name="no_task">无任务,请退出新建任务</string>
+
+    <!-- 异常捕捉 -->
+    <string name="crash_error_hint">发生意外错误\n抱歉，给您带来不便</string>
+    <string name="crash_error_restart">重新启动</string>
+    <string name="crash_error_log">错误日志</string>
+    <string name="crash_error_details">错误详情</string>
+    <string name="crash_error_info">错误信息</string>
+    <string name="crash_copy_log">复制日志</string>
+    <string name="crash_close">关闭</string>
+    <string name="add">新增</string>\
 
 </resources>

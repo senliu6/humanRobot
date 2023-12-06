@@ -52,7 +52,7 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
                 stateMachineRequest.navigation_task = 1;
                 RosTopic.publishStateMachineRequest(stateMachineRequest);
                 ManualPathParameter manualPathParameter = new ManualPathParameter();
-                manualPathParameter.point = DBUtils.getInstance().getPointS(String.valueOf(alarmId));
+//                manualPathParameter.point = DBUtils.getInstance().getPointS(String.valueOf(alarmId));
                 manualPathParameter.loop_num = (short) DBUtils.getInstance().getLoopNum(String.valueOf(alarmId));
                 RosTopic.publishManualPathParameterTopic(manualPathParameter);
                 stateMachineRequest.navigation_task = 3;

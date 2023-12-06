@@ -55,6 +55,7 @@
         android:paddingHorizontal="20dp"
         android:paddingVertical="5dp"
         app:shape_solidPressedColor="@color/red"
+        android:visibility="gone"
         />
 
     <LinearLayout

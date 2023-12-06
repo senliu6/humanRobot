@@ -153,13 +153,18 @@ public class DBUtils {
      * @return 路径点集合
      */
     @SuppressLint("Range")
-    public Point[] getPointS(String id) {
+    public Point[] getPointS(String id, boolean pathId) {
         try {
             // 构建查询语句
             String query = "SELECT * FROM manual_path WHERE map_id = ? AND id = ?";
 
+            String[] selectionArgs = new String[]{};
             // 执行查询
-            String[] selectionArgs = new String[]{Integer.toString(RosData.currentMapID), getPathId(id)};
+            if (pathId) {
+                selectionArgs = new String[]{Integer.toString(RosData.currentMapID), id};
+            } else {
+                selectionArgs = new String[]{Integer.toString(RosData.currentMapID), getPathId(id)};
+            }
             Cursor cursor = RCApplication.db.rawQuery(query, selectionArgs);
             List<PointF> pointfs = new ArrayList<PointF>();
             Point[] points;

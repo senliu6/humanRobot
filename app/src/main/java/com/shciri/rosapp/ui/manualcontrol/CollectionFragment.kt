@@ -320,7 +320,6 @@ class CollectionFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RobotPoseEvent) {
         location = event.pose
-        binding.tvTest.text = "接到位置 ${location!!.position.x} -- ${location!!.position.y}"
         MapView.pose = location
         binding.rosMap.postInvalidate()
     }

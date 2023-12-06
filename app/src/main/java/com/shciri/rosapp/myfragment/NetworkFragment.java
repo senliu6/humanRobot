@@ -9,14 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.databinding.FragmentNetworkBinding;
-import com.shciri.rosapp.dmros.data.UserList;
 
 /**
- * @author asus
+ * @author liudz
  */
 public class NetworkFragment extends Fragment {
 
@@ -37,24 +34,11 @@ public class NetworkFragment extends Fragment {
 
     private void initView() {
         //点击测试按钮
-        binding.tvTest.setOnClickListener(v -> {
-            if (UserList.INSTANCE.getArray()[0].equals(RCApplication.Operator)) {
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_clipControlFragment);
-            } else {
-                Toaster.showShort(getString(R.string.no_permission));
-            }
-
-        });
+        binding.tvTest.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_clipControlFragment));
         //点击返回
         binding.returnLl.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
         //点击设置IP
-        binding.tvNetwork.setOnClickListener(v -> {
-            if (UserList.INSTANCE.getArray()[0].equals(RCApplication.Operator)) {
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_clipFragment);
-            } else {
-                Toaster.showShort(getString(R.string.no_permission));
-            }
-        });
+        binding.tvNetwork.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_clipFragment));
 
     }
 

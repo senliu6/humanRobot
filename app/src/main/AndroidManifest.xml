@@ -23,14 +23,14 @@
     <application
         android:name=".RCApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RosApp.NoActionBar"
-        android:windowSoftInputMode="stateHidden"
-        android:hardwareAccelerated="true">
+        android:windowSoftInputMode="stateHidden">
         <meta-data
             android:name="design_width_in_dp"
             android:value="1280" />
@@ -43,6 +43,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.TaskControlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.CrashActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

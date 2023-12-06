@@ -35,48 +35,34 @@
         android:layout_height="wrap_content"
         android:text="execute_task_1"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/textView14"
+        app:layout_constraintStart_toStartOf="@+id/taskStatus"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.253" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/taskStatus"
         style="@style/WhiteTextTheme.26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="1  作业中 "
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+        android:text="1 : 作业中 "
+        app:layout_constraintEnd_toStartOf="@+id/tvSchedule"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/task_exe_name" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <TextView
+        android:id="@+id/tvSchedule"
+        style="@style/GrayTextTheme.26"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/textView14"
+        android:text="22%"
+        app:layout_constraintBottom_toBottomOf="@+id/taskStatus"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/task_detail_map_view"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="@+id/textView14">
+        app:layout_constraintStart_toEndOf="@+id/taskStatus"
+        app:layout_constraintTop_toTopOf="@+id/taskStatus" />
 
-        <TextView
-            android:id="@+id/textView22"
-            style="@style/GrayTextTheme.26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="22%" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:text="跳过"
-            android:textColor="#ff1f4e96"
-            android:textSize="23sp" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/textView23"
@@ -85,8 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="2  正在等待"
-        app:layout_constraintStart_toStartOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintStart_toStartOf="@+id/taskStatus"
+        app:layout_constraintTop_toBottomOf="@+id/taskStatus" />
 
     <TextView
         style="@style/GrayTextTheme.26"

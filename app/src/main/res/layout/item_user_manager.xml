@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_user.xml -->
+<com.hjq.shape.layout.ShapeLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:shape_strokeColor="@color/button_normal_stork"
+    app:shape_radius="15dp"
+    app:shape_strokeSize="2dp"
+    android:layout_marginTop="5dp">
+
+    <TextView
+        android:id="@+id/usernameTextView"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="16dp"/>
+    <TextView
+        android:id="@+id/passwordTextView"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="16dp"/>
+
+    <TextView
+        android:id="@+id/editButton"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Edit"/>
+
+    <TextView
+        android:id="@+id/deleteButton"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Delete"/>
+</com.hjq.shape.layout.ShapeLinearLayout>

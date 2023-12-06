@@ -1,14 +1,8 @@
 package com.shciri.rosapp.ui.myview;
 
 import android.content.Context;
-import android.graphics.Rect;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-//<<<<<<< HEAD
-//import android.view.MotionEvent;
-//=======
-//>>>>>>> eda724c2ecef5f508a13093319d17919f8d26a31
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,20 +10,12 @@ import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.ContentLoadingProgressBar;
 
 import com.shciri.rosapp.R;
-
-import java.util.ArrayList;
 
 public class TaskBtView extends ConstraintLayout{
 
@@ -78,12 +64,12 @@ public class TaskBtView extends ConstraintLayout{
             }
         });
 
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        view.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         mSpinner.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -109,6 +95,7 @@ public class TaskBtView extends ConstraintLayout{
                     detailPage.setVisibility(VISIBLE);
                     mEditIv.setVisibility(VISIBLE);
                     pullIv.setVisibility(VISIBLE);
+                    view.performClick();
                 } else {
                     view.clearAnimation();
                     detailPage.setVisibility(INVISIBLE);
@@ -116,6 +103,7 @@ public class TaskBtView extends ConstraintLayout{
                     pullIv.setVisibility(INVISIBLE);
                 }
             }
+
         });
     }
 

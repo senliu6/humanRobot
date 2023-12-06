@@ -27,6 +27,7 @@ import com.shciri.rosapp.dmros.client.RosService;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.data.UserList;
 import com.shciri.rosapp.server.AlarmService;
 import com.shciri.rosapp.ui.myview.StatusBarView;
 import com.shciri.rosapp.utils.AlarmManagerUtils;
@@ -209,6 +210,9 @@ public class TaskControlActivity extends AppCompatActivity {
                                     case 18:
                                         rosTopic.subscribeWatchMap(receiveHandler.getWatchMapHandler(), ((RCApplication) getApplication()).getRosClient());
                                         break;
+                                    case 19:
+                                        rosTopic.subscribeNavPace(receiveHandler.getNavPaceHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
                                     default:
                                 }
                             }
@@ -266,34 +270,34 @@ public class TaskControlActivity extends AppCompatActivity {
 
     //点击事件
     private void fragmentTrans() {
+        //注销登录
         binding.drawerCloseLl.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             finish();
         });
+        //系统设置
+        binding.systemSetLl.setOnClickListener(v -> navigateTo(R.id.systemSetFragment));
+        //定时任务
+        binding.timeTaskLl.setOnClickListener(v -> navigateTo(R.id.addTaskFragment));
+        //地图管理
+        binding.managerDataLl.setOnClickListener(v -> navigateTo(R.id.manageDataFragment));
+        //主页
+        binding.locationLl.setOnClickListener(v -> navigateTo(R.id.nav_home));
+        //任务报告
+        binding.tvTaskReport.setOnClickListener(v -> navigateTo(R.id.taskReportActivity));
+        //抱夹功能
+        binding.tvInternal.setOnClickListener(v -> navigateTo(R.id.netWorkFragment));
+        //用户管理
+        binding.tvUserManager.setOnClickListener(v -> navigateTo(R.id.userFragment));
 
-        binding.systemSetLl.setOnClickListener(v -> {
-            navigateTo(R.id.systemSetFragment);
-        });
-
-        binding.timeTaskLl.setOnClickListener(v -> {
-            navigateTo(R.id.addTaskFragment);
-        });
-
-        binding.managerDataLl.setOnClickListener(v -> {
-            navigateTo(R.id.manageDataFragment);
-        });
-
-        binding.locationLl.setOnClickListener(v -> {
-            navigateTo(R.id.nav_home);
-        });
-
-        binding.tvTaskReport.setOnClickListener(v -> {
-            navigateTo(R.id.taskReportActivity);
-        });
-
-        binding.tvInternal.setOnClickListener(v -> {
-            navigateTo(R.id.netWorkFragment);
-        });
+        //用户权限控制
+        if (!UserList.INSTANCE.getArray()[0].equals(RCApplication.Operator)) {
+            binding.tvInternal.setVisibility(View.GONE);
+            binding.tvUserManager.setVisibility(View.GONE);
+        } else {
+            binding.tvInternal.setVisibility(View.VISIBLE);
+            binding.tvUserManager.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
