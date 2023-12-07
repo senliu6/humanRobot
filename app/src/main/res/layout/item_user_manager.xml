@@ -27,19 +27,29 @@
         android:layout_height="wrap_content"
         android:padding="16dp"/>
 
-    <TextView
+    <com.hjq.shape.view.ShapeTextView
         android:id="@+id/editButton"
         style="@style/WhiteTextTheme.28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        app:shape_radius="14dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/red"
+        android:layout_marginVertical="8dp"
         android:text="Edit"/>
 
-    <TextView
+    <com.hjq.shape.view.ShapeTextView
         android:id="@+id/deleteButton"
         style="@style/WhiteTextTheme.28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        app:shape_radius="14dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/red"
+        android:layout_marginStart="8dp"
+        android:layout_marginVertical="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Delete"/>
 </com.hjq.shape.layout.ShapeLinearLayout>

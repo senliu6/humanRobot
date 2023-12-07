@@ -92,7 +92,7 @@ class UserManagerFragment : Fragment(), UserAdapter.OnItemClickListener {
         }
     }
 
-    override fun onEditClick(user: User) {
+    override fun onEditClick(user: User, position: Int) {
         passwordDialog = InputDialog.Builder(requireContext())
             .setTitle("请输入新密码")
             .setCancelText(getString(R.string.cancel))
@@ -103,7 +103,7 @@ class UserManagerFragment : Fragment(), UserAdapter.OnItemClickListener {
                 override fun onConfirmClicked(inputText: String) {
                     changePassword(user.username, inputText)
                     passwordDialog.dismiss()
-                    userList = getAllUsers()
+                    userList[position] = User(user.username, inputText)
                     userAdapter.notifyDataSetChanged()
                 }
 

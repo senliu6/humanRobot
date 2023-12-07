@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.hjq.shape.view.ShapeTextView
 import com.shciri.rosapp.R
 import com.shciri.rosapp.dmros.data.User
 
@@ -19,14 +20,14 @@ class UserAdapter(private val userList: List<User>, private val listener: OnItem
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     interface OnItemClickListener {
-        fun onEditClick(user: User)
+        fun onEditClick(user: User,position: Int)
         fun onDeleteClick(user: User, position: Int)
     }
 
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.usernameTextView)
-        val editButton: TextView = itemView.findViewById(R.id.editButton)
-        val deleteButton: TextView = itemView.findViewById(R.id.deleteButton)
+        val editButton: ShapeTextView = itemView.findViewById(R.id.editButton)
+        val deleteButton: ShapeTextView = itemView.findViewById(R.id.deleteButton)
         val passwordTextView: TextView = itemView.findViewById(R.id.passwordTextView)
     }
 
@@ -42,7 +43,7 @@ class UserAdapter(private val userList: List<User>, private val listener: OnItem
         holder.usernameTextView.text = currentUser.username
 
         holder.editButton.setOnClickListener {
-            listener.onEditClick(currentUser)
+            listener.onEditClick(currentUser,position)
         }
 
         holder.deleteButton.setOnClickListener {
