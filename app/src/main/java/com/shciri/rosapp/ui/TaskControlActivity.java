@@ -213,6 +213,12 @@ public class TaskControlActivity extends AppCompatActivity {
                                     case 19:
                                         rosTopic.subscribeNavPace(receiveHandler.getNavPaceHandler(), ((RCApplication) getApplication()).getRosClient());
                                         break;
+                                    case 20:
+                                        rosTopic.advertiseClampLocation(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 21:
+                                        rosTopic.subscribeClampLocation(receiveHandler.getClampNotifyHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
                                     default:
                                 }
                             }

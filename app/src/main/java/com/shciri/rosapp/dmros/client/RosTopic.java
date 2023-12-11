@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.com.jilk.ros.MessageHandler;
+import src.com.jilk.ros.ROSClient;
 import src.com.jilk.ros.Topic;
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.CoverageMap;
@@ -23,6 +24,8 @@ import src.com.jilk.ros.message.StateNotificationHeartbeat;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.Ultrasonic;
 import src.com.jilk.ros.message.custom.Battery;
+import src.com.jilk.ros.message.custom.ClampLocation;
+import src.com.jilk.ros.message.custom.ClampNotifyLocation;
 import src.com.jilk.ros.message.custom.EmergencyButton;
 import src.com.jilk.ros.message.custom.NavPace;
 import src.com.jilk.ros.message.goal.MoveGoal;
@@ -69,6 +72,9 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<Pose> robotPoseTopic;
     public static src.com.jilk.ros.Topic<NavPace> navPaceTopic;
 
+    public static src.com.jilk.ros.Topic<ClampLocation> clampLocationTopic;
+    public static src.com.jilk.ros.Topic<ClampNotifyLocation> clampNotifyLocationTopic;
+
     public static List<String> TopicName = new ArrayList<>();
 
     static {
@@ -93,6 +99,9 @@ public class RosTopic {
         TopicName.add("/robot_location");
         TopicName.add("/watch/carto_map");
         TopicName.add("/nav_pace");
+        TopicName.add("/clamp_location");
+        TopicName.add("/notify_clamp_location");
+
     }
 
 
@@ -228,19 +237,29 @@ public class RosTopic {
         enterManualTopic.advertise();
     }
 
-    public void subscribeWatchMap(MessageHandler handler, ROSBridgeClient client){
+    public void subscribeWatchMap(MessageHandler handler, ROSBridgeClient client) {
         watchMapTopic = new Topic<MapMsg>("/watch/carto_map", MapMsg.class, client);
         watchMapTopic.subscribe(handler);
     }
 
-    public void subscribeRobotPose(MessageHandler handler, ROSBridgeClient client){
+    public void subscribeRobotPose(MessageHandler handler, ROSBridgeClient client) {
         robotPoseTopic = new Topic<Pose>("/robot_location", Pose.class, client);
         robotPoseTopic.subscribe(handler);
     }
 
-    public void subscribeNavPace(MessageHandler handler, ROSBridgeClient client){
+    public void subscribeNavPace(MessageHandler handler, ROSBridgeClient client) {
         navPaceTopic = new Topic<NavPace>("/nav_pace", NavPace.class, client);
         navPaceTopic.subscribe(handler);
+    }
+
+    public void advertiseClampLocation(ROSBridgeClient client) {
+        clampLocationTopic = new Topic<>("/clamp_location", ClampLocation.class, client);
+        clampLocationTopic.advertise();
+    }
+
+    public void subscribeClampLocation(MessageHandler handler, ROSBridgeClient client) {
+        clampNotifyLocationTopic = new Topic<>("/notify_clamp_location", ClampNotifyLocation.class, client);
+        clampNotifyLocationTopic.subscribe(handler);
     }
 
     public static void publishStateMachineRequest(StateMachineRequest stateMachineRequest) {
@@ -294,6 +313,14 @@ public class RosTopic {
     public static void publishEnterManual(EnterManual enterManual) {
         if (enterManualTopic != null) {
             enterManualTopic.publish(enterManual);
+        } else {
+            Toaster.showShort(R.string.subscribe_fail_enter_manual);
+        }
+    }
+
+    public static void publishClampLocation(ClampLocation location) {
+        if (clampLocationTopic != null) {
+            clampLocationTopic.publish(location);
         } else {
             Toaster.showShort(R.string.subscribe_fail_enter_manual);
         }

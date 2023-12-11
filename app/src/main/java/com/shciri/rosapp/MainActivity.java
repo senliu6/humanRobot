@@ -28,6 +28,8 @@ import com.shciri.rosapp.databinding.ActivityLoginBinding;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.Settings;
+import com.shciri.rosapp.dmros.data.User;
+import com.shciri.rosapp.dmros.data.UserList;
 import com.shciri.rosapp.dmros.tool.AudioMngHelper;
 import com.shciri.rosapp.dmros.tool.UserRepository;
 import com.shciri.rosapp.mydata.DBOpenHelper;
@@ -142,12 +144,18 @@ public class MainActivity extends AppCompatActivity {
                 Settings.ROBOT_IP, "11.11.11.111", String.class);
 
         idOption = UserRepository.INSTANCE.getUserNameArray();
+        if (idOption.length==0){
+            idOption = UserList.INSTANCE.getArray();
+            for (User user: UserList.INSTANCE.getUsers()){
+                UserRepository.INSTANCE.addUser(user);
+            }
+        }
+        RCApplication.Operator = idOption[0];
+
         idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
         //设置数组适配器的布局样式
         idAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
         binding.identitySelect.setAdapter(idAdapter);
-        RCApplication.Operator = idOption[0];
-
         audioMngHelper = new AudioMngHelper(this);
         waitDialog = new WaitDialog.Builder(this)
                 .setLoadingText(getString(R.string.loading))

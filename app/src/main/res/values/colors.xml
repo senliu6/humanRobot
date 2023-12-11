@@ -73,8 +73,14 @@
     <color name="button_select_end">#04EDFD</color>
     <color name="button_select_stork">#03DAC5</color>
 
-
-
+    <!-- 橙色 -->
+    <color name="orange">#FFA500</color>
+    <!-- 绿色-->
+    <color name="green">#00FF00</color>
+    <!-- 紫色-->
+    <color name="purple">#8000FF</color>
+    <!-- 黄色-->
+    <color name="yellow">#FFFF00</color>
 
 
 </resources>

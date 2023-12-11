@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,13 +19,13 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnReset"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="8dp"
         android:text="货叉回零"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +35,7 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnClip"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
@@ -49,7 +50,7 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnAgo"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
@@ -64,7 +65,7 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnAfter"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -79,7 +80,7 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnLoosen"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -94,7 +95,7 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnRise"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
@@ -110,7 +111,7 @@
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btnDecline"
-        style="@style/WhiteTextTheme.40"
+        style="@style/WhiteTextTheme.24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -124,5 +125,116 @@
         app:shape_solidColor="@color/blue_1f4e96"
         app:shape_solidPressedColor="@color/button_select_start" />
 
+    <LinearLayout
+        android:id="@+id/LinearClamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnDecline">
 
+        <com.hjq.shape.view.ShapeCheckBox
+            android:id="@+id/checkMotor"
+            style="@style/WhiteTextTheme.26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:shape_radius="13dp"
+            app:shape_solidColor="@color/blue_1f4e96"
+            app:shape_solidCheckedColor="@color/red"
+            tools:text="升降当前值" />
+
+        <com.hjq.shape.view.ShapeCheckBox
+            android:id="@+id/checkClamp"
+            style="@style/WhiteTextTheme.26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            app:shape_radius="13dp"
+            app:shape_solidColor="@color/blue_1f4e96"
+            app:shape_solidCheckedColor="@color/red"
+            tools:text="夹抱当前值" />
+
+        <com.hjq.shape.view.ShapeCheckBox
+            android:id="@+id/checkLClamp"
+            style="@style/WhiteTextTheme.26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            app:shape_radius="13dp"
+            app:shape_solidColor="@color/blue_1f4e96"
+            app:shape_solidCheckedColor="@color/red"
+            tools:text="左夹抱当前值" />
+
+        <com.hjq.shape.view.ShapeCheckBox
+            android:id="@+id/checkRClamp"
+            style="@style/WhiteTextTheme.26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
+            app:shape_radius="13dp"
+            app:shape_solidColor="@color/blue_1f4e96"
+            app:shape_solidCheckedColor="@color/red"
+            tools:text="右夹抱当前值" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTip"
+        style="@style/WhiteTextTheme.28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingVertical="5dp"
+        android:text="请选择操作后输入值再启动:"
+        app:layout_constraintStart_toStartOf="@id/LinearClamp"
+        app:layout_constraintTop_toBottomOf="@id/LinearClamp" />
+
+    <com.hjq.shape.view.ShapeEditText
+        android:id="@+id/editInput"
+        style="@style/WhiteTextTheme.26"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:inputType="numberDecimal|numberSigned"
+        android:maxLength="6"
+        app:shape_solidColor="@color/button_select_start"
+        app:layout_constraintStart_toEndOf="@id/tvTip"
+        app:layout_constraintTop_toBottomOf="@id/LinearClamp" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvStart"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="开始"
+        app:layout_constraintStart_toStartOf="@id/tvTip"
+        app:layout_constraintTop_toBottomOf="@id/tvTip"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/blue_1f4e96"
+        app:shape_solidPressedColor="@color/red" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvStop"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:text="结束"
+        app:layout_constraintStart_toEndOf="@id/tvStart"
+        app:layout_constraintTop_toTopOf="@id/tvStart"
+        app:shape_radius="15dp"
+        app:shape_solidColor="@color/red"
+        app:shape_solidPressedColor="@color/blue_1f4e96" />
 </androidx.constraintlayout.widget.ConstraintLayout>

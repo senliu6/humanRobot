@@ -4,6 +4,8 @@ import src.com.jilk.ros.message.Pose
 import src.com.jilk.ros.message.RobotLocation
 import src.com.jilk.ros.message.StateMachineReply
 import src.com.jilk.ros.message.StateNotificationHeartbeat
+import src.com.jilk.ros.message.custom.ClampLocation
+import src.com.jilk.ros.message.custom.ClampNotifyLocation
 import src.com.jilk.ros.message.custom.NavPace
 
 /**
@@ -21,3 +23,5 @@ data class RobotLoginEvent(val robotLocation: RobotLocation) {}
 data class RobotPoseEvent(val pose: Pose)
 
 data class NavPaceEvent(val navPace: NavPace)
+
+data class ClampNotifyEvent(val location: ClampNotifyLocation)

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.tool.BatteryEvent;
+import com.shciri.rosapp.dmros.tool.ClampNotifyEvent;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.dmros.tool.NavPaceEvent;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
@@ -29,6 +30,7 @@ import src.com.jilk.ros.message.StateNotificationHeartbeat;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformsMsg;
 import src.com.jilk.ros.message.custom.Battery;
+import src.com.jilk.ros.message.custom.ClampNotifyLocation;
 import src.com.jilk.ros.message.custom.NavPace;
 import src.com.jilk.ros.message.sensor_msgs.Range;
 
@@ -46,8 +48,8 @@ public class ReceiveHandler {
     StateNotifyHandler stateNotifyHandler = new StateNotifyHandler();
     WatchMapHandler watchMapHandler = new WatchMapHandler();
     RobotPoseHandler robotPoseHandler = new RobotPoseHandler();
-
     NavPaceHandler navPaceHandler = new NavPaceHandler();
+    ClampNotifyLocationHandler clampNotifyLocationHandler = new ClampNotifyLocationHandler();
 
 
     private class MapTopicHandler extends Handler implements MessageHandler {
@@ -185,7 +187,6 @@ public class ReceiveHandler {
         public void onMessage(Message message) {
             Pose pose = (Pose) message;
             postDelayed(() -> EventBus.getDefault().post(new RobotPoseEvent(pose)), 500);
-
         }
     }
 
@@ -194,6 +195,14 @@ public class ReceiveHandler {
         public void onMessage(Message message) {
             NavPace pace = (NavPace) message;
             postDelayed(() -> EventBus.getDefault().post(new NavPaceEvent(pace)), 500);
+        }
+    }
+
+    public class ClampNotifyLocationHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            ClampNotifyLocation location = (ClampNotifyLocation) message;
+            postDelayed(() -> EventBus.getDefault().post(new ClampNotifyEvent(location)), 500);
         }
     }
 
@@ -248,6 +257,10 @@ public class ReceiveHandler {
 
     public MessageHandler getNavPaceHandler() {
         return navPaceHandler;
+    }
+
+    public MessageHandler getClampNotifyHandler() {
+        return clampNotifyLocationHandler;
     }
 
 
