@@ -27,7 +27,7 @@ public class TaskBtView extends ConstraintLayout{
     public View detailPage;
     ImageView mEditIv;
     ImageView pullIv;
-    private String[] starArray = {"空跑", "消杀", "空气净化", "同时开启"};
+    private String[] starArray;
     ArrayAdapter<String> starAdapter;
 
     public TaskBtView(Context context) {
@@ -108,6 +108,8 @@ public class TaskBtView extends ConstraintLayout{
     }
 
     private void initSpinner(Context context) {
+        starArray = new String[]{context.getString(R.string.empty_run),context.getString(R.string.disinfection)
+                , context.getString(R.string.air), context.getString(R.string.empty_run)};
         starAdapter = new ArrayAdapter<String>(context, R.layout.task_bt_spinner_item_select, starArray);
         //设置数组适配器的布局样式
         starAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);

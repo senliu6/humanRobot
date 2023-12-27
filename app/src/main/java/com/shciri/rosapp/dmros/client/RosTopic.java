@@ -1,5 +1,6 @@
 package com.shciri.rosapp.dmros.client;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.hjq.toast.Toaster;
@@ -76,6 +77,7 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<ClampNotifyLocation> clampNotifyLocationTopic;
 
     public static List<String> TopicName = new ArrayList<>();
+    private static Context currentContext;
 
     static {
         // 初始化 TopicName 集合
@@ -106,6 +108,10 @@ public class RosTopic {
 
 
     public boolean[] TopicMatch = new boolean[TopicName.size()];
+
+    public void setContext(Context context) {
+        currentContext = context;
+    }
 
     public void subscribeMapTopic(MessageHandler handler, ROSBridgeClient client) {
         mapTopic = new Topic<MapMsg>("/map", MapMsg.class, client);
@@ -266,7 +272,7 @@ public class RosTopic {
         if (stateMachineRequestRequestTopic != null) {
             stateMachineRequestRequestTopic.publish(stateMachineRequest);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_state_request);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_state_request));
         }
     }
 
@@ -274,7 +280,7 @@ public class RosTopic {
         if (mapControlParameterTopic != null) {
             mapControlParameterTopic.publish(requestMapControlParameter);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_map_control);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_map_control));
         }
     }
 
@@ -282,7 +288,7 @@ public class RosTopic {
         if (manualPathParameterTopic != null) {
             manualPathParameterTopic.publish(manualPathParameter);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_manual_path);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_manual_path));
         }
     }
 
@@ -290,7 +296,7 @@ public class RosTopic {
         if (coveragePointsTopic != null) {
             coveragePointsTopic.publish(coveragePoints);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_coverage_points);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_coverage_points));
         }
     }
 
@@ -298,7 +304,7 @@ public class RosTopic {
         if (clampControlTopic != null) {
             clampControlTopic.publish(control);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_clamp_control);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_clamp_control));
         }
     }
 
@@ -306,7 +312,7 @@ public class RosTopic {
         if (clampHardwareControlTopic != null) {
             clampHardwareControlTopic.publish(clampHardwareControl);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_clamp_hardware_control);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_clamp_hardware_control));
         }
     }
 
@@ -314,7 +320,7 @@ public class RosTopic {
         if (enterManualTopic != null) {
             enterManualTopic.publish(enterManual);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_enter_manual);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_enter_manual));
         }
     }
 
@@ -322,7 +328,7 @@ public class RosTopic {
         if (clampLocationTopic != null) {
             clampLocationTopic.publish(location);
         } else {
-            Toaster.showShort(R.string.subscribe_fail_enter_manual);
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_enter_manual));
         }
     }
 

@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/return_arrow_text_margin"
-            android:text="定时任务"
+            android:text="@string/time_task"
             style="@style/WhiteTextTheme.28"/>
     </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
@@ -112,19 +112,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.1" />
-
-    <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-        android:id="@+id/new_task_bt"
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="280dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="@string/add_task"
-        style="@style/WhiteTextTheme.24"
-        app:layout_constraintEnd_toEndOf="@+id/qlv_task"
-        app:layout_constraintTop_toBottomOf="@+id/qlv_task" />
 
     <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
         android:id="@+id/new_time_task_bt"

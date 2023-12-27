@@ -240,9 +240,7 @@ class CollectionFragment : Fragment() {
                             RequestMapControlParameter()
                         requestMapControlParameter.map_id = inputText
                         RosTopic.publishControlParameterTopic(requestMapControlParameter)
-                        if (inputText != null) {
-                            DBInsertMap(inputText, MD5)
-                        }
+                        DBInsertMap(inputText, MD5)
                         EventBus.getDefault()
                             .post(
                                 ControlMapEvent(

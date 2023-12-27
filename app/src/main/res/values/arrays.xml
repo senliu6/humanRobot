@@ -54,8 +54,9 @@
     </string-array>
 
     <string-array name="spinner_string">
-        <item>空跑</item>
-        <item>消杀</item>
+        <item>@string/empty_run
+        </item>
+        <item>@string/disinfection</item>
     </string-array>
 
     <string-array name="loop_spinner_string">
@@ -65,7 +66,7 @@
         <item>∞</item>
     </string-array>
 
-<!--    <string name="leak_canary_test_class_name">assertk.Assert</string>-->
+    <!--    <string name="leak_canary_test_class_name">assertk.Assert</string>-->
 
 
 </resources>

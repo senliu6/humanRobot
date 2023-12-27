@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.base.BaseFragment;
 import com.shciri.rosapp.databinding.FragmentDataManagePathInfoBinding;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
@@ -58,7 +59,7 @@ import src.com.jilk.ros.message.PoseStamped;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class DataManagePathInfoFragment extends Fragment {
+public class DataManagePathInfoFragment extends BaseFragment {
 
     private OnBackPressedCallback mBackPressedCallback;
     private List<PathListTitle> pathListData;
@@ -136,7 +137,7 @@ public class DataManagePathInfoFragment extends Fragment {
         //点击保存
         binding.saveBt.setOnClickListener(v -> {
             if (binding.mapView.isShowCoveragePath && binding.mapView.coveragePath.isEmpty()) {
-                Toaster.showShort(R.string.please_preview);
+                toast(R.string.please_preview);
             } else {
                 showInputDialog();
             }
@@ -313,16 +314,20 @@ public class DataManagePathInfoFragment extends Fragment {
                         // rename
                         break;
                     case 1:
-                        PathListTitle pathListTitle = pathListData.get(position);
-                        if (pathListTitle.ID == 0) {
-                            RCApplication.db.delete("manual_path", "name=?", new String[]{pathListTitle.pathName});
-                        } else {
-                            RCApplication.db.delete("manual_path", "id=?", new String[]{Integer.toString(pathListTitle.ID)});
+                        try {
+                            PathListTitle pathListTitle = pathListData.get(position);
+                            if (pathListTitle.ID == 0) {
+                                RCApplication.db.delete("manual_path", "name=?", new String[]{pathListTitle.pathName});
+                            } else {
+                                RCApplication.db.delete("manual_path", "id=?", new String[]{Integer.toString(pathListTitle.ID)});
+                            }
+                            removePosition = position;
+                            pathListData.remove(position);
+                            pathListAdapter.notifyDataSetChanged();
+                            showDeleteDialog(pathListTitle);
+                        } catch (Exception e) {
+                            Toaster.showShort(e.getMessage());
                         }
-                        removePosition = position;
-                        pathListData.remove(position);
-                        pathListAdapter.notifyDataSetChanged();
-                        showDeleteDialog(pathListTitle);
                         break;
                 }
                 // false : close the menu; true : not close the menu

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.shciri.rosapp.R;
@@ -60,6 +61,10 @@ public class AirStatusView extends ConstraintLayout {
 
     public void setValueView(String value) {
         valueView.setText(value);
+    }
+
+    public void setTitleView(String value) {
+        titleView.setText(value);
     }
 }
 

@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import com.hjq.toast.Toaster;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.base.BaseFragment;
 import com.shciri.rosapp.databinding.FragmentAddNewTimeTaskBinding;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.data.WeekString;
@@ -34,7 +35,7 @@ import java.util.Locale;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class AddNewTimeTaskFragment extends Fragment {
+public class AddNewTimeTaskFragment extends BaseFragment {
 
     private TimePickerDialog timePickerDialog;
     private int year, monthOfYear, dayOfMonth, hourStart, minStart, hourEnd, minEnd;
@@ -116,7 +117,7 @@ public class AddNewTimeTaskFragment extends Fragment {
         });
 
 
-        String[] dateOption = {"每天", "周一到周五", "周末", "一、三、五", "二,四,六"};
+        String[] dateOption = {getString(R.string.every_day), getString(R.string.one_to_five), getString(R.string.weekend), getString(R.string.on_three), getString(R.string.two_four)};
         ArrayAdapter<String> dateAdapter = new ArrayAdapter<String>(getContext(), R.layout.task_bt_spinner_item_select, dateOption);
         //设置数组适配器的布局样式
         dateAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
@@ -126,7 +127,7 @@ public class AddNewTimeTaskFragment extends Fragment {
         taskItemListArrayAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
         binding.addOriginTaskMapSpinner.setAdapter(taskItemListArrayAdapter);
 
-        String[] modeOption = {"消杀与空气进化", "仅消杀", "仅空气净化", "空跑"};
+        String[] modeOption = {getString(R.string.disinfection_air), getString(R.string.disinfection), getString(R.string.air), getString(R.string.empty_run)};
         ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(getContext(), R.layout.task_bt_spinner_item_select, modeOption);
         //设置数组适配器的布局样式
         modeAdapter.setDropDownViewResource(R.layout.task_bt_spinner_item_drapdown);
@@ -136,7 +137,7 @@ public class AddNewTimeTaskFragment extends Fragment {
             if (binding.addOriginTaskMapSpinner.getSelectedItem() != null) {
                 DialogBuilder(view);
             } else {
-                Toaster.showShort(R.string.no_task);
+                toast(R.string.no_task);
             }
 //                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio39/value", 1);
 //                RCApplication.adwApiManager.SetGpioOutLevel("/sys/class/gpio/gpio40/value", 1);
@@ -148,8 +149,8 @@ public class AddNewTimeTaskFragment extends Fragment {
 
     private void DialogBuilder(View view) {
         final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(getContext());
-        final String items[] = new String[]{"开启空气净化", "开启消杀LED"};
-        builder.setTitle("是否开启消杀灯与空气净化")
+        final String items[] = new String[]{getString(R.string.air), getString(R.string.disinfection_air)};
+        builder.setTitle(getString(R.string.disinfection_air))
                 .addItems(items, (dialog, which) -> {
 
                 }).setCheckedItems(new int[]{0})
@@ -169,7 +170,6 @@ public class AddNewTimeTaskFragment extends Fragment {
                     calendar.set(Calendar.MINUTE, minStart);
                     calendar.set(Calendar.SECOND, 0);
 //                        AlarmManagerUtils.getInstance(null).createPeriodAlarmManager(calendar, keyID, builder.getCheckedItemRecord().get(0), builder.getCheckedItemRecord().get(1));
-                    Toaster.showShort("设置成功: " + hourStart + ":" + minStart);
                     Log.d("Alarm", "fan_switch = " + builder.getCheckedItemRecord().get(0) + "   led_switch = " + builder.getCheckedItemRecord().get(1));
 
                     alarmIntent.putExtra("taskId", String.valueOf(keyID));

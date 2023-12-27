@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/add_new_task_text_margin_left"
         android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
-        android:text="源任务"
+        android:text="@string/source_task"
         app:layout_constraintBottom_toTopOf="@+id/add_origin_task_map_spinner"
         app:layout_constraintStart_toStartOf="@+id/add_origin_task_map_spinner" />
 
@@ -130,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
-        android:text="任务"
+        android:text="@string/task"
         style="@style/GrayTextTheme.20"
         app:layout_constraintBottom_toTopOf="@+id/add_time_task_mode_spinner"
         app:layout_constraintStart_toStartOf="@+id/add_time_task_mode_spinner" />
@@ -193,7 +193,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/add_new_task_text_margin_left"
         android:layout_marginBottom="@dimen/add_new_task_text_margin_bottom"
-        android:text="循环"
+        android:text="@string/loop"
         style="@style/GrayTextTheme.20"
         app:layout_constraintBottom_toTopOf="@+id/add_time_task_loop_spinner"
         app:layout_constraintStart_toStartOf="@+id/add_time_task_loop_spinner" />

@@ -2,8 +2,10 @@ package com.shciri.rosapp.ui.set;
 
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +21,25 @@ import com.hjq.toast.Toaster;
 import com.shciri.rosapp.MainActivity;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.base.BaseFragment;
 import com.shciri.rosapp.dmros.client.RosTopic;
+import com.shciri.rosapp.dmros.data.LanguageType;
+import com.shciri.rosapp.dmros.data.Settings;
 import com.shciri.rosapp.dmros.tool.VersionUpdateManager;
+import com.shciri.rosapp.ui.dialog.BaseAttrDialog;
+import com.shciri.rosapp.ui.dialog.TestDialog;
+import com.shciri.rosapp.utils.LanguageUtil;
 import com.shciri.rosapp.utils.SharedPreferencesUtil;
+
+import org.apache.log4j.chainsaw.Main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import src.com.jilk.ros.message.StateMachineRequest;
 
-public class SystemSetFragment extends Fragment {
+public class SystemSetFragment extends BaseFragment {
 
     private List<SystemSetAdapter.SystemSetList> systemSetListList;
     private ListView listView;
@@ -71,13 +82,14 @@ public class SystemSetFragment extends Fragment {
             }
         });
         versionUpdateManager.queryAPKInfo();
-
+        assert getContext() != null;
         systemSetListList = new ArrayList<>();
-        systemSetListList.add(new SystemSetAdapter.SystemSetList("清除任务历史报告数据"));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList("WIFI连接"));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList("打开文件目录"));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList("检查更新"));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList("还原数据库"));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.clean_task)));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.wifi_connect)));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.open_file)));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.update)));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.revert_date)));
+        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.set_language)));
         systemSetAdapter = new SystemSetAdapter(getContext(), systemSetListList);
         listView = view.findViewById(R.id.system_set_lv);
         listView.setAdapter(systemSetAdapter);
@@ -111,6 +123,22 @@ public class SystemSetFragment extends Fragment {
                         Intent homeIntent = new Intent(getActivity(), MainActivity.class);
                         startActivity(homeIntent);
                         requireActivity().finish();
+                        break;
+                    case 5://多语言设置
+                        String language = SharedPreferencesUtil.Companion.getValue(requireContext(), Settings.LANGUAGE, LanguageType.CHINESE.getLanguage(), String.class);
+                        BaseAttrDialog testDialog = new TestDialog.Builder(getActivity())
+                                .setLanguage(language)
+                                .setGravity(Gravity.CENTER)
+                                .setListener(language1 -> {
+                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                        LanguageUtil.INSTANCE.changeAppLanguage(requireActivity().getApplicationContext(), language1);
+                                    }
+                                    SharedPreferencesUtil.Companion.saveValue(requireActivity().getApplicationContext(), Settings.LANGUAGE, language1);
+                                    Intent intent1 = new Intent(getActivity(), MainActivity.class);
+                                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent1);
+
+                                }).show();
                         break;
                     default:
                 }

@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="路径和点管理"
+            android:text="@string/path_and_point_manager"
             style="@style/WhiteTextTheme.28"/>
     </LinearLayout>
 
@@ -81,7 +81,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
-        android:text="手动添加路径"
+        android:text="@string/add_path"
         style="@style/WhiteTextTheme.20"
         app:layout_constraintBottom_toBottomOf="@+id/map_manager_map_list_view"
         app:layout_constraintEnd_toStartOf="@+id/add_rect_bt"
@@ -93,7 +93,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         style="@style/WhiteTextTheme.20"
-        android:text="自动覆盖"
+        android:text="@string/automatic"
         android:background="@drawable/button_background_selector"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/add_path_bt"
@@ -108,49 +108,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/map_manager_map_list_view"
         app:layout_constraintTop_toTopOf="@+id/map_manager_map_list_view">
-
-<!--        <ImageView-->
-<!--            android:id="@+id/map_manager_map_info_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="73dp"-->
-<!--            android:background="#72A4B7"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/map_manager_map_info_name_tv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="50dp"-->
-<!--            android:text="地图名称：戴盟"-->
-<!--            android:textColor="#ff024e53"-->
-<!--            android:textSize="15sp"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/map_manager_map_info_map_size_tv"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/map_manager_map_info_view"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/map_manager_map_info_create_time_tv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="创建时间：2022-4-14 15:53:23"-->
-<!--            android:textColor="#ff024e53"-->
-<!--            android:textSize="15sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/map_manager_map_info_view"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/map_manager_map_info_name_tv"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/map_manager_map_info_name_tv" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/map_manager_map_info_map_size_tv"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="50dp"-->
-<!--            android:text="地图宽度：59.2m  地图高：62.4m"-->
-<!--            android:textColor="#ff024e53"-->
-<!--            android:textSize="15sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/map_manager_map_info_create_time_tv"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/map_manager_map_info_create_time_tv"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/map_manager_map_info_create_time_tv" />-->
 
         <com.shciri.rosapp.ui.myview.MapView
             app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +129,7 @@
             style="@style/WhiteTextTheme.20"
             android:gravity="center"
             android:background="@drawable/button_background_selector"
-            android:text="落点" />
+            android:text="@string/landing" />
 
         <TextView
             android:visibility="invisible"
@@ -202,7 +159,7 @@
             style="@style/WhiteTextTheme.20"
             android:gravity="center"
             android:background="@drawable/button_background_selector"
-            android:text="重置" />
+            android:text="@string/reset" />
 
         <TextView
             app:layout_constraintStart_toEndOf="@+id/record_bt"
@@ -216,7 +173,7 @@
             style="@style/WhiteTextTheme.20"
             android:gravity="center"
             android:background="@drawable/button_background_selector"
-            android:text="生成任务" />
+            android:text="@string/generate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

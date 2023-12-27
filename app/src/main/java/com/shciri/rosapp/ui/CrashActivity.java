@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.base.BaseActivity;
 import com.shciri.rosapp.databinding.ActivityCrashBinding;
 
 import java.io.File;
@@ -31,7 +32,7 @@ import cat.ereza.customactivityoncrash.config.CaocConfig;
  *
  * @author :liudz
  */
-public final class CrashActivity extends AppCompatActivity {
+public final class CrashActivity extends BaseActivity {
 
     private CaocConfig mConfig;
 

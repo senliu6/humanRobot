@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -20,9 +21,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.Toaster;
+import com.shciri.rosapp.base.BaseActivity;
 import com.shciri.rosapp.base.BaseDialog;
 import com.shciri.rosapp.databinding.ActivityLoginBinding;
 import com.shciri.rosapp.dmros.client.RosInit;
@@ -39,6 +40,7 @@ import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.dialog.InputDialog;
 import com.shciri.rosapp.ui.dialog.WaitDialog;
+import com.shciri.rosapp.utils.LanguageUtil;
 import com.shciri.rosapp.utils.SharedPreferencesUtil;
 import com.shciri.rosapp.utils.ToolsUtil;
 import com.shciri.rosapp.utils.protocol.ReplyIPC;
@@ -61,7 +63,7 @@ import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 /**
  * @author asus
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String ACTION_USB_PERMISSION = "cn.wch.wchusbdriver.USB_PERMISSION";
     private String TAG = MainActivity.class.getSimpleName();
@@ -94,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
     private String robotIp = "11.11.11.111";
     private String[] idOption;
     private ArrayAdapter<String> idAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
                 Settings.ROBOT_IP, "11.11.11.111", String.class);
 
         idOption = UserRepository.INSTANCE.getUserNameArray();
-        if (idOption.length==0){
+        if (idOption.length == 0) {
             idOption = UserList.INSTANCE.getArray();
-            for (User user: UserList.INSTANCE.getUsers()){
+            for (User user : UserList.INSTANCE.getUsers()) {
                 UserRepository.INSTANCE.addUser(user);
             }
         }
@@ -164,13 +165,13 @@ public class MainActivity extends AppCompatActivity {
 
         handler = new myHandler();
         intentDialog = new BaseDialog.Builder(this)
-                .setTitle("Warning")
+                .setTitle(getString(R.string.warning))
                 .setContent(getString(R.string.please_check_intent))
                 .setCancelText(getString(R.string.retry))
                 .setConfirmText(getString(R.string.enter_offline_mode))
                 .setCanceledOnTouchOutside(false)
                 .setOnCancelClick(view -> {
-                    Toaster.showShort(R.string.retrying);
+                    toastShort(R.string.retrying);
                     executorService.submit(() -> {
                         ROSBridgeClient client = rosInit.rosConnect(robotIp, RCApplication.rosPort);
                         ((RCApplication) getApplication()).setRosClient(client);
@@ -204,14 +205,14 @@ public class MainActivity extends AppCompatActivity {
                                 isUSBConnected = true;
                                 UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
                                 RCApplication.uartVCP.InitUartVCP(manager);
-                                Toaster.showShort("已经连接USB");
+                                toastShort(R.string.usb_conect);
                             }
                         } else {
                             if (isUSBConnected) {
                                 isUSBConnected = false;
                                 UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
                                 RCApplication.uartVCP.InitUartVCP(manager);
-                                Toaster.showShort("已经断开USB");
+                                toastShort(R.string.usb_close);
                             }
                         }
                     }
@@ -260,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         });
         binding.loginKeyboard.setLoginKeyboardListener(result -> {
             if (result.length() >= binding.loginKeyboard.getLimit()) {
-                Toaster.show(R.string.password_outIndex);
+                toast(R.string.password_outIndex);
             }
             password = result;
             setLoginBackGround();
@@ -283,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             } else {
-                Toaster.showLong(R.string.password_error);
+                toastLong(R.string.password_error);
                 password = "";
                 binding.loginKeyboard.clearResult();
                 setLoginBackGround();
@@ -303,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
                         binding.tvIp.setText(String.format(getResources().getString(R.string.robot_id), inputText));
                         inputDialog.dismiss();
                     } else {
-                        Toaster.showShort(R.string.input_format);
+                        toastShort(R.string.input_format);
                     }
 
                 })

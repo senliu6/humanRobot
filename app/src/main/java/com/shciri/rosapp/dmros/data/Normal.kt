@@ -17,6 +17,7 @@ object WeekString {
 //IP设置
 object Settings {
     const val ROBOT_IP: String = "robot_ip"
+    const val LANGUAGE: String = "language"
 }
 
 //用户管理
@@ -34,6 +35,20 @@ object UserList {
     }
 
     val array: Array<String> = users.map { it.username }.toTypedArray()
+}
+
+enum class LanguageType(language: String) {
+    CHINESE("ch"), ENGLISH("en"),FAN("zh-tw");
+
+    private val language: String?
+
+    init {
+        this.language = language
+    }
+
+    fun getLanguage(): String {
+        return language ?: ""
+    }
 }
 
 // User.kt

@@ -1,5 +1,6 @@
 package com.shciri.rosapp.ui.datamanagement;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -93,13 +94,13 @@ public class DataManageMapFragment extends Fragment {
         binding.startEraseMapTv.setOnClickListener(v -> {
             binding.mapView.startEraseState();
             controlMode = MODE_ERASE_MAP;
-            binding.btnBack.setText("撤销");
+            binding.btnBack.setText(getString(R.string.revert));
         });
         //点击开始虚拟墙
         binding.startVirtualWallTv.setOnClickListener(v -> {
             binding.mapView.startVirtualWallState(mVirtualWallPaths);
             controlMode = MODE_VIRTUAL_WALL;
-            binding.btnBack.setText("添加点");
+            binding.btnBack.setText(R.string.add_point);
         });
 
         //点击退出
@@ -150,6 +151,10 @@ public class DataManageMapFragment extends Fragment {
             bundle.putInt("state", 1);
             Navigation.findNavController(v).navigate(R.id.collectionFragment, bundle);
         });
+
+        if (MapAdapter.mapLists.size() > 0) {
+            setMapInfomation(0);
+        }
     }
 
 
@@ -220,6 +225,7 @@ public class DataManageMapFragment extends Fragment {
             }
         };
         binding.mapManageSwipeList.setMenuCreator(creator);
+
         mapAdapter = new MapAdapter(getContext());
         binding.mapManageSwipeList.setAdapter(mapAdapter);
         binding.mapManageSwipeList.setOnMenuItemClickListener((position, menu, index) -> {
@@ -265,6 +271,7 @@ public class DataManageMapFragment extends Fragment {
                 StateMachineRequest stateMachineRequest = new StateMachineRequest();
                 stateMachineRequest.map_control = 2;
                 RosTopic.publishStateMachineRequest(stateMachineRequest);
+                setMapInfomation(position);
             }
         });
     }
@@ -282,5 +289,12 @@ public class DataManageMapFragment extends Fragment {
     private int dp2px(float value) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (value * scale + 0.5f);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setMapInfomation(int position) {
+        binding.textView26.setText(MapAdapter.mapLists.get(position).name);
+        binding.mapCreateTimeTv.setText(MapAdapter.mapLists.get(position).name);
+        binding.mapSizeTv.setText(MapAdapter.mapLists.get(position).width + "*" + MapAdapter.mapLists.get(0).width);
     }
 }

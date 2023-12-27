@@ -150,7 +150,7 @@
             android:id="@+id/textViewCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="摄像头"
+            android:text="@string/camera"
             style="@style/WhiteTextTheme.20"
             app:layout_constraintEnd_toEndOf="@+id/health_camera_textview"
             app:layout_constraintStart_toStartOf="@+id/health_camera_textview"
@@ -184,7 +184,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="电机"
+            android:text="@string/motor"
             style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toTopOf="@+id/health_motor_textview"
             app:layout_constraintEnd_toEndOf="@+id/health_motor_textview"
@@ -216,7 +216,7 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="雷达"
+            android:text="@string/radar"
             style="@style/WhiteTextTheme.20"
             app:layout_constraintBottom_toBottomOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="@+id/health_radar_textview"
@@ -319,7 +319,7 @@
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
             android:layout_alignParentBottom="true"
-            app:titleText="温度"
+            app:titleText=""
             app:unitText="℃" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
@@ -329,7 +329,7 @@
             android:layout_alignTop="@+id/T_status_view"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/T_status_view"
-            app:titleText="湿度"
+            app:titleText=""
             app:unitText="%" />
 
         <com.shciri.rosapp.ui.myview.AirStatusView
@@ -349,7 +349,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="30dp"
             android:layout_toEndOf="@id/PM2.5_status_view"
-            app:titleText="甲醛"
+            app:titleText=""
             app:unitText="mg/m³" />
 
     </RelativeLayout>
@@ -357,6 +357,7 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@id/conLayout" />
+        app:layout_constraintTop_toBottomOf="@id/conLayout"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

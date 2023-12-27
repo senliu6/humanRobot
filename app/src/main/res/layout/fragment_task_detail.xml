@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/return_arrow_text_margin"
-            android:text="任务详情"
+            android:text="@string/task_detail"
             style="@style/WhiteTextTheme.28" />
     </LinearLayout>
 
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="step 1:    路径一"
+        android:text="@string/step_1_path"
         style="@style/WhiteTextTheme.24"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/task_detail_name"
@@ -84,7 +84,7 @@
         android:id="@+id/predict_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="预计用时"
+        android:text="@string/estimated_time"
         style="@style/GrayTextTheme.26" />
 
     <TextView
@@ -103,7 +103,7 @@
         android:id="@+id/creation_time_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="创建时间---"
+        android:text="@string/creation_time"
         android:textColor="#ff05737f"
         android:textSize="23sp"
         app:layout_constraintVertical_bias="0.8"

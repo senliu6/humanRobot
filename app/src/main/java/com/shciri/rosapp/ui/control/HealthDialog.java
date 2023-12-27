@@ -135,6 +135,9 @@ public class HealthDialog extends Dialog {
             }
             RCApplication.uartVCP.sendData(data);
         });
+        binding.TStatusView.setTitleView(getContext().getString(R.string.temper));
+        binding.humidityStatusView.setTitleView(getContext().getString(R.string.humidity));
+        binding.formaldehydeStatusView.setTitleView(getContext().getString(R.string.formal));
 
         initHardware();
     }

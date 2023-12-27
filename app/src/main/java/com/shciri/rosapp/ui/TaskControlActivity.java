@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,6 +20,7 @@ import androidx.navigation.Navigation;
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.base.BaseActivity;
 import com.shciri.rosapp.databinding.ActivityTaskControlBinding;
 import com.shciri.rosapp.dmros.client.RosInit;
 import com.shciri.rosapp.dmros.client.RosService;
@@ -51,7 +51,7 @@ import src.com.jilk.ros.message.StateMachineRequest;
 /**
  * @author
  */
-public class TaskControlActivity extends AppCompatActivity {
+public class TaskControlActivity extends BaseActivity {
     private OnBackPressedCallback mBackPressedCallback;
     private RosTopic rosTopic = new RosTopic();
     private RosService rosService = new RosService();
@@ -72,6 +72,7 @@ public class TaskControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTaskControlBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        rosTopic.setContext(this);
 
         EventBus.getDefault().register(this);
 
@@ -106,7 +107,7 @@ public class TaskControlActivity extends AppCompatActivity {
 
         rosInit.setOnRosConnectListener(connected -> {
             if (!isFinishing()) {
-                Toaster.showShort(getString(R.string.ros_connect_fail));
+                toast(R.string.ros_connect_fail);
                 runOnUiThread(() -> statusBarView.setConnectStatus(connected));
             }
         });

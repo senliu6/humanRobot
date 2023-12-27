@@ -19,12 +19,11 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.base.BaseFragment;
 import com.shciri.rosapp.databinding.FragmentChooseTaskBinding;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.RosData;
@@ -50,7 +49,7 @@ import src.com.jilk.ros.message.requestparam.ManualPathParameter;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class ChooseTaskFragment extends Fragment implements View.OnClickListener {
+public class ChooseTaskFragment extends BaseFragment implements View.OnClickListener {
 
     private View mOpenDrawer;
     private View mHealthDialog;
@@ -94,7 +93,6 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
 
         InitialTaskView(view);
-
         mapSpinner = binding.chooseTaskMapSpinner;
         mapText = binding.chooseTaskMapNameTv;
         mapText.setOnClickListener(v -> mapSpinner.performClick());
@@ -116,13 +114,13 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                     manualPathParameter.loop_num = (short) taskCycleTimes;
                     RosTopic.publishManualPathParameterTopic(manualPathParameter);
                     stateMachineRequest.navigation_task = 3;
-                    Toaster.showLong("触发定时任务${alarm.taskId}");
+                    toast(R.string.start_task);
                     RosTopic.publishStateMachineRequest(stateMachineRequest);
                     ToolsUtil.INSTANCE.playRingtone(getActivity());
                     Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
                 }
             }else {
-                Toaster.showShort(R.string.no_task);
+                toast(R.string.no_task);
             }
         });
 
@@ -319,7 +317,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
                 if (waitDialog.isShowing()) {
                     waitDialog.dismiss();
                 }
-                Toaster.showShort("定位成功");
+                toast(R.string.location_success);
                 break;
             default:
 
@@ -330,7 +328,7 @@ public class ChooseTaskFragment extends Fragment implements View.OnClickListener
         if (!ManageTaskDB.taskLists.isEmpty()) {
             Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
         } else {
-            Toaster.showShort(getString(R.string.please_create_new_task));
+            toast(R.string.please_create_new_task);
         }
     }
 }

@@ -2,13 +2,18 @@ package com.shciri.rosapp;
 
 import android.app.ADWApiManager;
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 
 import com.hjq.toast.Toaster;
+import com.shciri.rosapp.dmros.data.LanguageType;
+import com.shciri.rosapp.dmros.data.Settings;
 import com.shciri.rosapp.ui.CrashActivity;
+import com.shciri.rosapp.utils.LanguageUtil;
+import com.shciri.rosapp.utils.SharedPreferencesUtil;
 import com.shciri.rosapp.utils.UartVCP;
 import com.shciri.rosapp.utils.protocol.ReplyIPC;
 
@@ -36,9 +41,12 @@ public class RCApplication extends Application {
 
     private String TAG = "RCApplication";
 
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
         mediaPlayer = new MediaPlayer();
         //无需再调用setDataSource
         mediaPlayer = MediaPlayer.create(this, R.raw.disinfecting_warning);
@@ -88,6 +96,11 @@ public class RCApplication extends Application {
                 // 设置监听器
                 //.eventListener(new YourCustomEventListener())
                 .apply();
+
+        String language = SharedPreferencesUtil.Companion.getValue(getContext(), Settings.LANGUAGE, LanguageType.CHINESE.getLanguage(), String.class);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            LanguageUtil.INSTANCE.changeAppLanguage(getApplicationContext(), language);
+        }
     }
 
     private void pushMessageToIPC() {
@@ -147,5 +160,9 @@ public class RCApplication extends Application {
         public Thread newThread(Runnable r) {
             return new Thread(r, "MyThreadPool-" + threadCount.getAndIncrement());
         }
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }
