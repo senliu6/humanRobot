@@ -15,10 +15,11 @@
     </style>
 
     <style name="Theme.RosApp.NoActionBar" parent="QMUI.Compat.NoActionBar">
-        <item name="android:windowBackground">@drawable/kernel_logo</item>
+        <item name="android:windowBackground">@mipmap/main_background</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:fontFamily">@font/noto</item>
     </style>
 
     <style name="Theme.RosApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

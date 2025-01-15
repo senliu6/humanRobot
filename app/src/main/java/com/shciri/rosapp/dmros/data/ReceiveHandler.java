@@ -6,15 +6,27 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.shciri.rosapp.dmros.client.RosInit;
+import com.shciri.rosapp.dmros.tool.AirEvent;
+import com.shciri.rosapp.dmros.tool.AirQualityEvent;
 import com.shciri.rosapp.dmros.tool.BatteryEvent;
 import com.shciri.rosapp.dmros.tool.ClampNotifyEvent;
+import com.shciri.rosapp.dmros.tool.GlobalPathEvent;
 import com.shciri.rosapp.dmros.tool.MyPGM;
 import com.shciri.rosapp.dmros.tool.NavPaceEvent;
+import com.shciri.rosapp.dmros.tool.PointCloud2d;
+import com.shciri.rosapp.dmros.tool.PointCloudEvent;
+import com.shciri.rosapp.dmros.tool.ProgressEvent;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.dmros.tool.RobotPoseEvent;
 import com.shciri.rosapp.dmros.tool.StateNotifyHeadEvent;
 import com.shciri.rosapp.dmros.tool.StateTopicReplyEvent;
 import com.shciri.rosapp.dmros.tool.UltrasonicEvent;
+import com.shciri.rosapp.dmros.tool.VideoImageEvent;
+import com.shciri.rosapp.dmros.tool.VideoImageIndexEvent;
+import com.shciri.rosapp.dmros.tool.VideoImageIndexProEvent;
+import com.shciri.rosapp.dmros.tool.VideoImageProEvent;
+import com.shciri.rosapp.rosdata.PathData;
+import com.shciri.rosapp.rosdata.Progress;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,9 +41,12 @@ import src.com.jilk.ros.message.StateMachineReply;
 import src.com.jilk.ros.message.StateNotificationHeartbeat;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.TransformsMsg;
-import src.com.jilk.ros.message.custom.Battery;
+import src.com.jilk.ros.message.custom.BatteryInfo;
 import src.com.jilk.ros.message.custom.ClampNotifyLocation;
 import src.com.jilk.ros.message.custom.NavPace;
+import src.com.jilk.ros.message.custom.Pose2D;
+import src.com.jilk.ros.message.custom.request.ImageMessage;
+import src.com.jilk.ros.message.custom.request.CompressedImageList;
 import src.com.jilk.ros.message.sensor_msgs.Range;
 
 public class ReceiveHandler {
@@ -50,6 +65,25 @@ public class ReceiveHandler {
     RobotPoseHandler robotPoseHandler = new RobotPoseHandler();
     NavPaceHandler navPaceHandler = new NavPaceHandler();
     ClampNotifyLocationHandler clampNotifyLocationHandler = new ClampNotifyLocationHandler();
+    AirHandler airHandler = new AirHandler();
+
+    ImageHandle imageHandler = new ImageHandle();
+
+    ImageHandlePro imageHandlerPro = new ImageHandlePro();
+
+    ImageIndexHandle imageIndexHandle = new ImageIndexHandle();
+
+    ImageIndexHandlePro imageIndexHandlePro = new ImageIndexHandlePro();
+
+    PointCloudHandler pointCloudHandler = new PointCloudHandler();
+
+    ProgressHandler progressHandler = new ProgressHandler();
+
+    GlobalPathHandler globalPathHandler = new GlobalPathHandler();
+
+
+
+
 
 
     private class MapTopicHandler extends Handler implements MessageHandler {
@@ -79,9 +113,9 @@ public class ReceiveHandler {
                     EventBus.getDefault().post(new PublishEvent("/watch/carto_map"));
                 }
             } else {
-                if (PublishEvent.readyPublish) {
-                    EventBus.getDefault().post(new PublishEvent("/map"));
-                }
+//                if (PublishEvent.readyPublish) {
+                    EventBus.getDefault().post(new PublishEvent("/slam_map"));
+//                }
             }
 
         }
@@ -147,8 +181,8 @@ public class ReceiveHandler {
     private class BatteryHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            Battery battery = (Battery) message;
-            EventBus.getDefault().post(new BatteryEvent(battery.battery_percent, battery.current));
+            BatteryInfo batteryInfo = (BatteryInfo) message;
+            postDelayed(() -> EventBus.getDefault().post(new BatteryEvent(batteryInfo)), 500);
         }
     }
 
@@ -185,7 +219,7 @@ public class ReceiveHandler {
     public class RobotPoseHandler extends Handler implements MessageHandler {
         @Override
         public void onMessage(Message message) {
-            Pose pose = (Pose) message;
+            Pose2D pose = (Pose2D) message;
             postDelayed(() -> EventBus.getDefault().post(new RobotPoseEvent(pose)), 500);
         }
     }
@@ -194,7 +228,7 @@ public class ReceiveHandler {
         @Override
         public void onMessage(Message message) {
             NavPace pace = (NavPace) message;
-            postDelayed(() -> EventBus.getDefault().post(new NavPaceEvent(pace)), 500);
+//            postDelayed(() -> EventBus.getDefault().post(new NavPaceEvent(pace)), 500);
         }
     }
 
@@ -206,6 +240,83 @@ public class ReceiveHandler {
         }
     }
 
+    public class AirHandler extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+            AirQualityEvent airQualityEvent = (AirQualityEvent) message;
+//            Toaster.show("空气质量" + airQualityEvent.co2);
+            postDelayed(() -> EventBus.getDefault().post(new AirEvent(airQualityEvent)), 500);
+        }
+    }
+
+    public class ImageHandle extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+            CompressedImageList imageMessage = (CompressedImageList) message;
+            postDelayed(() -> EventBus.getDefault().post(new VideoImageEvent(imageMessage)), 100);
+        }
+    }
+
+    public class ImageHandlePro extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+            ImageMessage imageMessage = (ImageMessage) message;
+            postDelayed(() -> EventBus.getDefault().post(new VideoImageProEvent(imageMessage)), 100);
+        }
+    }
+
+    public class ImageIndexHandle extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+            ImageMessage imageMessage = (ImageMessage) message;
+            postDelayed(() -> EventBus.getDefault().post(new VideoImageIndexEvent(imageMessage)), 100);
+        }
+    }
+
+    public class ImageIndexHandlePro extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+//            ImageMessage imageMessage = (ImageMessage) message;
+//            postDelayed(() -> EventBus.getDefault().post(new VideoImageIndexProEvent(imageMessage)), 100);
+        }
+    }
+
+
+
+    public class PointCloudHandler extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+            PointCloud2d pointCloud2d = (PointCloud2d) message;
+            postDelayed(() -> EventBus.getDefault().post(new PointCloudEvent(pointCloud2d)), 500);
+        }
+    }
+
+    public class ProgressHandler extends Handler implements MessageHandler {
+
+        @Override
+        public void onMessage(Message message) {
+            Progress progress = (Progress) message;
+            NavPace navPace = new NavPace();
+            navPace.std_msgs = progress.mission_progress;
+//            postDelayed(() -> EventBus.getDefault().post(new NavPaceEvent(navPace)), 500);
+            postDelayed(() -> EventBus.getDefault().post(new ProgressEvent(progress)), 500);
+        }
+    }
+
+    public class GlobalPathHandler extends Handler implements MessageHandler {
+        @Override
+        public void onMessage(Message message) {
+            PathData pathData = (PathData) message;
+            Log.d("TTT", "onMessage"+pathData.poses.length);
+            postDelayed(() -> EventBus.getDefault().post(new GlobalPathEvent(pathData)), 500);
+        }
+    }
 
     public MessageHandler getMapTopicHandler() {
         return mapTopicHandler;
@@ -263,5 +374,35 @@ public class ReceiveHandler {
         return clampNotifyLocationHandler;
     }
 
+    public MessageHandler getAirHandler() {
+        return airHandler;
+    }
 
+    public MessageHandler getImageHandler() {
+        return imageHandler;
+    }
+
+    public MessageHandler getImageHandlerPro() {
+        return imageHandlerPro;
+    }
+
+    public MessageHandler getImageIndexHandler() {
+        return imageIndexHandle;
+    }
+
+    public MessageHandler getImageIndexHandlerPro() {
+        return imageIndexHandlePro;
+    }
+
+    public MessageHandler getPointCloudHandler() {
+        return pointCloudHandler;
+    }
+
+    public MessageHandler getProgressHandler() {
+        return progressHandler;
+    }
+
+    public MessageHandler getGlobalPathHandler() {
+        return globalPathHandler;
+    }
 }

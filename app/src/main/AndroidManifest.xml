@@ -16,21 +16,25 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
 
-
     <uses-feature android:name="android.hardware.usb.host" />
-
 
     <application
         android:name=".RCApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.RosApp.NoActionBar"
         android:windowSoftInputMode="stateHidden">
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+        </activity>
+
         <meta-data
             android:name="design_width_in_dp"
             android:value="1280" />
@@ -43,27 +47,29 @@
             android:exported="false" />
         <activity
             android:name=".ui.TaskControlActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.CrashActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
+        </activity>
+
+        <activity android:name=".ui.MainTestActivity" android:exported="false">
+
         </activity>
 
         <receiver
@@ -76,7 +82,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.shciri.rosapp.fileprovider"
+            android:authorities="com.shciri.human.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -87,8 +93,6 @@
         <service
             android:name=".server.AlarmService"
             android:exported="false" />
-
     </application>
-
 
 </manifest>

@@ -16,6 +16,7 @@ import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.databinding.DialogHealthBinding;
 import com.shciri.rosapp.dmros.data.RosData;
+import com.shciri.rosapp.dmros.tool.AirEvent;
 import com.shciri.rosapp.dmros.tool.AirQualityEvent;
 import com.shciri.rosapp.utils.protocol.RequestIPC;
 
@@ -63,7 +64,7 @@ public class HealthDialog extends Dialog {
                 /**
                  * 设置这个使dialog全屏
                  */
-                lp.width =binding.conLayout.getLeft()+binding.conLayout.getWidth();
+                lp.width = binding.conLayout.getLeft() + binding.conLayout.getWidth();
                 lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 dialogWindow.setAttributes(lp);
                 binding.conLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -78,7 +79,6 @@ public class HealthDialog extends Dialog {
         initView();
 
         EventBus.getDefault().register(this);
-        AirQualityEvent.readyPublish = true;
     }
 
     private void initView() {
@@ -96,14 +96,16 @@ public class HealthDialog extends Dialog {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 number = progress;
-                binding.tvRotateSpeed .setText(progress+"%");
+                binding.tvRotateSpeed.setText(progress + "%");
                 // 如果要设置最小的值的话，我们的最大值要减10（seekbar_fan_speed.setMax(100-10);）
                 // progress+=10;
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 // 监听是何时开始滑动
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // 监听是何时结束滑动
@@ -118,9 +120,9 @@ public class HealthDialog extends Dialog {
         binding.ornamentalLedSv.setDmSwitchListener(press -> {
             Log.d("ornamental_led", String.valueOf(press));
             byte[] data;
-            if(press){
+            if (press) {
                 data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 1);
-            }else{
+            } else {
                 data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
             }
             RCApplication.uartVCP.sendData(data);
@@ -128,9 +130,9 @@ public class HealthDialog extends Dialog {
 
         binding.uvcLedSv.setDmSwitchListener(press -> {
             byte[] data;
-            if(press){
+            if (press) {
                 data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 1, (byte) 1);
-            }else{
+            } else {
                 data = RequestIPC.disinfectionLedControlRequest((byte) 0, (byte) 0, (byte) 0);
             }
             RCApplication.uartVCP.sendData(data);
@@ -143,43 +145,46 @@ public class HealthDialog extends Dialog {
     }
 
     private void initHardware() {
-        if (null != RosData.stateNotificationHeartbeat){
+        if (null != RosData.stateNotificationHeartbeat) {
             StateNotificationHeartbeat stateNotificationHeartbeat = RosData.stateNotificationHeartbeat;
-            if (stateNotificationHeartbeat.camera_state == normal){
+            if (stateNotificationHeartbeat.camera_state == normal) {
                 binding.healthCameraTextview.setText(R.string.normal);
-            }else {
+            } else {
                 binding.healthCameraTextview.setText(R.string.noNormal);
             }
-            if (stateNotificationHeartbeat.lidar_state == normal){
+            if (stateNotificationHeartbeat.lidar_state == normal) {
                 binding.healthRadarTextview.setText(R.string.normal);
-            }else {
+            } else {
                 binding.healthRadarTextview.setText(R.string.noNormal);
             }
-            if (stateNotificationHeartbeat.motor_state == normal){
+            if (stateNotificationHeartbeat.motor_state == normal) {
                 binding.healthMotorTextview.setText(R.string.normal);
-            }else {
+            } else {
                 binding.healthMotorTextview.setText(R.string.noNormal);
             }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(AirQualityEvent event) {
-        String value = Integer.toString(event.getCO2());
+    public void onEvent(AirEvent event) {
+        AirQualityEvent event1 = event.getAirQualityEvent();
+        String value = Integer.toString(event1.co2);
         binding.co2View.setValueView(value);
-        value = Integer.toString(event.getFormaldehyde()/1000);
+        value = Integer.toString(event1.ch2o);
         binding.formaldehydeStatusView.setValueView(value);
-        value = Integer.toString(event.getTVOC());
+        value = Integer.toString(event1.tvoc);
         binding.TVOCStatusView.setValueView(value);
-        value = Integer.toString(event.getPM2_5());
+        value = Integer.toString(event1.pm2p5);
         binding.PM25StatusView.setValueView(value);
-        value = Integer.toString(event.getPM10());
+        value = Integer.toString(event1.pm10);
         binding.PM10StatusView.setValueView(value);
-        value = Float.toString(event.getTemperature());
+        value = Float.toString(event1.temperature-272);
         binding.TStatusView.setValueView(value);
-        value = Float.toString(event.getHumidity());
+        value = Float.toString(event1.humidity);
         binding.humidityStatusView.setValueView(value);
-    };
+    }
+
+    ;
 
     /**
      * 设置是否可以点击 Dialog View 外部关闭 Dialog

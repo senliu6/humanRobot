@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.ui.myview.ControlFaceplateView;
+import com.shciri.rosapp.ui.view.ControlFaceplateView;
 
 public class ControlFaceplateFragment extends Fragment {
 

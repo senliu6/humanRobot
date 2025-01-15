@@ -17,7 +17,7 @@
         app:srcCompat="@mipmap/performmap_zuokuang4_21"
         tools:layout_editor_absoluteY="-52dp" />
 
-    <com.shciri.rosapp.ui.myview.MapView
+    <com.shciri.rosapp.ui.view.MapView
         android:id="@+id/task_detail_map_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"

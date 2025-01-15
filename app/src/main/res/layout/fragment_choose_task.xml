@@ -4,259 +4,380 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="100dp"
-    tools:context=".ui.control.ChooseTaskFragment">
-
-
-    <TextView
-        android:id="@+id/choose_task_map_name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="15dp"
-        android:text="Daimon"
-        style="@style/WhiteTextTheme.28"
-        app:layout_constraintBottom_toBottomOf="@+id/map_image"
-        app:layout_constraintEnd_toStartOf="@+id/map_image"
-        app:layout_constraintTop_toTopOf="@+id/map_image" />
-
-    <Spinner
-        android:id="@+id/choose_task_map_spinner"
-        android:layout_width="129dp"
-        android:layout_height="45dp"
-        android:dropDownWidth="129dp"
-        android:dropDownVerticalOffset="13dp"
-        android:overlapAnchor="false"
-        android:spinnerMode="dropdown"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/map_image"
-        app:layout_constraintStart_toStartOf="@+id/choose_task_map_name_tv"
-        app:layout_constraintTop_toBottomOf="@+id/parent" />
+    android:layout_marginTop="40dp"
+    tools:context=".ui.ChooseTaskFragment">
 
     <ImageView
-        android:id="@+id/map_image"
-        android:layout_width="39dp"
-        android:layout_height="39dp"
-        android:layout_marginEnd="160dp"
+        android:id="@+id/ivIcon"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:src="@mipmap/robot"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hjq.shape.layout.ShapeConstraintLayout
+        android:id="@+id/shapeStatus"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="120dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/parent"
-        app:srcCompat="@mipmap/dingwei4_22" />
-    <com.hjq.shape.view.ShapeButton
-        android:id="@+id/btnRetargeting"
+        app:layout_constraintStart_toEndOf="@+id/ivIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="50dp"
+        app:shape_strokeColor="@color/black"
+        app:shape_strokeSize="2dp">
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/tvTaskStatus"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="60dp"
+            android:text="@string/task_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/tvLocation"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/now_location"
+            app:layout_constraintStart_toStartOf="@+id/tvTaskStatus"
+            app:layout_constraintTop_toBottomOf="@+id/tvTaskStatus" />
+
+        <com.rey.material.widget.TextView
+            android:id="@+id/tvSpeed"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/now_speed"
+            app:layout_constraintStart_toStartOf="@+id/tvTaskStatus"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btnCharge"
+            style="@style/WhiteTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="@string/go_charge"
+            app:layout_constraintStart_toStartOf="@id/tvSpeed"
+            app:layout_constraintTop_toTopOf="@id/arcStatus"
+            app:shape_radius="20dp"
+            app:shape_solidColor="@color/blue_bg"
+            app:shape_solidPressedColor="@color/blue_00a5b7" />
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btnExitCharge"
+            style="@style/WhiteTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="@string/exit_charge"
+            app:layout_constraintStart_toEndOf="@id/btnCharge"
+            app:layout_constraintTop_toTopOf="@id/arcStatus"
+            app:shape_radius="20dp"
+            app:shape_solidColor="@color/red"
+            app:shape_solidPressedColor="@color/blue_00a5b7" />
+
+        <com.shciri.rosapp.ui.view.CircularProgressBar
+            android:id="@+id/circularProgressBattery"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="50dp"
+            app:backgroundColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressColor="@color/blue_bg"
+            app:strokeWidth="15dp" />
+
+        <com.shciri.rosapp.ui.view.ArcStateView
+            android:id="@+id/arcStatus"
+            android:layout_width="400dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/circularProgressBattery" />
+
+    </com.hjq.shape.layout.ShapeConstraintLayout>
+
+    <com.rey.material.widget.TextView
+        android:id="@+id/tvPath"
+        style="@style/BlackTextTheme.30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/WhiteTextTheme.26"
-        android:text="@string/retargeting"
-        app:layout_constraintEnd_toStartOf="@id/choose_task_map_spinner"
-        app:layout_constraintTop_toTopOf="@id/choose_task_map_spinner"
-        android:layout_marginEnd="40dp"
-        app:shape_radius="20dp"
-        app:shape_solidColor="@color/blue_1f4e96"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="5dp"
-        app:shape_solidPressedColor="@color/red"
-        android:visibility="gone"
-        />
-
-    <LinearLayout
-        android:id="@+id/nav_view"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/textView21"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="@string/path"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_image">
+        app:layout_constraintTop_toBottomOf="@id/shapeStatus" />
 
-        <ImageView
-            android:id="@+id/health_iv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/choose_task_icon_size_height"
-            android:layout_marginTop="30dp"
-            android:scaleType="center"
-            android:src="@mipmap/choosetask_jiankang4_21" />
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@id/shapeModeOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        app:layout_constraintStart_toEndOf="@+id/tvPath"
+        app:layout_constraintTop_toBottomOf="@+id/shapeStatus"
+        app:shape_radius="20dp"
+        app:shape_strokeColor="@color/black"
+        app:shape_strokeSize="2dp">
 
-        <ImageView
-            android:id="@+id/task_report_iv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/choose_task_icon_size_height"
-            android:layout_marginTop="@dimen/choose_task_icon_margin_top"
-            android:scaleType="center"
-            android:src="@mipmap/choosetask_xuanze4_21" />
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinnerModeOne"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="260dp"
+            android:layout_height="60dp" />
+    </com.hjq.shape.layout.ShapeLinearLayout>
 
-        <ImageView
-            android:id="@+id/manual_control_iv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/choose_task_icon_size_height"
-            android:layout_marginTop="@dimen/choose_task_icon_margin_top"
-            android:scaleType="center"
-            android:src="@mipmap/choosetask_shoudong4_21" />
+    <com.rey.material.widget.TextView
+        android:id="@+id/tvTaskNum"
+        style="@style/BlackTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="@string/loop_num"
+        app:layout_constraintStart_toEndOf="@+id/shapeModeOne"
+        app:layout_constraintTop_toBottomOf="@id/shapeStatus" />
 
-        <ImageView
-            android:id="@+id/open_drawer_iv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/choose_task_icon_size_height"
-            android:layout_marginTop="@dimen/choose_task_icon_margin_top"
-            android:layout_marginBottom="40dp"
-            android:scaleType="center"
-            android:src="@mipmap/choosetask_shujuguanli4_21" />
-    </LinearLayout>
+    <com.hjq.shape.view.ShapeEditText
+        android:id="@+id/editNumber"
+        style="@style/BlackTextTheme.30"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="3"
+        android:padding="10dp"
+        android:text="1"
+        app:layout_constraintStart_toEndOf="@+id/tvTaskNum"
+        app:layout_constraintTop_toTopOf="@+id/shapeModeOne"
+        app:shape_radius="20dp"
+        app:shape_solidColor="@color/white"
+        app:shape_strokeColor="@color/black"
+        app:shape_strokeSize="2dp" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="4dp"
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnStart"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="30dp"
+        android:text="@string/execute"
+        app:layout_constraintStart_toEndOf="@id/editNumber"
+        app:layout_constraintTop_toBottomOf="@id/shapeStatus"
+        app:shape_radius="30dp"
+        app:shape_solidColor="@color/blue_bg"
+        app:shape_solidPressedColor="@color/blue_00a5b7" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnEnd"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="30dp"
+        android:text="@string/end"
+        app:layout_constraintStart_toEndOf="@id/btnStart"
+        app:layout_constraintTop_toBottomOf="@id/shapeStatus"
+        app:shape_radius="30dp"
+        app:shape_solidColor="@color/red"
+        app:shape_solidPressedColor="@color/blue_00a5b7" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnPointNav"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="30dp"
+        android:text="@string/point_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shapeStatus"
+        app:shape_radius="30dp"
+        app:shape_solidColor="@color/blue_bg"
+        app:shape_solidPressedColor="@color/blue_00a5b7" />
+
+    <com.shciri.rosapp.ui.view.MapView
+        android:id="@+id/ros_map"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/ros_bt_line"
-        app:layout_constraintBottom_toBottomOf="@+id/nav_view"
-        app:layout_constraintStart_toEndOf="@+id/nav_view"
-        app:layout_constraintTop_toTopOf="@+id/nav_view" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/linFun"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPointNav" />
 
-    <HorizontalScrollView
-        android:id="@+id/tasks_view"
+    <ImageView
+        android:id="@+id/ivExpand"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="60dp"
+        android:src="@mipmap/more_con"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.rey.material.widget.LinearLayout
+        android:id="@+id/linFun"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        app:layout_constraintStart_toEndOf="@+id/nav_view"
-        app:layout_constraintTop_toTopOf="@+id/nav_view">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="350dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <com.shciri.rosapp.ui.myview.TaskBtView
-                android:id="@+id/task_bt1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/task_bt_margin"
-                android:focusableInTouchMode="true" />
-
-            <com.shciri.rosapp.ui.myview.TaskBtView
-                android:id="@+id/task_bt2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/task_bt_margin"
-                android:focusableInTouchMode="true" />
-
-            <com.shciri.rosapp.ui.myview.TaskBtView
-                android:id="@+id/task_bt3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/task_bt_margin"
-                android:focusableInTouchMode="true" />
-
-            <LinearLayout
-                android:id="@+id/more_task_ll"
-                android:layout_width="238dp"
-                android:layout_height="200dp"
-                android:layout_marginStart="@dimen/task_bt_margin"
-                android:layout_marginEnd="@dimen/task_bt_margin"
-                android:layout_marginBottom="12dp"
-                android:background="@mipmap/choose_task_background"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:scaleType="fitXY"
-                    app:srcCompat="@mipmap/choosetask_gengduo4_21" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="更多"
-                    style="@style/WhiteTextTheme.20" />
-            </LinearLayout>
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/loop_number"
-        style="@style/WhiteTextTheme.30"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/nav_view"
-        app:layout_constraintTop_toBottomOf="@+id/tasks_view" />
-
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView21"
-        app:layout_constraintStart_toEndOf="@+id/textView21"
-        app:layout_constraintTop_toTopOf="@+id/textView21"
-        android:orientation="horizontal">
-
-        <com.hjq.shape.view.ShapeRadioButton
-            android:id="@+id/circulateTv1"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="51dp"
-            android:text="@string/one"
-            style="@style/WhiteTextTheme.30"
-            android:button="@null"
-            android:gravity="center"
-            app:shape_solidCheckedColor="@color/red"
-            app:shape_radius="4dp"/>
-
-        <com.hjq.shape.view.ShapeRadioButton
-            android:id="@+id/circulateTv2"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:text="@string/two"
-            style="@style/WhiteTextTheme.30"
-            android:gravity="center"
-            android:button="@null"
-            app:shape_solidCheckedColor="@color/red"
-            app:shape_radius="4dp"
-            />
-
-        <com.hjq.shape.view.ShapeRadioButton
-            android:id="@+id/circulateTv3"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:text="@string/three"
-            style="@style/WhiteTextTheme.30"
-            android:gravity="center"
-            android:button="@null"
-            app:shape_solidCheckedColor="@color/red"
-            app:shape_radius="4dp"
-            />
-
-        <com.hjq.shape.view.ShapeRadioButton
-            android:id="@+id/circulateTv4"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:text="@string/infinity"
-            android:button="@null"
-            style="@style/WhiteTextTheme.30"
-            android:gravity="center"
-            app:shape_solidCheckedColor="@color/red"
-            app:shape_radius="4dp" />
-    </RadioGroup>
-
-
-    <TextView
-        android:id="@+id/start_task_bt"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="@string/start_task"
-        style="@style/WhiteTextTheme.24"
-        app:layout_constraintBottom_toBottomOf="@+id/textView21"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView21"
-        app:layout_constraintVertical_bias="0.545" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:id="@+id/shapeHand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:shape_radius="30dp"
+            app:shape_solidColor="@color/blue_bg">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/hand" />
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tvHand"
+                style="@style/WhiteTextTheme.30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/hand_control"
+                app:shape_radius="30dp" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:id="@+id/shapeLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:shape_radius="30dp"
+            app:shape_solidColor="@color/blue_bg">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/map_edit" />
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tvMapEdit"
+                style="@style/WhiteTextTheme.30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/map_edit"
+                app:shape_radius="30dp" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:id="@+id/shapeMapManager"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:shape_radius="30dp"
+            app:shape_solidColor="@color/blue_bg">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/map_manager" />
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tvManager"
+                style="@style/WhiteTextTheme.30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/map_manager"
+                app:shape_radius="30dp" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:id="@+id/shapeSystem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:shape_radius="30dp"
+            app:shape_solidColor="@color/blue_bg">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:src="@mipmap/sett" />
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/tvSystem"
+                style="@style/WhiteTextTheme.30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/system_set"
+                app:shape_radius="30dp" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    </com.rey.material.widget.LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

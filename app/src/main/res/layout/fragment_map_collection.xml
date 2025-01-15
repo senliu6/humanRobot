@@ -5,20 +5,17 @@
     android:layout_height="match_parent"
     android:background="@color/lightsteelblue">
 
-    <com.shciri.rosapp.ui.myview.MapView
+    <com.shciri.rosapp.ui.view.MapView
         android:id="@+id/ros_map"
-        android:layout_width="846dp"
-        android:layout_height="750dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvExitMap"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.shciri.rosapp.ui.myview.MyControllerView
+    <com.shciri.rosapp.ui.view.MyControllerView
         android:id="@+id/controller_view"
         android:layout_width="250dp"
         android:layout_height="250dp"

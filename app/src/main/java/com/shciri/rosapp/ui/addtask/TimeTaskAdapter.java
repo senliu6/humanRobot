@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.mydata.DBUtils;
+import com.shciri.rosapp.rosdata.DBUtils;
 import com.shciri.rosapp.server.AlarmService;
 import com.shciri.rosapp.utils.SharedPreferencesUtil;
 

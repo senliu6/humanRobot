@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RosApp</string>
+    <string name="app_name">HumanApp</string>
     <string name="business_btn">UV Disinfection Lamp</string>
     <string name="switch_off">OFF</string>
     <string name="switch_on">ON</string>
@@ -153,7 +153,7 @@
     <string name="radar">Radar</string>
     <string name="temper">Temperature</string>
     <string name="humidity">Humidity</string>
-    <string name="formaldehyde">Formaldehyde</string>
+    <string name="formal">Formaldehyde</string>
     <string name="task_report_list">Task Report List</string>
     <string name="create_time">Create Time</string>
     <string name="task_type">Task Type</string>
@@ -194,7 +194,70 @@
     <string name="select_language">Select Language:</string>
     <string name="chinese">Chinese</string>
     <string name="traditional">Traditional Chinese</string>
-    <style name="turn_on_simultaneously">Turn on simultaneously</style>
 
+    <string name="one_reatsrt">One-click restart</string>
+    <string name="please_input_wifi">Please enter the WIFI name and password</string>
+
+    <string name="turn_on_simultaneously">Turn on simultaneously</string>
+    <string name="control_timeout">Control timeout</string>
+    <string name="control_success">Control success</string>
+    <string name="hand_control">Hand control</string>
+    <string name="refresh">Refresh</string>
+    <string name="send">Send</string>
+    <string name="extend_list_control">Expand action list</string>
+    <string name="enlarge">Enlarge</string>
+    <string name="control_list">Control list</string>
+    <string name="intensity">Intensity</string>
+    <string name="speed">Speed</string>
+    <string name="angle">Angle</string>
+    <string name="please_input_name">Please input name</string>
+    <string name="please_input_inteeval">Please input interval</string>
+    <string name="refresh_image">Refresh image</string>
+    <string name="narrow">Narrow</string>
+
+
+    <string name="position_mode">Position Mode</string>
+    <string name="servo_mode">Servo Mode</string>
+    <string name="velocity_mode">Velocity Mode</string>
+    <string name="force_control_mode">Force Control Mode</string>
+    <string name="pinky">Pinky</string>
+    <string name="ring_finger">Ring Finger</string>
+    <string name="middle_finger">Middle Finger</string>
+    <string name="index_finger">Index Finger</string>
+    <string name="thumb">Thumb</string>
+    <string name="thumb_bend">Thumb Bend</string>
+    <string name="thumb_rotate">Thumb Rotate</string>
+    <string name="remote_mode">Remote Mode</string>
+    <string name="recording_actions">Recording Actions</string>
+
+
+    <string name="clear_v_wall">Clear virtual wall.</string>
+    <string name="add_charge_poi">Add charging point.</string>
+    <string name="create_map_fail">Map creation failed.</string>
+    <string name="no_contral_offline">This function cannot be operated in offline mode.</string>
+    <string name="please_input_pathname">Please enter the path name.</string>
+    <string name="path">Path</string>
+    <string name="task_status">Task status: %1$s</string>
+    <string name="map_edit">Map editing</string>
+    <string name="now_location">Current location: %1$s</string>
+    <string name="go_charge">Go for charging.</string>
+    <string name="exit_charge">Exit charging.</string>
+    <string name="execute">Execute</string>
+    <string name="end">End</string>
+    <string name="please_check_task">Please check the path and the number of times.</string>
+    <string name="mission_sucess">The task initiation was successful.</string>
+    <string name="mission_fail">The task initiation failed.</string>
+    <string name="now_speed">Current speed: %1$s</string>
+    <string name="point_nav">Fixed-point navigation</string>
+    <string name="please_click_map">Please click on the map to select the destination point.</string>
+
+    <string name="now_map">Current map</string>
+    <string name="switchs">Switch</string>
+    <string name="current_map_cannot_delete">The current map cannot be deleted.</string>
+    <string name="please_input_new_map">Please enter the new map name.</string>
+
+    <string name="idle">Idle</string>
+    <string name="navigation">Nav</string>
+    <string name="charging">Charge</string>
 
 </resources>

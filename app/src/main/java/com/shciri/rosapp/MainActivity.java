@@ -1,10 +1,12 @@
 package com.shciri.rosapp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
@@ -12,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -21,8 +22,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.hjq.toast.Toaster;
+import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.shciri.rosapp.base.BaseActivity;
 import com.shciri.rosapp.base.BaseDialog;
 import com.shciri.rosapp.databinding.ActivityLoginBinding;
@@ -33,15 +36,15 @@ import com.shciri.rosapp.dmros.data.User;
 import com.shciri.rosapp.dmros.data.UserList;
 import com.shciri.rosapp.dmros.tool.AudioMngHelper;
 import com.shciri.rosapp.dmros.tool.UserRepository;
-import com.shciri.rosapp.mydata.DBOpenHelper;
-import com.shciri.rosapp.mydata.DBUtils;
+import com.shciri.rosapp.rosdata.DBOpenHelper;
+import com.shciri.rosapp.rosdata.DBUtils;
 import com.shciri.rosapp.server.ConnectServer;
 import com.shciri.rosapp.server.ServerInfoTab;
 import com.shciri.rosapp.ui.TaskControlActivity;
 import com.shciri.rosapp.ui.dialog.InputDialog;
 import com.shciri.rosapp.ui.dialog.WaitDialog;
-import com.shciri.rosapp.utils.LanguageUtil;
 import com.shciri.rosapp.utils.SharedPreferencesUtil;
+import com.shciri.rosapp.utils.SimCardStatusManager;
 import com.shciri.rosapp.utils.ToolsUtil;
 import com.shciri.rosapp.utils.protocol.ReplyIPC;
 import com.shciri.rosapp.utils.protocol.RequestIPC;
@@ -56,7 +59,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
-import src.com.jilk.ros.message.custom.Battery;
+import src.com.jilk.ros.message.custom.BatteryInfo;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 
@@ -93,9 +96,10 @@ public class MainActivity extends BaseActivity {
     private ExecutorService executorService = RCApplication.getExecutorService();
 
     private InputDialog inputDialog;
-    private String robotIp = "11.11.11.111";
+    private String robotIp = "192.168.8.24";
     private String[] idOption;
     private ArrayAdapter<String> idAdapter;
+    private SimCardStatusManager simCardStatusManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +108,7 @@ public class MainActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         //如果修改db的表内容，则需要在此提高db的version
-        DBOpenHelper dbOpenHelper = new DBOpenHelper(this, "test", null, 9);
+        DBOpenHelper dbOpenHelper = new DBOpenHelper(this, "test", null, 10);
         RCApplication.db = dbOpenHelper.getWritableDatabase();
 //        RCApplication.db.delete("map","id=?",new String[]{"1"});
 //        ContentValues values = new ContentValues();
@@ -127,22 +131,29 @@ public class MainActivity extends BaseActivity {
         // 广播监听热插拔
         UsbBroadcastReceiver();
 
+        simCardStatusManager = new SimCardStatusManager(this);
+        simCardStatusManager.checkSimCardStatus();
+//        binding.loginStatusBar.setSim(simCardStatusManager.getSimStatusOpen());
+
 
         byte[] data = RequestIPC.batteryRequest();
         RCApplication.uartVCP.sendData(data);
         byte[] response = new byte[100];
         int len = RCApplication.uartVCP.readData(response);
         RCApplication.replyIPC.ipc_put_rx_byte(response, len);
+
+        // 检查并请求权限
+        verifyStoragePermissions(this);
     }
 
     private void initData() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a", Locale.ENGLISH);
         Date date = new Date(System.currentTimeMillis());
         binding.loginStatusBar.setTimeView(simpleDateFormat.format(date));
-        binding.loginStatusBar.setBatteryPercent((byte) (RCApplication.localBattery * 100));
+//        binding.loginStatusBar.setBatteryPercent((byte) (RCApplication.localBattery * 100));
 
         robotIp = SharedPreferencesUtil.Companion.getValue(this.getApplicationContext(),
-                Settings.ROBOT_IP, "11.11.11.111", String.class);
+                Settings.ROBOT_IP, "192.168.8.24", String.class);
 
         idOption = UserRepository.INSTANCE.getUserNameArray();
         if (idOption.length == 0) {
@@ -152,6 +163,9 @@ public class MainActivity extends BaseActivity {
             }
         }
         RCApplication.Operator = idOption[0];
+
+        // TODO 用于设置香港机器单独用户登录使用
+        RCApplication.Operator = "Admin";
 
         idAdapter = new ArrayAdapter<String>(this, R.layout.task_bt_spinner_item_select, idOption);
         //设置数组适配器的布局样式
@@ -172,7 +186,7 @@ public class MainActivity extends BaseActivity {
                 .setCanceledOnTouchOutside(false)
                 .setOnCancelClick(view -> {
                     toastShort(R.string.retrying);
-                    executorService.submit(() -> {
+                    executorService.execute(() -> {
                         ROSBridgeClient client = rosInit.rosConnect(robotIp, RCApplication.rosPort);
                         ((RCApplication) getApplication()).setRosClient(client);
                     });
@@ -188,6 +202,8 @@ public class MainActivity extends BaseActivity {
         rosInit.setOnRosConnectListener(connected -> {
             runOnUiThread(() -> binding.loginStatusBar.setConnectStatus(connected));
         });
+
+        binding.tvRestart.setOnClickListener(view -> ProcessPhoenix.triggerRebirth(getApplicationContext()));
 
     }
 
@@ -248,6 +264,8 @@ public class MainActivity extends BaseActivity {
     private void initView() {
         /* 防止软键盘自动弹出 */
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        robotIp = SharedPreferencesUtil.Companion.getValue(this.getApplicationContext(),
+                Settings.ROBOT_IP, "192.168.8.24", String.class);
         binding.identitySelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -294,8 +312,9 @@ public class MainActivity extends BaseActivity {
 
         inputDialog = new InputDialog.Builder(this)
                 .setTitle(getString(R.string.please_input_ip))
+                .setEditText(robotIp)
                 .setOnCancelClick(v -> inputDialog.dismiss())
-                .setOnConfirmClick(inputText -> {
+                .setOnConfirmClick((inputText, password) -> {
                     if (inputText.matches(LimitInputTextWatcher.REGEX_IP)) {
                         DBUtils.getInstance().DBUpdateInfo(ServerInfoTab.id, inputText);
                         SharedPreferencesUtil.Companion.saveValue(this.getApplicationContext(), Settings.ROBOT_IP, inputText);
@@ -433,12 +452,12 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ReplyIPC.BatteryReply event) {
-        binding.loginStatusBar.setBatteryPercent(event.getCapacity_percent());
-        Battery battery = new Battery();
-        battery.battery_percent = (byte) event.getCapacity_percent();
-        battery.current = (short) event.getCurrent();
-        if (null != RosTopic.batteryTopic) {
-            RosTopic.batteryTopic.publish(battery);
+//        binding.loginStatusBar.setBatteryPercent(event.getCapacity_percent());
+        BatteryInfo batteryInfo = new BatteryInfo();
+        batteryInfo.battery_percent = (byte) event.getCapacity_percent();
+        batteryInfo.current = (short) event.getCurrent();
+        if (null != RosTopic.batteryInfoTopic) {
+            RosTopic.batteryInfoTopic.publish(batteryInfo);
         }
     }
 
@@ -464,14 +483,32 @@ public class MainActivity extends BaseActivity {
         binding.passwordEdit.setText(password);
         if (TextUtils.isEmpty(password)) {
             binding.buttonLogin.getShapeDrawableBuilder()
-                    .setSolidColor(Color.parseColor(getResources().getString(R.color.f9fcfc_33))).intoBackground();
-            binding.buttonLogin.setTextColor(getResources().getColor(R.color.gray_02a496));
+                    .setSolidColor(Color.parseColor(getResources().getString(R.color.gray))).intoBackground();
+            binding.buttonLogin.setTextColor(getResources().getColor(R.color.black));
         } else {
             binding.buttonLogin.getShapeDrawableBuilder()
-                    .setSolidColor(Color.parseColor(getResources().getString(R.color.blue_00a5b7)))
-                    .setSolidGradientColors(ToolsUtil.INSTANCE.intToColorInt(getApplicationContext(), R.color.white_00fdfa), ToolsUtil.INSTANCE.intToColorInt(getApplicationContext(), R.color.gray_00899c))
-                    .setSolidGradientOrientation(270).intoBackground();
-            binding.buttonLogin.setTextColor(Color.WHITE);
+                    .setSolidColor(Color.parseColor(getResources().getString(R.color.red)))
+                    .intoBackground();
+            binding.buttonLogin.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static <Activity> void verifyStoragePermissions(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission((Context) activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // 如果没有权限，则请求权限
+            ActivityCompat.requestPermissions(
+                    (android.app.Activity) activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
         }
     }
 }

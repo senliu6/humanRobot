@@ -17,7 +17,6 @@ import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.base.BaseActivity;
@@ -29,7 +28,7 @@ import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.data.UserList;
 import com.shciri.rosapp.server.AlarmService;
-import com.shciri.rosapp.ui.myview.StatusBarView;
+import com.shciri.rosapp.ui.view.StatusBarView;
 import com.shciri.rosapp.utils.AlarmManagerUtils;
 import com.shciri.rosapp.utils.MyBroadCastReceiver;
 import com.shciri.rosapp.utils.protocol.ReplyIPC;
@@ -144,9 +143,10 @@ public class TaskControlActivity extends BaseActivity {
                 try {
                     long start = System.currentTimeMillis();
                     Log.d("CeshiTAG", "topicList" + RCApplication.client.getTopics().length);
-                    rosTopic.subscribeMapTopic(receiveHandler.getMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
+//                    rosTopic.subscribeMapTopic(receiveHandler.getMapTopicHandler(), ((RCApplication) getApplication()).getRosClient());
                     topicingList.clear();
                     for (String s : RCApplication.client.getTopics()) {
+
                         for (int i = 0; i < RosTopic.TopicName.size(); i++) {
 //                            Log.d("CeshiTAG", "可订阅的topic==" + s);
                             if (s.equals(RosTopic.TopicName.get(i))) {
@@ -220,6 +220,33 @@ public class TaskControlActivity extends BaseActivity {
                                     case 21:
                                         rosTopic.subscribeClampLocation(receiveHandler.getClampNotifyHandler(), ((RCApplication) getApplication()).getRosClient());
                                         break;
+                                    case 22:
+                                        rosTopic.subscribeAir(receiveHandler.getAirHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 23:
+                                        rosTopic.subscribeVideoFrames(receiveHandler.getImageHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 24:
+                                        rosTopic.subscribeVideoFramesPro(receiveHandler.getImageHandlerPro(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 25:
+                                        rosTopic.subscribeIndexVideoFrames(receiveHandler.getImageIndexHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 26:
+//                                        rosTopic.subscribeIndexVideoFramesPro(receiveHandler.getImageIndexHandlerPro(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 27:
+                                        rosTopic.subscribeModalitiesControl(((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 28:
+                                        rosTopic.subscribePointCloud(receiveHandler.getPointCloudHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 29:
+                                        rosTopic.subscribeProgress(receiveHandler.getProgressHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
+                                    case 30:
+                                        rosTopic.subscribeGlobalPath(receiveHandler.getGlobalPathHandler(), ((RCApplication) getApplication()).getRosClient());
+                                        break;
                                     default:
                                 }
                             }
@@ -285,24 +312,17 @@ public class TaskControlActivity extends BaseActivity {
         //系统设置
         binding.systemSetLl.setOnClickListener(v -> navigateTo(R.id.systemSetFragment));
         //定时任务
-        binding.timeTaskLl.setOnClickListener(v -> navigateTo(R.id.addTaskFragment));
-        //地图管理
-        binding.managerDataLl.setOnClickListener(v -> navigateTo(R.id.manageDataFragment));
+        binding.timeTaskLl.setOnClickListener(v -> navigateTo(R.id.mapManagerFragment));
         //主页
         binding.locationLl.setOnClickListener(v -> navigateTo(R.id.nav_home));
-        //任务报告
-        binding.tvTaskReport.setOnClickListener(v -> navigateTo(R.id.taskReportActivity));
-        //抱夹功能
-        binding.tvInternal.setOnClickListener(v -> navigateTo(R.id.netWorkFragment));
         //用户管理
         binding.tvUserManager.setOnClickListener(v -> navigateTo(R.id.userFragment));
 
+
         //用户权限控制
         if (!UserList.INSTANCE.getArray()[0].equals(RCApplication.Operator)) {
-            binding.tvInternal.setVisibility(View.GONE);
             binding.tvUserManager.setVisibility(View.GONE);
         } else {
-            binding.tvInternal.setVisibility(View.VISIBLE);
             binding.tvUserManager.setVisibility(View.VISIBLE);
         }
     }

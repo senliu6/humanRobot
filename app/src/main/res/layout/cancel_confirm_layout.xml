@@ -10,19 +10,19 @@
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/dialog_button_cancel"
         app:shape_radius="15dp"
-        app:shape_solidColor="@color/f9fcfc_33"
+        app:shape_solidColor="@color/blue_bg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/cancel"
-        style="@style/GrayTextTheme.26"/>
+        style="@style/WhiteTextTheme.26"/>
 
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/dialog_button_confirm"
         app:shape_radius="15dp"
-        app:shape_solidColor="@color/f9fcfc_33"
+        app:shape_solidColor="@color/blue_bg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"

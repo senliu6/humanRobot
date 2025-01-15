@@ -5,12 +5,15 @@ import android.util.Log;
 
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
+import com.shciri.rosapp.dmros.tool.AirQualityEvent;
+import com.shciri.rosapp.dmros.tool.PointCloud2d;
+import com.shciri.rosapp.rosdata.PathData;
+import com.shciri.rosapp.rosdata.Progress;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import src.com.jilk.ros.MessageHandler;
-import src.com.jilk.ros.ROSClient;
 import src.com.jilk.ros.Topic;
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.CoverageMap;
@@ -24,19 +27,24 @@ import src.com.jilk.ros.message.StateMachineRequest;
 import src.com.jilk.ros.message.StateNotificationHeartbeat;
 import src.com.jilk.ros.message.TFTopic;
 import src.com.jilk.ros.message.Ultrasonic;
-import src.com.jilk.ros.message.custom.Battery;
+import src.com.jilk.ros.message.custom.BatteryInfo;
 import src.com.jilk.ros.message.custom.ClampLocation;
 import src.com.jilk.ros.message.custom.ClampNotifyLocation;
 import src.com.jilk.ros.message.custom.EmergencyButton;
 import src.com.jilk.ros.message.custom.NavPace;
+import src.com.jilk.ros.message.custom.Pose2D;
+import src.com.jilk.ros.message.custom.request.ImageMessage;
+import src.com.jilk.ros.message.custom.request.CompressedImageList;
 import src.com.jilk.ros.message.goal.MoveGoal;
 import src.com.jilk.ros.message.kortex_driver.Base_JointSpeeds;
 import src.com.jilk.ros.message.requestparam.ClampControl;
 import src.com.jilk.ros.message.requestparam.ClampHardwareControl;
 import src.com.jilk.ros.message.requestparam.EnterManual;
 import src.com.jilk.ros.message.requestparam.ManualPathParameter;
+import src.com.jilk.ros.message.requestparam.Modalities;
 import src.com.jilk.ros.message.requestparam.RequestMapControlParameter;
 import src.com.jilk.ros.message.sensor_msgs.Range;
+import src.com.jilk.ros.message.std_msgs.StringData;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
 public class RosTopic {
@@ -55,7 +63,8 @@ public class RosTopic {
     public static src.com.jilk.ros.Topic<Range> ultrasonicTopic3;
     public static src.com.jilk.ros.Topic<Base_JointSpeeds> joint_velocity;
     public static src.com.jilk.ros.Topic<EmergencyButton> emergencyButtonTopic;
-    public static src.com.jilk.ros.Topic<Battery> batteryTopic;
+    public static src.com.jilk.ros.Topic<BatteryInfo> batteryInfoTopic;
+
     public static src.com.jilk.ros.Topic<StateMachineRequest> stateMachineRequestRequestTopic;
     public static src.com.jilk.ros.Topic<StateMachineReply> stateMachineRequestReplyTopic;
     public static src.com.jilk.ros.Topic<StateNotificationHeartbeat> stateNotificationHeartbeatTopic;
@@ -70,18 +79,34 @@ public class RosTopic {
 
     public static src.com.jilk.ros.Topic<MapMsg> watchMapTopic;
 
-    public static src.com.jilk.ros.Topic<Pose> robotPoseTopic;
+    public static src.com.jilk.ros.Topic<Pose2D> robotPoseTopic;
     public static src.com.jilk.ros.Topic<NavPace> navPaceTopic;
 
     public static src.com.jilk.ros.Topic<ClampLocation> clampLocationTopic;
     public static src.com.jilk.ros.Topic<ClampNotifyLocation> clampNotifyLocationTopic;
+
+    public static src.com.jilk.ros.Topic<AirQualityEvent> airQualityEventTopic;
+
+    public static src.com.jilk.ros.Topic<Progress> progressTopic;
+
+    public static src.com.jilk.ros.Topic<PathData> globalPath;
+
+    public Topic<CompressedImageList> imageMessageTopic;
+    public Topic<ImageMessage> imageMessageTopicPro;
+    public Topic<ImageMessage> imageIndexTopic;
+    public Topic<StringData> imageIndexTopicPro;
+
+    public static Topic<Modalities> modalitiesTopic;
+
+    public static src.com.jilk.ros.Topic<PointCloud2d> pointCloud2dsTopic;
+
 
     public static List<String> TopicName = new ArrayList<>();
     private static Context currentContext;
 
     static {
         // 初始化 TopicName 集合
-        TopicName.add("/map");
+        TopicName.add("/slam_map");
         TopicName.add("/cmd_vel");
         TopicName.add("/tf");
         TopicName.add("/move_base_simple/goal");
@@ -98,11 +123,20 @@ public class RosTopic {
         TopicName.add("/clamp_control");
         TopicName.add("/clamp_hardware_control");
         TopicName.add("/enter_manual_clamp");
-        TopicName.add("/robot_location");
+        TopicName.add("/robot_pose");
         TopicName.add("/watch/carto_map");
         TopicName.add("/nav_pace");
         TopicName.add("/clamp_location");
         TopicName.add("/notify_clamp_location");
+        TopicName.add("/air_quality_sensor");
+        TopicName.add("/finger_images");
+        TopicName.add("/thumb_processed");
+        TopicName.add("/index_row");
+        TopicName.add("/test");
+        TopicName.add("/get_images");
+        TopicName.add("/align_point_cloud");//激光点云信息
+        TopicName.add("/mission_status");//机器人实时进度
+        TopicName.add("/local_path");// 全局路径
 
     }
 
@@ -114,7 +148,7 @@ public class RosTopic {
     }
 
     public void subscribeMapTopic(MessageHandler handler, ROSBridgeClient client) {
-        mapTopic = new Topic<MapMsg>("/map", MapMsg.class, client);
+        mapTopic = new Topic<MapMsg>("/slam_map", MapMsg.class, client);
         mapTopic.subscribe(handler);
     }
 
@@ -195,9 +229,9 @@ public class RosTopic {
     }
 
     public void subscribeBatteryTopic(MessageHandler handler, ROSBridgeClient client) {
-        batteryTopic = new Topic<Battery>("/battery", Battery.class, client);
-        batteryTopic.subscribe(handler);
-        batteryTopic.advertise();
+        batteryInfoTopic = new Topic<>("/hardware_battery_info", BatteryInfo.class, client);
+        batteryInfoTopic.subscribe(handler);
+//        batteryInfoTopic.advertise();
         Log.d("SUB Topic", "subscribeBatteryTopic");
     }
 
@@ -249,7 +283,7 @@ public class RosTopic {
     }
 
     public void subscribeRobotPose(MessageHandler handler, ROSBridgeClient client) {
-        robotPoseTopic = new Topic<Pose>("/robot_location", Pose.class, client);
+        robotPoseTopic = new Topic<Pose2D>("/robot_pose", Pose2D.class, client);
         robotPoseTopic.subscribe(handler);
     }
 
@@ -266,6 +300,53 @@ public class RosTopic {
     public void subscribeClampLocation(MessageHandler handler, ROSBridgeClient client) {
         clampNotifyLocationTopic = new Topic<>("/notify_clamp_location", ClampNotifyLocation.class, client);
         clampNotifyLocationTopic.subscribe(handler);
+    }
+
+    public void subscribeAir(MessageHandler handler, ROSBridgeClient client) {
+        airQualityEventTopic = new Topic<>("air_quality_sensor", AirQualityEvent.class, client);
+        airQualityEventTopic.subscribe(handler);
+    }
+
+    public void subscribeVideoFrames(MessageHandler handler, ROSBridgeClient client) {
+        imageMessageTopic = new Topic<>("/finger_images", CompressedImageList.class, client);
+        imageMessageTopic.subscribe(handler);
+    }
+
+    public void subscribeVideoFramesPro(MessageHandler handler, ROSBridgeClient client) {
+        imageMessageTopicPro = new Topic<>("/thumb_processed", ImageMessage.class, client);
+        imageMessageTopicPro.subscribe(handler);
+    }
+
+
+    public void subscribeIndexVideoFrames(MessageHandler handler, ROSBridgeClient client) {
+        imageIndexTopic = new Topic<>("/index_row", ImageMessage.class, client);
+        imageIndexTopic.subscribe(handler);
+    }
+
+    public void subscribeIndexVideoFramesPro(MessageHandler handler, ROSBridgeClient client) {
+        imageIndexTopicPro = new Topic<>("/test", StringData.class, client);
+        imageIndexTopicPro.subscribe(handler);//index_processed
+    }
+
+
+    public void subscribeModalitiesControl(ROSBridgeClient client) {
+        modalitiesTopic = new Topic<>("/get_images", Modalities.class, client);
+        modalitiesTopic.advertise();
+    }
+
+    public void subscribePointCloud(MessageHandler handler, ROSBridgeClient client) {
+        pointCloud2dsTopic = new Topic<>("/align_point_cloud", PointCloud2d.class, client);
+        pointCloud2dsTopic.subscribe(handler);
+    }
+
+    public void subscribeProgress(MessageHandler handler, ROSBridgeClient client){
+        progressTopic = new Topic<>("/mission_status", Progress.class, client);
+        progressTopic.subscribe(handler);
+    }
+
+    public void subscribeGlobalPath(MessageHandler handler, ROSBridgeClient client){
+        globalPath = new Topic<>("/local_path", PathData.class, client);
+        globalPath.subscribe(handler);
     }
 
     public static void publishStateMachineRequest(StateMachineRequest stateMachineRequest) {
@@ -331,6 +412,15 @@ public class RosTopic {
             Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_enter_manual));
         }
     }
+
+    public static void publishModalitiesControl(Modalities modalities) {
+        if (modalitiesTopic != null) {
+            modalitiesTopic.publish(modalities);
+        } else {
+            Toaster.showShort(currentContext.getResources().getString(R.string.subscribe_fail_clamp_hardware_control));
+        }
+    }
+
 
 
     public void deInitAll() {

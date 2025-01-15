@@ -10,6 +10,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.shciri.rosapp.server.AlarmService
+import java.lang.reflect.Type
 
 class SharedPreferencesUtil {
 
@@ -114,6 +115,45 @@ class SharedPreferencesUtil {
             editor.remove(key)
             editor.apply()
         }
+
+        fun <T> saveTypeValue(context: Context, key: String, value: T) {
+            val preferences = getAppSetPreferences(context)
+            val editor = preferences.edit()
+            val gson = Gson()
+            val json = gson.toJson(value)
+            editor.putString(key, json)
+            editor.apply()
+        }
+
+        fun <T> getTypeValue(context: Context, key: String, defaultValue: T, type: Type): T {
+            val preferences = getAppSetPreferences(context)
+            val gson = Gson()
+            val json = preferences.getString(key, null)
+            return if (json != null) {
+                gson.fromJson(json, type)
+            } else {
+                defaultValue
+            }
+        }
+
+        // 新增保存对象的方法
+        fun <T> saveObject(context: Context, key: String, value: T) {
+            val preferences = getAppSetPreferences(context)
+            val editor = preferences.edit()
+            val gson = Gson()
+            val json = gson.toJson(value)
+            editor.putString(key, json)
+            editor.apply()
+        }
+
+        // 新增获取对象的方法
+        fun <T> getObject(context: Context, key: String, clazz: Class<T>): T? {
+            val preferences = getAppSetPreferences(context)
+            val gson = Gson()
+            val json = preferences.getString(key, null)
+            return json?.let { gson.fromJson(it, clazz) }
+        }
+
 
     }
 

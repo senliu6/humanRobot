@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/BlackTextTheme.20"
+        android:text="Row Data" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_execute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:shape_solidColor="@color/yellow"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="15dp"
+        app:shape_radius="20dp"
+        app:shape_solidPressedColor="@color/black"
+        android:text="Running"
+        style="@style/BlackTextTheme.20"
+        android:layout_marginEnd="20dp"/>
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        style="@style/WhiteTextTheme.20"
+        app:shape_solidColor="@color/red"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="15dp"
+        app:shape_radius="20dp"
+        app:shape_solidPressedColor="@color/black"/>
+</LinearLayout>

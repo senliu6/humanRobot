@@ -12,6 +12,7 @@ import com.hjq.toast.Toaster;
 import com.shciri.rosapp.dmros.data.LanguageType;
 import com.shciri.rosapp.dmros.data.Settings;
 import com.shciri.rosapp.ui.CrashActivity;
+import com.shciri.rosapp.utils.CustomToastStyle;
 import com.shciri.rosapp.utils.LanguageUtil;
 import com.shciri.rosapp.utils.SharedPreferencesUtil;
 import com.shciri.rosapp.utils.UartVCP;
@@ -82,6 +83,7 @@ public class RCApplication extends Application {
             }
         }).start();
         Toaster.init(this);
+        Toaster.setStyle(new CustomToastStyle());
 
         // Crash 捕捉界面
         CaocConfig.Builder.create()
@@ -165,4 +167,5 @@ public class RCApplication extends Application {
     public static Context getContext() {
         return context;
     }
+    
 }

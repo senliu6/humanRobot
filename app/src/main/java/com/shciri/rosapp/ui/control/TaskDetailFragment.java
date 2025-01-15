@@ -23,7 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.ui.myview.MapView;
+import com.shciri.rosapp.ui.view.MapView;
 
 import java.util.ArrayList;
 

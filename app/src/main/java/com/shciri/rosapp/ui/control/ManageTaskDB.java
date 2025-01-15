@@ -20,7 +20,7 @@ public class ManageTaskDB {
     private final Gson gson = new Gson();
 
     public void queryTask() {
-        Cursor cursor = RCApplication.db.query("task",null, "map_id=?", new String[]{Integer.toString(RosData.currentMapID)}, null, null, null);
+        Cursor cursor = RCApplication.db.query("task",null, "map_id=?", new String[]{RosData.currentMapID}, null, null, null);
         taskLists = new ArrayList<>();
         taskNameList = new ArrayList<>();
         if(cursor.getCount() > 0)

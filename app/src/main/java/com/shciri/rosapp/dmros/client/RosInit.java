@@ -2,6 +2,8 @@ package com.shciri.rosapp.dmros.client;
 
 import android.util.Log;
 
+import com.hjq.toast.Toaster;
+
 import src.com.jilk.ros.ROSClient;
 import src.com.jilk.ros.rosbridge.ROSBridgeClient;
 
@@ -35,6 +37,7 @@ public class RosInit {
 
     public ROSBridgeClient rosConnect(String ip, String port) {
         if (isConnect) {
+            Toaster.show("Connect Success");
             return null;
         }
         ConnectionStatus connectionStatus = new ConnectionStatus();

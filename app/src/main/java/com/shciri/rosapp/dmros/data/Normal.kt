@@ -18,6 +18,15 @@ object WeekString {
 object Settings {
     const val ROBOT_IP: String = "robot_ip"
     const val LANGUAGE: String = "language"
+    const val MAP_RESOLUTION: String = "map_resolution"
+    const val MAP_HEIGHT: String ="map_height"
+    const val MAP_POSE_X : String = "map_pose_x"
+    const val MAP_POSE_Y :String = "map_pose_y"
+    const val MAP_POSE_Z :String = "map_pose_z"
+    const val MAP_CURRENT:String = "map_current"
+    const val MAP_CURRENT_ID:String = "map_current_id"
+
+
 }
 
 //用户管理

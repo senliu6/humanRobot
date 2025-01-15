@@ -35,29 +35,6 @@
             app:drawableStartCompat="@mipmap/home" />
 
         <TextView
-            style="@style/WhiteTextTheme.20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/drawer_text_margin_left"
-            android:layout_marginTop="10dp"
-            android:drawablePadding="40dp"
-            android:paddingVertical="15dp"
-            android:text="@string/healthy_manager"
-            app:drawableStartCompat="@mipmap/health_logo" />
-
-        <TextView
-            android:id="@+id/tv_task_report"
-            style="@style/WhiteTextTheme.20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/drawer_text_margin_left"
-            android:layout_marginTop="10dp"
-            android:drawablePadding="40dp"
-            android:paddingVertical="15dp"
-            android:text="@string/task_report"
-            app:drawableStartCompat="@mipmap/task_report" />
-
-        <TextView
             android:id="@+id/time_task_ll"
             style="@style/WhiteTextTheme.20"
             android:layout_width="wrap_content"
@@ -66,21 +43,8 @@
             android:layout_marginTop="10dp"
             android:drawablePadding="40dp"
             android:paddingVertical="15dp"
-            android:text="@string/scheduled_task"
+            android:text="@string/map_manager"
             app:drawableStartCompat="@mipmap/time_task" />
-
-
-        <TextView
-            android:id="@+id/manager_data_ll"
-            style="@style/WhiteTextTheme.20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/drawer_text_margin_left"
-            android:layout_marginTop="10dp"
-            android:drawablePadding="40dp"
-            android:paddingVertical="15dp"
-            android:text="@string/map_and_path"
-            app:drawableStartCompat="@mipmap/map_path" />
 
         <TextView
             android:id="@+id/system_set_ll"
@@ -93,19 +57,6 @@
             android:paddingVertical="15dp"
             android:text="@string/system_set"
             app:drawableStartCompat="@mipmap/system_set" />
-
-
-        <TextView
-            android:id="@+id/tvInternal"
-            style="@style/WhiteTextTheme.20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/drawer_text_margin_left"
-            android:layout_marginTop="10dp"
-            android:drawablePadding="40dp"
-            android:paddingVertical="15dp"
-            android:text="@string/clip"
-            app:drawableStartCompat="@mipmap/clip" />
 
         <TextView
             android:id="@+id/tvUserManager"

@@ -1,7 +1,6 @@
 package com.shciri.rosapp.ui.set;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.mydata.MoreTaskAdapter;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class SystemSetAdapter extends BaseAdapter {
 
@@ -50,12 +47,12 @@ public class SystemSetAdapter extends BaseAdapter {
         }else{
             vh = (ViewHolder) convertView.getTag();
         }
-        int colorPos=position%2;
-        if(colorPos==1)
-            convertView.setBackgroundColor(Color.argb(30, 255, 255, 255)); //颜色设置
-        else
-            convertView.setBackgroundColor(Color.argb(30, 100, 100, 100));//颜色设置
-
+//        int colorPos=position%2;
+//        if(colorPos==1)
+//            convertView.setBackgroundColor(Color.argb(30, 255, 255, 255)); //颜色设置
+//        else
+//            convertView.setBackgroundColor(Color.argb(30, 100, 100, 100));//颜色设置
+//
         SystemSetList item = getItem(position);
         vh.title.setText(item.option);
         return convertView;

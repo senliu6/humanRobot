@@ -4,108 +4,189 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton1"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="0"
             android:layout_column="0"
-            android:background="@drawable/login_key_1" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="1"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_gravity="center"
+             />
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton2"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="0"
             android:layout_column="1"
-            app:srcCompat="@drawable/login_key_2" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="2"
+            android:layout_marginStart="20dp"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_gravity="center"/>
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton3"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="0"
             android:layout_column="2"
-            app:srcCompat="@drawable/login_key_3" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="3"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+             />
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton4"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="1"
             android:layout_column="0"
-            app:srcCompat="@drawable/login_key_4" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="4"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton5"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="1"
             android:layout_column="1"
-            app:srcCompat="@drawable/login_key_5" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="5"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton6"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="1"
             android:layout_column="2"
-            app:srcCompat="@drawable/login_key_6" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="6"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+             />
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton7"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="2"
             android:layout_column="0"
-            app:srcCompat="@drawable/login_key_7" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="7"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton8"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="2"
             android:layout_column="1"
-            app:srcCompat="@drawable/login_key_8" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="8"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"/>
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton9"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="2"
             android:layout_column="2"
-            app:srcCompat="@drawable/login_key_9" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="9"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            />
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton10"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="3"
             android:layout_column="0"
-            app:srcCompat="@drawable/login_key_ac" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="AC"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+             />
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton11"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="3"
             android:layout_column="1"
-            app:srcCompat="@drawable/login_key_0" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="0"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+             />
 
-        <ImageView
+        <com.hjq.shape.view.ShapeTextView
             android:id="@+id/imageButton12"
-            style="@style/NumericStyle"
             android:layout_width="@dimen/numeric_key_width"
             android:layout_height="@dimen/numeric_key_height"
             android:layout_row="3"
             android:layout_column="2"
-            app:srcCompat="@drawable/login_key_del" />
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            app:shape_radius="40dp"
+            android:text="DEL"
+            style="@style/BlackTextTheme.30"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            />
 </GridLayout>

@@ -4,15 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/big_background">
+    android:background="@mipmap/main_background">
 
-    <com.shciri.rosapp.ui.myview.StatusBarView
+
+    <com.shciri.rosapp.ui.view.StatusBarView
         android:id="@+id/login_statusBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hjq.shape.view.ShapeTextView
+        android:id="@+id/tvRestart"
+        style="@style/BlackTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="50dp"
+        android:includeFontPadding="false"
+        android:letterSpacing="0.05"
+        android:lineSpacingExtra="1dp"
+        android:padding="20dp"
+        android:text="@string/one_reatsrt"
+        android:textAlignment="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="40dp"
+        app:shape_strokeColor="@color/black"
+        app:shape_strokeSize="1dp" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -24,7 +44,8 @@
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/logo4_21" />
+        app:srcCompat="@mipmap/logo4_21"
+        android:visibility="gone"/>
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/connecting_progress_bar"
@@ -33,40 +54,45 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:indeterminateTint="#02fde8"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_statusBar"
         tools:ignore="UnusedAttribute" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.hjq.shape.layout.ShapeConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="100dp"
-        android:background="@mipmap/login_background"
         android:paddingTop="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connecting_progress_bar">
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="40dp">
 
         <TextView
             android:id="@+id/textView"
+            style="@style/BlackTextTheme.40"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
             android:layout_marginTop="28dp"
             android:includeFontPadding="false"
             android:letterSpacing="0.05"
             android:lineSpacingExtra="1dp"
             android:text="@string/login_to_robot"
             android:textAlignment="center"
-            style="@style/WhiteTextTheme.28"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="120dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,105 +100,147 @@
 
             <LinearLayout
                 android:id="@+id/left_item"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="40dp"
+                android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
+                <com.hjq.shape.layout.ShapeRelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:drawablePadding="10dp"
-                    android:includeFontPadding="false"
-                    android:text="@string/account"
-                    style="@style/GrayTextTheme.20"
-                    app:drawableStartCompat="@mipmap/login_yonghu_4_21"
-                    tools:ignore="MissingClass" />
+                    app:shape_strokeColor="@color/black"
+                    app:shape_strokeSize="1dp"
+                    app:shape_radius="30dp"
+                    android:orientation="vertical">
 
-                <Spinner
-                    android:id="@+id/identity_select"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"
-                    android:layout_width="460dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/spinner_bg_bottom"
-                    android:gravity="center"
-                    android:overlapAnchor="false"
-                    android:spinnerMode="dropdown"
-                    android:textAlignment="gravity"
-                    android:theme="@style/ThemeSpinner"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
+
+                    <Spinner
+                        android:id="@+id/identity_select"
+                        android:layout_width="540dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:overlapAnchor="false"
+                        android:paddingStart="80dp"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="gravity"
+                        android:visibility="gone"
+                        android:theme="@style/ThemeSpinner"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSelect"
+                        android:layout_width="540dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+
+                        android:gravity="center"
+                        style="@style/BlackTextTheme.30"
+                        android:text="Admin"
+                        android:overlapAnchor="false"
+                        android:spinnerMode="dropdown"
+                        android:textAlignment="gravity"
+                        />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="-80dp"
+                        android:drawablePadding="10dp"
+                        android:includeFontPadding="false"
+                        android:src="@mipmap/login_account" />
+                </com.hjq.shape.layout.ShapeRelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="20dp"
-                    android:drawablePadding="10dp"
-                    android:includeFontPadding="false"
-                    android:text="@string/password"
-                    style="@style/GrayTextTheme.20"
-                    app:drawableStartCompat="@mipmap/login_mima4_21" />
-                <EditText
-                    android:id="@+id/password_Edit"
-                    android:layout_width="461dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/edit_password"
-                    android:clickable="false"
-                    android:gravity="fill"
-                    android:hint="@string/please_input_password"
-                    android:includeFontPadding="false"
-                    android:inputType="number"
-                    android:maxLength="12"
-                    android:selectAllOnFocus="true"
-                    style="@style/WhiteTextTheme.24"
-                    android:textColorHint="@color/gray_02a496"
-                    android:layout_marginTop="10dp"
-                    android:paddingStart="10dp"
-                    tools:ignore="RtlSymmetry,TextFields" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="40dp">
+
+                    <com.hjq.shape.view.ShapeEditText
+                        android:id="@+id/password_Edit"
+                        style="@style/BlackTextTheme.30"
+                        android:layout_width="560dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="10dp"
+                        android:clickable="false"
+                        android:gravity="fill"
+                        android:hint="@string/please_input_password"
+                        android:includeFontPadding="false"
+                        android:inputType="number"
+                        android:maxLength="12"
+                        android:paddingStart="80dp"
+                        android:selectAllOnFocus="true"
+                        android:textColorHint="@color/black"
+                        app:shape_radius="30dp"
+                        app:shape_strokeColor="@color/black"
+                        app:shape_strokeSize="1dp"
+                        tools:ignore="RtlSymmetry,TextFields" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="-80dp"
+                        android:drawablePadding="10dp"
+                        android:includeFontPadding="false"
+                        android:src="@mipmap/login_mima4_21" />
+                </RelativeLayout>
+
                 <com.hjq.shape.view.ShapeButton
                     android:id="@+id/button_login"
-                    android:layout_width="461dp"
-                    android:layout_height="60dp"
-                    android:text="@string/login_button"
-                    style="@style/GrayTextTheme.26"
-                    android:gravity="center"
+                    style="@style/WhiteTextTheme.30"
+                    android:layout_width="560dp"
+                    android:layout_height="80dp"
                     android:layout_marginTop="54dp"
-                    android:textStyle="bold"
                     android:layout_marginBottom="100dp"
-                    app:shape_radius="5dp"
-                    app:shape_strokeColor="@color/white_00fdfa"
-                    app:shape_strokeSize="0.5dp"
-                    app:shape_solidColor="@color/f9fcfc_33"
-                    app:shape_solidPressedColor="#AA5A8DDF"/>
+                    android:gravity="center"
+                    android:text="@string/login_button"
+                    android:textStyle="bold"
+                    app:shape_radius="30dp"
+                    app:shape_solidColor="@color/blue_bg"
+                    app:shape_solidPressedColor="#AA5A8DDF"
+                    app:shape_strokeSize="0.5dp" />
             </LinearLayout>
 
-            <com.shciri.rosapp.ui.myview.LoginKeyboardView
+            <com.shciri.rosapp.ui.view.LoginKeyboardView
                 android:id="@+id/loginKeyboard"
-                android:layout_width="wrap_content"
+                android:layout_width="500dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="51dp"
+                android:layout_margin="40dp"
                 android:layout_marginTop="31dp"
                 app:layout_constraintStart_toEndOf="@+id/left_item"
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.hjq.shape.layout.ShapeConstraintLayout>
 
     <TextView
         android:id="@+id/tv_ip"
+        style="@style/BlackTextTheme.30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
         android:includeFontPadding="false"
         android:padding="15dp"
         android:text="@string/robot_id"
-        style="@style/GrayTextTheme.20"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

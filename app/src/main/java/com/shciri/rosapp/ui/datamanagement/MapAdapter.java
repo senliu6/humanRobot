@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shciri.rosapp.R;
-import com.shciri.rosapp.mydata.MoreTaskAdapter;
 
 import java.util.List;
 

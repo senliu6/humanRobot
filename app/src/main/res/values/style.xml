@@ -94,5 +94,50 @@
         <item name="android:textSize">30sp</item>
     </style>
 
+    <style name="BlackTextTheme">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="BlackTextTheme.20" parent="BlackTextTheme">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BlackTextTheme.30" parent="BlackTextTheme">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="BlackTextTheme.40" parent="BlackTextTheme">
+        <item name="android:textSize">40sp</item>
+    </style>
+
+    <declare-styleable name="CustomProgressBar">
+        <attr name="progress" format="integer"/>
+        <attr name="maxProgress" format="integer"/>
+        <attr name="progressBarColor" format="color"/>
+        <attr name="circleColor" format="color"/>
+        <attr name="progressTextColor" format="color"/>
+        <attr name="progressTextSize" format="dimension"/>
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <style name="QMUI.Compat.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 自定义内容 -->
+    </style>
+
+    <style name="CustomFontStyle" parent="Theme.AppCompat.Light">
+        <item name="android:fontFamily">@font/noto</item>
+    </style>
+
+    <declare-styleable name="CircularProgressBar">
+        <attr name="progressColor" format="color"/>
+        <attr name="backgroundColor" format="color"/>
+        <attr name="strokeWidth" format="dimension"/>
+    </declare-styleable>
+
+
+
 
 </resources>

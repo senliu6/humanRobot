@@ -19,6 +19,8 @@
  */
 package src.com.jilk.ros;
 
+import android.util.Log;
+
 import java.util.concurrent.LinkedBlockingQueue;
 
 import src.com.jilk.ros.message.Message;

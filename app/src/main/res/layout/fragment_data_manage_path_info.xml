@@ -44,15 +44,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/performmap_zuokuang4_21" />
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/map_manage_swipeList"
-        app:layout_constraintBottom_toBottomOf="@+id/map_manager_map_list_view"
-        app:layout_constraintEnd_toEndOf="@+id/map_manager_map_list_view"
-        app:layout_constraintStart_toStartOf="@+id/map_manager_map_list_view"
-        app:layout_constraintTop_toTopOf="@+id/map_manager_map_list_view"
-        android:layout_width="443dp"
-        android:layout_height="450dp"
-        app:layout_constraintVertical_bias="0.525"/>
 
     <TextView
         android:id="@+id/choose_task_map_name_tv"
@@ -109,7 +100,7 @@
         app:layout_constraintStart_toEndOf="@+id/map_manager_map_list_view"
         app:layout_constraintTop_toTopOf="@+id/map_manager_map_list_view">
 
-        <com.shciri.rosapp.ui.myview.MapView
+        <com.shciri.rosapp.ui.view.MapView
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/mapView"
             android:layout_width="match_parent"

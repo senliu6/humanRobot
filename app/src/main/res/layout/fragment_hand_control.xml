@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@+id/return_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/return_margin_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
+        app:shape_strokeSize="1dp"
+        android:layout_marginStart="100dp"
+        app:shape_strokeColor="@color/black"
+        app:shape_radius="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/arrow_left_d" />
+
+        <TextView
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
+            android:text="@string/hand_control" />
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@+id/shape_tale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintHandControl"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/white"
+        android:layout_marginHorizontal="50dp">
+        <TableLayout
+            android:id="@+id/finger_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="6dp"
+            android:stretchColumns="*" />
+
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@id/tvSend"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingHorizontal="60dp"
+        android:paddingVertical="20dp"
+        android:text="@string/send"
+        app:layout_constraintEnd_toEndOf="@id/spinnerDirection"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerDirection"
+        app:shape_radius="40dp"
+        app:shape_solidColor="@color/blue_bg"
+        app:shape_solidPressedColor="@color/red" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvUp"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:paddingHorizontal="60dp"
+        android:paddingVertical="20dp"
+        android:text="@string/refresh"
+        app:layout_constraintEnd_toStartOf="@+id/tvSend"
+        app:layout_constraintTop_toTopOf="@+id/tvSend"
+        app:shape_radius="40dp"
+        app:shape_solidColor="@color/blue_bg"
+        app:shape_solidPressedColor="@color/red" />
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerDirection"
+        style="@style/BlackTextTheme.30"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/return_ll" />
+
+    <com.jaredrummler.materialspinner.MaterialSpinner
+        android:id="@+id/spinnerMode"
+        style="@style/BlackTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerDirection"
+        app:layout_constraintTop_toTopOf="@+id/spinnerDirection" />
+
+
+    <com.hjq.shape.layout.ShapeConstraintLayout
+        android:id="@+id/linOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        app:shape_radius="50dp"
+        android:paddingVertical="20dp"
+        app:shape_solidColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvExpendControlList">
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/tvHandOne"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:text="@string/thumb"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:id="@id/shapeModeOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerDirection"
+            app:layout_constraintTop_toBottomOf="@+id/parent"
+            app:layout_constraintStart_toEndOf="@id/tvHandOne"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="2dp"
+            android:padding="10dp"
+            app:shape_radius="20dp">
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinnerModeOne"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+           />
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+        <com.hjq.shape.view.ShapeImageView
+            android:id="@+id/imageOne"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/daimon_map"
+            app:layout_constraintTop_toBottomOf="@id/shapeModeOne"
+            app:layout_constraintStart_toStartOf="@+id/shapeModeOne"/>
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/tvHandTwo"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:text="@string/index_finger"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toEndOf="@id/shapeModeOne"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:id="@+id/shapeModeTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerDirection"
+            app:layout_constraintTop_toBottomOf="@+id/parent"
+            app:layout_constraintStart_toEndOf="@id/tvHandTwo"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="2dp"
+            android:padding="10dp"
+            app:shape_radius="20dp">
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinnerModeTwo"
+            style="@style/BlackTextTheme.30"
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+           />
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+        <com.hjq.shape.view.ShapeImageView
+            android:id="@+id/imageTwo"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/daimon_map"
+            app:layout_constraintTop_toBottomOf="@id/shapeModeTwo"
+            app:layout_constraintStart_toStartOf="@id/shapeModeTwo"
+            />
+
+
+    </com.hjq.shape.layout.ShapeConstraintLayout>
+
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@+id/linTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linOne">
+
+        <com.hjq.shape.view.ShapeTextView
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:text="@string/middle_finger" />
+
+        <com.hjq.shape.view.ShapeImageView
+            android:id="@+id/imageThree"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/daimon_map" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.hjq.shape.layout.ShapeLinearLayout
+                android:id="@+id/shapeModeThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                app:shape_strokeColor="@color/black"
+                app:shape_strokeSize="2dp"
+                android:padding="10dp"
+                app:shape_radius="20dp">
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinnerModeThree"
+                style="@style/BlackTextTheme.30"
+                android:layout_width="300dp"
+                android:layout_height="80dp" />
+            </com.hjq.shape.layout.ShapeLinearLayout>
+
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/tvUpImageS"
+                style="@style/WhiteTextTheme.30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:paddingHorizontal="60dp"
+                android:paddingVertical="20dp"
+                android:text="@string/refresh_image"
+                app:layout_constraintEnd_toStartOf="@+id/tvSend"
+                app:layout_constraintTop_toTopOf="@+id/tvSend"
+                app:shape_radius="40dp"
+                android:layout_marginVertical="20dp"
+                android:layout_marginStart="20dp"
+                app:shape_solidColor="@color/blue_bg"
+                app:shape_solidPressedColor="@color/red" />
+        </LinearLayout>
+
+
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@+id/lineTranscribe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="50dp"
+        android:padding="30dp"
+        app:shape_solidColor="@color/white"
+        app:shape_radius="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvExpendControlList"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <com.rey.material.widget.RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           >
+            <EditText
+                android:id="@+id/editControlName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BlackTextTheme.30"
+                android:hint="@string/please_input_name"
+                android:layout_marginStart="100dp"/>
+
+            <EditText
+                android:id="@+id/editControlInterval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BlackTextTheme.30"
+                android:hint="@string/please_input_inteeval"
+                android:layout_toEndOf="@id/editControlName"
+                android:inputType="number"
+                android:layout_marginStart="30dp"
+                android:visibility="gone"/>
+
+
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                style="@style/BlackTextTheme.20"
+                android:text="@string/add"
+                app:shape_solidPressedColor="@color/blue_00a5b7"
+                app:shape_radius="30dp"
+                app:shape_strokeColor="@color/black"
+                app:shape_strokeSize="1dp"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="20dp"
+                android:layout_toStartOf="@+id/btnTest"
+               />
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btnTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                style="@style/BlackTextTheme.20"
+                android:text="@string/test"
+                app:shape_solidPressedColor="@color/blue_00a5b7"
+                app:shape_radius="30dp"
+                app:shape_strokeColor="@color/black"
+                app:shape_strokeSize="1dp"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="20dp"
+                android:layout_toStartOf="@+id/btnSave"
+                />
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="16dp"
+                style="@style/BlackTextTheme.20"
+                android:text="@string/save"
+                app:shape_solidPressedColor="@color/blue_00a5b7"
+                app:shape_radius="30dp"
+                app:shape_strokeColor="@color/black"
+                app:shape_strokeSize="1dp"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="20dp"
+                android:layout_alignParentEnd="true"
+                />
+
+        </com.rey.material.widget.RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.hjq.shape.view.ShapeTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/BlackTextTheme.30"
+
+                android:text="@string/angle"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/BlackTextTheme.30"
+                android:text="@string/speed"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/BlackTextTheme.30"
+                android:text="@string/intensity"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerControl"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"/>
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@+id/lineControlList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="50dp"
+        app:shape_solidColor="@color/white"
+        app:shape_radius="100dp"
+        android:padding="50dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/control_list"
+            style="@style/BlackTextTheme.30"
+            android:layout_marginBottom="50dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvTranScribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recording_actions"
+        app:shape_solidColor="@color/blue_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shape_tale"
+        android:layout_marginEnd="150dp"
+        style="@style/WhiteTextTheme.30"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="20dp"
+        app:shape_radius="30dp"
+        android:layout_marginTop="20dp"/>
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/tvExpendControlList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/extend_list_control"
+        app:shape_solidColor="@color/blue_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shape_tale"
+        style="@style/WhiteTextTheme.30"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="20dp"
+        android:layout_marginTop="20dp"
+        app:shape_radius="30dp"
+        android:layout_marginStart="150dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintHandControl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="79dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/return_ll">
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btnZoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            style="@style/BlackTextTheme.20"
+            android:text="@string/enlarge"
+            app:shape_solidPressedColor="@color/blue_00a5b7"
+            app:shape_radius="30dp"
+            app:shape_strokeColor="@color/black"
+            app:shape_strokeSize="1dp"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <ImageView
+            android:layout_width="600dp"
+            android:layout_height="600dp"
+            android:src="@drawable/hand_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"
+            />
+
+        <com.shciri.rosapp.ui.view.VerticalSeekBar
+            android:id="@+id/progressDa1"
+            android:layout_width="40dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="130dp"
+            android:rotation="40"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.shciri.rosapp.ui.view.VerticalSeekBar
+            android:id="@+id/progressDa"
+            android:layout_width="40dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="150dp"
+            android:rotation="-90"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.shciri.rosapp.ui.view.VerticalSeekBar
+            android:id="@+id/progressEr"
+            android:layout_width="40dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@id/progressSan"
+            app:layout_constraintTop_toTopOf="@id/progressSan" />
+
+        <com.shciri.rosapp.ui.view.VerticalSeekBar
+            android:id="@+id/progressSan"
+            android:layout_width="40dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.shciri.rosapp.ui.view.VerticalSeekBar
+            android:id="@+id/progressSi"
+            android:layout_width="40dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toStartOf="@id/progressSan"
+            app:layout_constraintTop_toTopOf="@id/progressSan" />
+
+
+        <com.shciri.rosapp.ui.view.VerticalSeekBar
+            android:id="@+id/progressWu"
+            android:layout_width="40dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toStartOf="@id/progressSi"
+            app:layout_constraintTop_toTopOf="@id/progressSi" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

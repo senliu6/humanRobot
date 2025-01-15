@@ -3,11 +3,8 @@ package com.shciri.rosapp.ui.datamanagement;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Path;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
+
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
@@ -29,10 +24,8 @@ import com.shciri.rosapp.databinding.FragmentDataManageMapBinding;
 import com.shciri.rosapp.dmros.client.RosTopic;
 import com.shciri.rosapp.dmros.data.ReceiveHandler;
 import com.shciri.rosapp.dmros.data.RosData;
-import com.shciri.rosapp.dmros.tool.BitmapUtils;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
-import com.shciri.rosapp.mydata.DBUtils;
-import com.shciri.rosapp.ui.myview.MapView;
+import com.shciri.rosapp.ui.view.MapView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +34,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 
 import src.com.jilk.ros.message.StateMachineRequest;
-import src.com.jilk.ros.message.requestparam.RequestMapControlParameter;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -83,19 +75,14 @@ public class DataManageMapFragment extends Fragment {
 
         initView();
 
-        mapTitleListInit();
+//        mapTitleListInit();
 
     }
 
     private void initView() {
         //点击返回
         binding.returnLl.setOnClickListener(view1 -> Navigation.findNavController(view1).navigateUp());
-        //点击开始修图
-        binding.startEraseMapTv.setOnClickListener(v -> {
-            binding.mapView.startEraseState();
-            controlMode = MODE_ERASE_MAP;
-            binding.btnBack.setText(getString(R.string.revert));
-        });
+
         //点击开始虚拟墙
         binding.startVirtualWallTv.setOnClickListener(v -> {
             binding.mapView.startVirtualWallState(mVirtualWallPaths);
@@ -105,9 +92,7 @@ public class DataManageMapFragment extends Fragment {
 
         //点击退出
         binding.btnQuit.setOnClickListener(v -> {
-            if (controlMode == MODE_ERASE_MAP) {
-                binding.mapView.exitWithSaveEraseState();
-            } else if (controlMode == MODE_VIRTUAL_WALL) {
+           if (controlMode == MODE_VIRTUAL_WALL) {
                 binding.mapView.exitVirtualWallState();
             } else {
                 Toaster.showShort(getString(R.string.not_select_control));
@@ -116,12 +101,9 @@ public class DataManageMapFragment extends Fragment {
         });
         //点击保存
         binding.btnSave.setOnClickListener(v -> {
-            if (controlMode == MODE_ERASE_MAP) {
-                //修图
-                binding.mapView.saveErasedMap();
-            } else if (controlMode == MODE_VIRTUAL_WALL) {
+           if (controlMode == MODE_VIRTUAL_WALL) {
                 //虚拟墙
-                binding.mapView.saveVirtualWallPathPoints();
+//                binding.mapView.saveVirtualWallPathPoints();
                 mVirtualWallPaths.addAll(binding.mapView.getVirtualWallPaths());
             } else {
                 Toaster.showShort(getString(R.string.not_select_control));
@@ -129,9 +111,7 @@ public class DataManageMapFragment extends Fragment {
         });
         //点击撤销或添加点
         binding.btnBack.setOnClickListener(v -> {
-            if (controlMode == 1) {
-                binding.mapView.undoErase();
-            } else if (controlMode == 2) {
+           if (controlMode == 2) {
                 binding.mapView.addVirtualWallPathPoint();
             } else {
                 Toaster.showShort(getString(R.string.not_select_control));
@@ -191,90 +171,90 @@ public class DataManageMapFragment extends Fragment {
 //        mapLists.add(data);
 //    }
 
-    private void mapTitleListInit() {
-
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                // create "open" item
-                SwipeMenuItem openItem = new SwipeMenuItem(getContext());
-                // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
-                // set item width
-                openItem.setWidth(dp2px(90));
-                // set item title
-                openItem.setTitle("Open");
-                openItem.setTitleSize(18);
-                // set item title font color
-                openItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(openItem);
-
-                // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(dp2px(90));
-                // set a icon
-                deleteItem.setIcon(R.drawable.ic_delete);
-                // add to menu
-                menu.addMenuItem(deleteItem);
-            }
-        };
-        binding.mapManageSwipeList.setMenuCreator(creator);
-
-        mapAdapter = new MapAdapter(getContext());
-        binding.mapManageSwipeList.setAdapter(mapAdapter);
-        binding.mapManageSwipeList.setOnMenuItemClickListener((position, menu, index) -> {
-            switch (index) {
-                case 0:
-                    // open
-                    break;
-                case 1:
-                    // delete 删除单个地图
-                    if (BitmapUtils.deleteMap(mapAdapter.getItem(position).name, mapAdapter.getItem(position).id)) {
-                        DBUtils.getInstance().deleteMap(mapAdapter.getItem(position).id);
-                        DBUtils.getInstance().deletePathOfMapID(mapAdapter.getItem(position).id);
-                        mapAdapter.removeItem(position);
-                        mapAdapter.notifyDataSetChanged();
-                    }
-                    RequestMapControlParameter requestMapControlParameter = new RequestMapControlParameter();
-                    requestMapControlParameter.map_id = mapAdapter.getItem(position).name;
-                    RosTopic.publishControlParameterTopic(requestMapControlParameter);
-
-                    StateMachineRequest request = new StateMachineRequest();
-                    request.map_control = 6;
-                    RosTopic.publishStateMachineRequest(request);
-
-                    break;
-                default:
-            }
-            // false : close the menu; true : not close the menu
-            return false;
-        });
-
-        binding.mapManageSwipeList.setOnItemClickListener((parent, view, position, id) -> {
-            if (mapAdapter.getCount() != 0) {
-//                    切换地图
-                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath() +
-                        "/RobotLocalMap" +
-                        "/" + mapAdapter.getItem(position).name + "_1" + ".png");
-                binding.mapView.setBitmap(bitmap, MapView.updateMapID.RUNNING);
-
-                RequestMapControlParameter parameter = new RequestMapControlParameter();
-                parameter.map_id = mapAdapter.getItem(position).name;
-                RosTopic.publishControlParameterTopic(parameter);
-
-                StateMachineRequest stateMachineRequest = new StateMachineRequest();
-                stateMachineRequest.map_control = 2;
-                RosTopic.publishStateMachineRequest(stateMachineRequest);
-                setMapInfomation(position);
-            }
-        });
-    }
+//    private void mapTitleListInit() {
+//
+//        SwipeMenuCreator creator = new SwipeMenuCreator() {
+//            @Override
+//            public void create(SwipeMenu menu) {
+//                // create "open" item
+//                SwipeMenuItem openItem = new SwipeMenuItem(getContext());
+//                // set item background
+//                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+//                        0xCE)));
+//                // set item width
+//                openItem.setWidth(dp2px(90));
+//                // set item title
+//                openItem.setTitle("Open");
+//                openItem.setTitleSize(18);
+//                // set item title font color
+//                openItem.setTitleColor(Color.WHITE);
+//                // add to menu
+//                menu.addMenuItem(openItem);
+//
+//                // create "delete" item
+//                SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
+//                // set item background
+//                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+//                        0x3F, 0x25)));
+//                // set item width
+//                deleteItem.setWidth(dp2px(90));
+//                // set a icon
+//                deleteItem.setIcon(R.drawable.ic_delete);
+//                // add to menu
+//                menu.addMenuItem(deleteItem);
+//            }
+//        };
+//        binding.mapManageSwipeList.setMenuCreator(creator);
+//
+//        mapAdapter = new MapAdapter(getContext());
+//        binding.mapManageSwipeList.setAdapter(mapAdapter);
+//        binding.mapManageSwipeList.setOnMenuItemClickListener((position, menu, index) -> {
+//            switch (index) {
+//                case 0:
+//                    // open
+//                    break;
+//                case 1:
+//                    // delete 删除单个地图
+//                    if (BitmapUtils.deleteMap(mapAdapter.getItem(position).name, mapAdapter.getItem(position).id)) {
+//                        DBUtils.getInstance().deleteMap(mapAdapter.getItem(position).id);
+//                        DBUtils.getInstance().deletePathOfMapID(mapAdapter.getItem(position).id);
+//                        mapAdapter.removeItem(position);
+//                        mapAdapter.notifyDataSetChanged();
+//                    }
+//                    RequestMapControlParameter requestMapControlParameter = new RequestMapControlParameter();
+//                    requestMapControlParameter.map_id = mapAdapter.getItem(position).name;
+//                    RosTopic.publishControlParameterTopic(requestMapControlParameter);
+//
+//                    StateMachineRequest request = new StateMachineRequest();
+//                    request.map_control = 6;
+//                    RosTopic.publishStateMachineRequest(request);
+//
+//                    break;
+//                default:
+//            }
+//            // false : close the menu; true : not close the menu
+//            return false;
+//        });
+//
+//        binding.mapManageSwipeList.setOnItemClickListener((parent, view, position, id) -> {
+//            if (mapAdapter.getCount() != 0) {
+////                    切换地图
+//                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath() +
+//                        "/RobotLocalMap" +
+//                        "/" + mapAdapter.getItem(position).name + "_1" + ".png");
+//                binding.mapView.setBitmap(bitmap, MapView.updateMapID.RUNNING);
+//
+//                RequestMapControlParameter parameter = new RequestMapControlParameter();
+//                parameter.map_id = mapAdapter.getItem(position).name;
+//                RosTopic.publishControlParameterTopic(parameter);
+//
+//                StateMachineRequest stateMachineRequest = new StateMachineRequest();
+//                stateMachineRequest.map_control = 2;
+//                RosTopic.publishStateMachineRequest(stateMachineRequest);
+//                setMapInfomation(position);
+//            }
+//        });
+//    }
 
     // 将dp转换为px
     private int dp2px(int value) {

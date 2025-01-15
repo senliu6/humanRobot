@@ -1,12 +1,14 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.hjq.shape.layout.ShapeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="15dp">
+    app:shape_solidColor="@color/button_background_text"
+    app:shape_radius="50dp"
+    android:padding="50dp"
+    android:layout_marginBottom="30dp">
 
     <TextView
-        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -14,9 +16,8 @@
         android:id="@+id/system_set_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:text="Set"
-        android:textColor="@android:color/white"
-        android:textSize="40sp" />
+        style="@style/WhiteTextTheme.40"
+        android:gravity="center"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.hjq.shape.layout.ShapeConstraintLayout>

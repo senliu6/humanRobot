@@ -5,16 +5,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PointF;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,16 +19,10 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
 import com.shciri.rosapp.base.BaseFragment;
@@ -41,7 +32,7 @@ import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
 import com.shciri.rosapp.ui.dialog.InputDialog;
-import com.shciri.rosapp.ui.myview.MapView;
+import com.shciri.rosapp.ui.view.MapView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -90,7 +81,7 @@ public class DataManagePathInfoFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pathTitleListInit();
+//        pathTitleListInit();
 
         if (RosData.rosBitmap != null) {
             binding.mapView.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING);
@@ -112,36 +103,16 @@ public class DataManagePathInfoFragment extends BaseFragment {
             binding.saveBt.setVisibility(View.VISIBLE);
             binding.resetBt.setVisibility(View.VISIBLE);
         });
-        //点击自动覆盖
-        binding.addRectBt.setOnClickListener(v -> {
-            binding.mapView.setShowDBPath(false);
-            binding.mapView.startRectState();
-            binding.recordBt.setText("预览");
-            binding.generateTaskBt.setVisibility(View.INVISIBLE);
-            binding.recordBt.setVisibility(View.VISIBLE);
-            binding.saveBt.setVisibility(View.VISIBLE);
-            binding.resetBt.setVisibility(View.VISIBLE);
-        });
+
 
         //点击落点
         binding.recordBt.setOnClickListener(v -> {
             if (binding.mapView.isAddPathState()) {
                 binding.mapView.addPathPoint();
-            } else if (binding.mapView.isRectState()) {
-                binding.mapView.addRect();
-                if (RosTopic.coveragePointsTopic != null) {
-                    new Thread(() -> RosTopic.publishCoveragePointsTopic(RosData.coveragePoints)).start();
-                }
             }
         });
         //点击保存
-        binding.saveBt.setOnClickListener(v -> {
-            if (binding.mapView.isShowCoveragePath && binding.mapView.coveragePath.isEmpty()) {
-                toast(R.string.please_preview);
-            } else {
-                showInputDialog();
-            }
-        });
+
         //点击生成任务
         binding.generateTaskBt.setOnClickListener(v -> showInputDialogForGenerateTask());
 
@@ -157,7 +128,7 @@ public class DataManagePathInfoFragment extends BaseFragment {
     private void showInputDialogForGenerateTask() {
         taskInputDialog = new InputDialog.Builder(getActivity())
                 .setTitle("请输入任务名")
-                .setOnConfirmClick(inputText -> {
+                .setOnConfirmClick((inputText, password) -> {
                     String pathID = gson.toJson(pathListAdapter.getItem(currentPosition).ID);
                     insertTask(inputText, pathID);
                     taskInputDialog.dismiss();
@@ -169,13 +140,14 @@ public class DataManagePathInfoFragment extends BaseFragment {
     private void showInputDialog() {
         pathInputDialog = new InputDialog.Builder(getActivity())
                 .setTitle("请输入路径名")
-                .setOnConfirmClick(inputText -> {
+                .setOnConfirmClick((inputText, password) -> {
                     int tmpID = 0;
-                    if (binding.mapView.isShowCoveragePath) {
-                        String point = gson.toJson(binding.mapView.coveragePath);
-                        tmpID = (int) insertManualPath(inputText, point);
-                        pointString.add(point);
-                    } else if (binding.mapView.isAddPathState()) {
+//                    if (binding.mapView) {
+//                        String point = gson.toJson(binding.mapView.coveragePath);
+//                        tmpID = (int) insertManualPath(inputText, point);
+//                        pointString.add(point);
+//                    } else
+                    if (binding.mapView.isAddPathState()) {
                         String point = gson.toJson(binding.mapView.pathPointList);
                         tmpID = (int) insertManualPath(inputText, point);
                         pointString.add(point);
@@ -199,7 +171,7 @@ public class DataManagePathInfoFragment extends BaseFragment {
 
     private void queryManualPath() {
         //查询全部数据
-        Cursor cursor = RCApplication.db.query("manual_path", null, "map_id=?", new String[]{Integer.toString(RosData.currentMapID)}, null, null, null);
+        Cursor cursor = RCApplication.db.query("manual_path", null, "map_id=?", new String[]{RosData.currentMapID}, null, null, null);
 
         pointString = new ArrayList<>();
         if (cursor.getCount() > 0) {
@@ -231,7 +203,6 @@ public class DataManagePathInfoFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PublishEvent event) {
         if ("/coverage_path".equals(event.getMessage())) {
-            binding.mapView.clearCoveragePath();
             for (PoseStamped point : RosData.coveragePath.poses) {
                 plotPath((int) (point.pose.position.x / 0.05f), (int) (point.pose.position.y / 0.05f));
             }
@@ -251,97 +222,95 @@ public class DataManagePathInfoFragment extends BaseFragment {
     private void plotPath(int x, int y) {
         int tX = RosData.MapData.poseX + x;
         int tY = RosData.MapData.poseY + y;
-
-        binding.mapView.setCoveragePath(tX, RosData.map.info.height - tY, true);
     }
 
-    private void pathTitleListInit() {
-        pathListData = new ArrayList<PathListTitle>();
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-            @Override
-            public void create(SwipeMenu menu) {
-                // create "open" item
-                SwipeMenuItem openItem = new SwipeMenuItem(getContext());
-                // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
-                // set item width
-                openItem.setWidth(dp2px(90));
-                // set item title
-                openItem.setTitle("Rename");
-                openItem.setTitleSize(18);
-                // set item title font color
-                openItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(openItem);
-
-                // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(dp2px(90));
-                // set a icon
-                deleteItem.setIcon(R.drawable.ic_delete);
-                // add to menu
-                menu.addMenuItem(deleteItem);
-            }
-        };
-        binding.mapManageSwipeList.setMenuCreator(creator);
-        pathListAdapter = new AppAdapter();
-        binding.mapManageSwipeList.setAdapter(pathListAdapter);
-        binding.mapManageSwipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (pathListAdapter.getCount() != 0) {
-                    binding.generateTaskBt.setVisibility(View.VISIBLE);
-                    currentPosition = position;
-                    binding.mapView.DBPathPointList = gson.fromJson(pointString.get(position), type);
-                    binding.mapView.setShowDBPath(true);
-                    binding.recordBt.findViewById(R.id.record_bt).setVisibility(View.INVISIBLE);
-                    binding.saveBt.findViewById(R.id.save_bt).setVisibility(View.INVISIBLE);
-                    binding.resetBt.findViewById(R.id.reset_bt).setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        binding.mapManageSwipeList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-                        // rename
-                        break;
-                    case 1:
-                        try {
-                            PathListTitle pathListTitle = pathListData.get(position);
-                            if (pathListTitle.ID == 0) {
-                                RCApplication.db.delete("manual_path", "name=?", new String[]{pathListTitle.pathName});
-                            } else {
-                                RCApplication.db.delete("manual_path", "id=?", new String[]{Integer.toString(pathListTitle.ID)});
-                            }
-                            removePosition = position;
-                            pathListData.remove(position);
-                            pathListAdapter.notifyDataSetChanged();
-                            showDeleteDialog(pathListTitle);
-                        } catch (Exception e) {
-                            Toaster.showShort(e.getMessage());
-                        }
-                        break;
-                }
-                // false : close the menu; true : not close the menu
-                return false;
-            }
-        });
-    }
+//    private void pathTitleListInit() {
+//        pathListData = new ArrayList<PathListTitle>();
+//        SwipeMenuCreator creator = new SwipeMenuCreator() {
+//            @Override
+//            public void create(SwipeMenu menu) {
+//                // create "open" item
+//                SwipeMenuItem openItem = new SwipeMenuItem(getContext());
+//                // set item background
+//                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+//                        0xCE)));
+//                // set item width
+//                openItem.setWidth(dp2px(90));
+//                // set item title
+//                openItem.setTitle("Rename");
+//                openItem.setTitleSize(18);
+//                // set item title font color
+//                openItem.setTitleColor(Color.WHITE);
+//                // add to menu
+//                menu.addMenuItem(openItem);
+//
+//                // create "delete" item
+//                SwipeMenuItem deleteItem = new SwipeMenuItem(getContext());
+//                // set item background
+//                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+//                        0x3F, 0x25)));
+//                // set item width
+//                deleteItem.setWidth(dp2px(90));
+//                // set a icon
+//                deleteItem.setIcon(R.drawable.ic_delete);
+//                // add to menu
+//                menu.addMenuItem(deleteItem);
+//            }
+//        };
+//        binding.mapManageSwipeList.setMenuCreator(creator);
+//        pathListAdapter = new AppAdapter();
+//        binding.mapManageSwipeList.setAdapter(pathListAdapter);
+//        binding.mapManageSwipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (pathListAdapter.getCount() != 0) {
+//                    binding.generateTaskBt.setVisibility(View.VISIBLE);
+//                    currentPosition = position;
+//                    binding.mapView.DBPathPointList = gson.fromJson(pointString.get(position), type);
+//                    binding.mapView.setShowDBPath(true);
+//                    binding.recordBt.findViewById(R.id.record_bt).setVisibility(View.INVISIBLE);
+//                    binding.saveBt.findViewById(R.id.save_bt).setVisibility(View.INVISIBLE);
+//                    binding.resetBt.findViewById(R.id.reset_bt).setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//
+////        binding.mapManageSwipeList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+////            @Override
+////            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+////                switch (index) {
+////                    case 0:
+////                        // rename
+////                        break;
+////                    case 1:
+////                        try {
+////                            PathListTitle pathListTitle = pathListData.get(position);
+////                            if (pathListTitle.ID == 0) {
+////                                RCApplication.db.delete("manual_path", "name=?", new String[]{pathListTitle.pathName});
+////                            } else {
+////                                RCApplication.db.delete("manual_path", "id=?", new String[]{Integer.toString(pathListTitle.ID)});
+////                            }
+////                            removePosition = position;
+////                            pathListData.remove(position);
+////                            pathListAdapter.notifyDataSetChanged();
+////                            showDeleteDialog(pathListTitle);
+////                        } catch (Exception e) {
+////                            Toaster.showShort(e.getMessage());
+////                        }
+////                        break;
+////                }
+////                // false : close the menu; true : not close the menu
+////                return false;
+////            }
+////        });
+//    }
 
     private void showDeleteDialog(PathListTitle pathListTitle) {
         deleteInputDialog = new InputDialog.Builder(getActivity())
                 .setTitle("删除路径")
                 .setContent("删除路径数据的同时也会将使用此路径的任务删除")
                 .setEditShow(false)
-                .setOnConfirmClick(inputText -> {
+                .setOnConfirmClick((inputText, password) -> {
                     for (ManageTaskDB.TaskItemList x : ManageTaskDB.taskLists) {
                         if (x.pathID == pathListTitle.ID) {
                             RCApplication.db.delete("task", "path_id=?", new String[]{Integer.toString(pathListTitle.ID)});

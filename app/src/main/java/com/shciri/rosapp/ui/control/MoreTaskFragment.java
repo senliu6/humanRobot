@@ -15,10 +15,9 @@ import androidx.navigation.Navigation;
 
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
-import com.shciri.rosapp.mydata.MoreTaskAdapter;
+import com.shciri.rosapp.rosdata.MoreTaskAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MoreTaskFragment extends Fragment {
@@ -61,7 +60,7 @@ public class MoreTaskFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 for (ImageView x : moreTaskAdapter.yesIvList) {
-                    if(x.getVisibility() == View.VISIBLE)
+                    if (x.getVisibility() == View.VISIBLE)
                         x.setVisibility(View.INVISIBLE);
                 }
                 moreTaskAdapter.yesIvList.get(position).setVisibility(View.VISIBLE);
@@ -73,24 +72,11 @@ public class MoreTaskFragment extends Fragment {
         view.findViewById(R.id.delete_task_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentPosition < moreTaskList.size())
+                if (currentPosition < moreTaskList.size())
                     deleteTask();
             }
         });
 
-        view.findViewById(R.id.detail_task_bt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskDetailFragment);
-            }
-        });
-
-        view.findViewById(R.id.start_task_bt).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_taskExeFragment);
-            }
-        });
     }
 
     private void deleteTask() {

@@ -11,9 +11,6 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.hjq.toast.Toaster;
-import com.qmuiteam.qmui.skin.QMUISkinManager;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import org.json.JSONObject;
 
@@ -170,40 +167,40 @@ public class VersionUpdateManager extends AppInnerDownLode{
      * @param downloadURL 下载url
      */
     private void showUpdateTipdialog(String serverVersion, String updateSummary, String downloadURL) {
-        int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
+//        int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
-        new QMUIDialog.MessageDialogBuilder(mContext)
-                .setTitle("检查到有新版本")
-                .setMessage("last version: " + serverVersion + "\n" + updateSummary)
-                .setCanceledOnTouchOutside(false)
-                .setSkinManager(QMUISkinManager.defaultInstance(mContext))
-                .addAction("取消", new QMUIDialogAction.ActionListener() {
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        mListener.clickCancel();
-                        dialog.dismiss();
-                    }
-                })
-                .addAction(0, "立即更新", QMUIDialogAction.ACTION_PROP_POSITIVE, new QMUIDialogAction.ActionListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(QMUIDialog dialog, int index) {
-                        dialog.dismiss();
-                        Log.d("update ","点击立即更新");
-                        if (!haveInstallPermission) {
-                            Toaster.showShort( "请打开安装未知来源应用的权限");
-
-                            Uri packageURI = Uri.parse("package:" + mContext.getPackageName());
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
-
-                            mListener.haveNoInstallPermission(intent, VersionUpdateManagerPermissionCode);
-                        }else {
-                            //下载更新
-                            URLDownloadApk(mContext, downloadURL, apkName);
-                        }
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
+//        new QMUIDialog.MessageDialogBuilder(mContext)
+//                .setTitle("检查到有新版本")
+//                .setMessage("last version: " + serverVersion + "\n" + updateSummary)
+//                .setCanceledOnTouchOutside(false)
+//                .setSkinManager(QMUISkinManager.defaultInstance(mContext))
+//                .addAction("取消", new QMUIDialogAction.ActionListener() {
+//                    @Override
+//                    public void onClick(QMUIDialog dialog, int index) {
+//                        mListener.clickCancel();
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .addAction(0, "立即更新", QMUIDialogAction.ACTION_PROP_POSITIVE, new QMUIDialogAction.ActionListener() {
+//                    @RequiresApi(api = Build.VERSION_CODES.O)
+//                    @Override
+//                    public void onClick(QMUIDialog dialog, int index) {
+//                        dialog.dismiss();
+//                        Log.d("update ","点击立即更新");
+//                        if (!haveInstallPermission) {
+//                            Toaster.showShort( "请打开安装未知来源应用的权限");
+//
+//                            Uri packageURI = Uri.parse("package:" + mContext.getPackageName());
+//                            Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+//
+//                            mListener.haveNoInstallPermission(intent, VersionUpdateManagerPermissionCode);
+//                        }else {
+//                            //下载更新
+//                            URLDownloadApk(mContext, downloadURL, apkName);
+//                        }
+//                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
     }
 
     /**

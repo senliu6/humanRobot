@@ -1,7 +1,11 @@
 package com.shciri.rosapp.dmros.data;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.utils.SharedPreferencesUtil;
 
 import src.com.jilk.ros.message.CmdVel;
 import src.com.jilk.ros.message.CoverageMap;
@@ -39,7 +43,7 @@ public class RosData {
     public static CoveragePoints coveragePoints;
     public static Base_JointSpeeds jointSpeeds;
     public static byte taskPercent;
-    public static int currentMapID = 1;
+    public static String currentMapID = "";
     public static int dataBaseMaxMapID = 0;
 
     public static final String MAP = "com.shciri.rosapp.map";
@@ -53,11 +57,16 @@ public class RosData {
 
     public static RobotLocation robotLocation;
 
+    public static String currentMapName = "";
+    public static boolean isTimeTask = false;
+
 
     public static void RosDataInit() {
         long start = System.currentTimeMillis();
         map = new MapMsg();
         map.info = new MapMetaData();
+        map.info.origin = new Pose();
+        map.info.origin.position = new Point();
 
         cmd_vel = new CmdVel();
         cmd_vel.linear = new Vector3();
@@ -103,9 +112,9 @@ public class RosData {
         public static float roll;
 
         public static void fastConversion() {
-            x = (int) (transform.translation.x / 0.05f);
-            y = (int) (transform.translation.y / 0.05f);
-            z = (int) (transform.translation.z / 0.05f);
+            x = (int) (transform.translation.x / RosData.map.info.resolution);
+            y = (int) (transform.translation.y / RosData.map.info.resolution);
+            z = (int) (transform.translation.z / RosData.map.info.resolution);
 //            Log.d("CeshiTAG", "x=" + x + ", y=" + y + ", z= " + z);
             Quaternion quaternion = new Quaternion((float) transform.rotation.w, (float) transform.rotation.x, (float) transform.rotation.y, (float) transform.rotation.z);
             EulerAngles eulerAngles = quaternion.ToEulerAngles();
@@ -120,8 +129,10 @@ public class RosData {
         public static int poseY;
 
         public static void fastConversion() {
-            poseX = (int) (-map.info.origin.position.x / 0.05f);
-            poseY = (int) (-map.info.origin.position.y / 0.05f);
+            poseX = (int) (-map.info.origin.position.x / map.info.resolution);
+            poseY = (int) (-map.info.origin.position.y / map.info.resolution);
+            Log.d("CeshiTAG", "原点x"+map.info.origin.position.x+"y"+map.info.origin.position.y);
+
         }
     }
 
@@ -129,8 +140,8 @@ public class RosData {
     //像素坐标转成世界坐标（单位：m）
     public static Point getActualXY(float x, float y) {
         Point point = new Point();
-        point.x = (x - MapData.poseX) * 0.05f;
-        point.y = (map.info.height - y - MapData.poseY) * 0.05f;
+        point.x = (x - MapData.poseX) * map.info.resolution;
+        point.y = (map.info.height - y - MapData.poseY) * map.info.resolution;
 //        Log.d("CeshiTAG", "转换后的点" + point.x + "y== " + point.y + "原点x=" + MapData.poseX + "Y=" + MapData.poseY + "地图高度" + map.info.height+"X="+x+"y+"+y);
         return point;
     }
@@ -138,9 +149,50 @@ public class RosData {
     //世界坐标转换成像素坐标
     public static Point getPixelXY(double x, double y) {
         Point point = new Point();
-        point.x = x / 0.05f + MapData.poseX;
-        point.y = map.info.height - (y / 0.05f) - MapData.poseY;
-//        Log.d("CeshiTAG", "转换后的点" + point.x + "y== " + point.y + "原点x=" + MapData.poseX + "Y=" + MapData.poseY + "地图高度" + map.info.height + "X=" + x + "y+" + y);
+        point.x = x / map.info.resolution + (MapData.poseX);
+        point.y = map.info.height - (y / map.info.resolution) - (MapData.poseY);
+//        Log.d("CeshiTAG", "转换后的点" + point.x + "y== " + point.y + "原点x=" + MapData.poseX + "Y=" + MapData.poseY + "地图高度" + map.info.height + "X=" + x + "y+" + y+"比例"+map.info.resolution);
         return point;
     }
+
+    public static void getMapInfo() {
+        // 获取全局应用上下文
+        Context context = RCApplication.getContext();
+
+        // 检查 map 的 resolution 属性并设置默认值
+        if (map.info.resolution == 0) {
+            map.info.resolution = SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_RESOLUTION, 0.06F, float.class);
+        }
+
+        // 检查 map 的 height 属性并设置默认值
+        if (map.info.height == 0) {
+            map.info.height = SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_HEIGHT, 100, int.class);
+        }
+
+        // 检查 origin.position.x 并设置默认值
+        if (map.info.origin.position.x == 0) {
+            map.info.origin.position.x = SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_POSE_X, 50F, float.class);
+            Log.d("CeshiTAG", "x==="+SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_POSE_X, 50F, float.class)+"==="+map.info.origin.position.x);
+        }
+
+        // 检查 origin.position.y 并设置默认值
+        if (map.info.origin.position.y == 0) {
+            map.info.origin.position.y = SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_POSE_Y, 50F, float.class);
+            Log.d("CeshiTAG", "y==="+SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_POSE_Y, 50F, float.class)+"==="+map.info.origin.position.y);
+        }
+
+        // 检查 origin.position.z 并设置默认值
+        if (map.info.origin.position.z == 0) {
+            map.info.origin.position.z = SharedPreferencesUtil.Companion.getValue(context,
+                    Settings.MAP_POSE_Z, 50F, float.class);
+        }
+        RosData.MapData.fastConversion();
+    }
+
 }

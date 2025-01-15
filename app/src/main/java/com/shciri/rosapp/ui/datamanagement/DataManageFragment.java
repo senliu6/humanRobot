@@ -37,24 +37,8 @@ public class DataManageFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.manager_map).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_manageDataFragment_to_mapFragment);
-            }
-        });
-        view.findViewById(R.id.manager_path_info).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_manageDataFragment_to_managePathInfoFragment);
-            }
-        });
-        view.findViewById(R.id.tv_set).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_manageDataFragment_mapSetFragment);
-            }
-        });
+
+
     }
 
     @Override

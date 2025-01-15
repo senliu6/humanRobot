@@ -81,6 +81,21 @@
     <color name="purple">#8000FF</color>
     <!-- 黄色-->
     <color name="yellow">#FFFF00</color>
+    
+
+    <color name="white_Ivory">#000000 </color>
+    <color name="button_background_text">#0b1d2d</color>
+    <color name="button_background">#00e3f3</color>
+
+    <color name="button_start">#af94fc</color>
+    <color name="button_end">#3f2bf8</color>
+
+    <color name="background">#1E1E1E</color>
+    <color name="main">#E17632</color>
+
+    <color name="blue_bg">#7863FC</color>
+    <color name="dialog_backgrounds">#2E3351</color>
+
 
 
 </resources>

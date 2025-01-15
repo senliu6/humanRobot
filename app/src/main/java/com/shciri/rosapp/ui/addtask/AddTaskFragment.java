@@ -22,6 +22,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.RCApplication;
+import com.shciri.rosapp.base.BaseFragment;
 import com.shciri.rosapp.dmros.data.RosData;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.List;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class AddTaskFragment extends Fragment {
+public class AddTaskFragment extends BaseFragment {
 
     private ViewPager viewPager;
     TabLayout tabs;
@@ -49,31 +50,31 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.new_time_task_bt).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_addTaskFragment_to_addNewTimeTaskFragment));
+//        view.findViewById(R.id.new_time_task_bt).setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_addTaskFragment_to_addNewTimeTaskFragment));
 
-        view.findViewById(R.id.return_ll).setOnClickListener(view1 -> Navigation.findNavController(view1).navigateUp());
+        view.findViewById(R.id.return_ll).setOnClickListener(this::back);
 
         timeTaskItemList = new ArrayList<TimeTaskAdapter.TimeTaskItemList>();
         queryTimeTaskList();
-        TimeTaskAdapter timeTaskAdapter = new TimeTaskAdapter(timeTaskItemList);
-        RecyclerView recyclerView = view.findViewById(R.id.qlv_task);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        //设置布局管理器
-        recyclerView.setLayoutManager(layoutManager);
-        //设置为垂直布局，这也是默认的
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        //设置Adapter
-        recyclerView.setAdapter(timeTaskAdapter);
-        //添加Android自带的分割线
-        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-        // 设置Item添加和移除的动画
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        TimeTaskAdapter timeTaskAdapter = new TimeTaskAdapter(timeTaskItemList);
+//        RecyclerView recyclerView = view.findViewById(R.id.qlv_task);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+//        //设置布局管理器
+//        recyclerView.setLayoutManager(layoutManager);
+//        //设置为垂直布局，这也是默认的
+//        layoutManager.setOrientation(RecyclerView.VERTICAL);
+//        //设置Adapter
+//        recyclerView.setAdapter(timeTaskAdapter);
+//        //添加Android自带的分割线
+//        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+//        // 设置Item添加和移除的动画
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void queryTimeTaskList() {
         try {
             //查询全部数据
-            Cursor cursor = RCApplication.db.query("time_task", null, "map_id=?", new String[]{Integer.toString(RosData.currentMapID)}, null, null, null);
+            Cursor cursor = RCApplication.db.query("time_task", null, "map_id=?", new String[]{RosData.currentMapID}, null, null, null);
             if (cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
                     @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));

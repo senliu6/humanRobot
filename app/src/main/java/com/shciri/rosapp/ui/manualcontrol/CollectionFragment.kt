@@ -21,13 +21,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hjq.toast.Toaster
 import com.shciri.rosapp.R
 import com.shciri.rosapp.RCApplication
+import com.shciri.rosapp.base.BaseFragment
 import com.shciri.rosapp.databinding.FragmentMapCollectionBinding
-import com.shciri.rosapp.dmros.client.RosTopic
 import com.shciri.rosapp.dmros.data.RosData
 import com.shciri.rosapp.dmros.tool.BitmapUtils
 import com.shciri.rosapp.dmros.tool.ControlMapEvent
@@ -35,16 +34,21 @@ import com.shciri.rosapp.dmros.tool.MyPGM
 import com.shciri.rosapp.dmros.tool.PublishEvent
 import com.shciri.rosapp.dmros.tool.RobotPoseEvent
 import com.shciri.rosapp.dmros.tool.StateTopicReplyEvent
+import com.shciri.rosapp.rosdata.MapCreateCmd
+import com.shciri.rosapp.rosdata.request.MapCreateRequest
+import com.shciri.rosapp.rosdata.response.SimplerResponse
 import com.shciri.rosapp.ui.dialog.InputDialog
 import com.shciri.rosapp.ui.dialog.InputDialog.InputDialogListener
 import com.shciri.rosapp.ui.dialog.WaitDialog
-import com.shciri.rosapp.ui.myview.MapView
+import com.shciri.rosapp.ui.view.MapView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import src.com.jilk.ros.message.Pose
 import src.com.jilk.ros.message.StateMachineRequest
-import src.com.jilk.ros.message.requestparam.RequestMapControlParameter
+import src.com.jilk.ros.message.custom.Pose2D
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,7 +58,7 @@ import java.util.Locale
  * @author ：liudz
  * 日期：2023年11月17日
  */
-class CollectionFragment : Fragment() {
+class CollectionFragment : BaseFragment() {
 
     private lateinit var binding: FragmentMapCollectionBinding
     private var stateMachineRequest: StateMachineRequest? = null
@@ -62,18 +66,8 @@ class CollectionFragment : Fragment() {
     private var waitDialog: WaitDialog? = null
 
     private var inputDialog: InputDialog? = null
-    private val executorService = RCApplication.getExecutorService()
 
-    private var localReceiver: LocalReceiver? = null
-
-    var localBroadcastManager: LocalBroadcastManager? = null
-
-    //    private PhotoView photoView;
-    private var bitmap: Bitmap? = null
-
-    private var location: Pose? = null
-
-    private val handler = Handler()
+    private var location: Pose2D? = null
 
 
     override fun onCreateView(
@@ -96,38 +90,69 @@ class CollectionFragment : Fragment() {
             val map = BitmapFactory.decodeResource(resources, R.drawable.daimon_map)
             binding.rosMap.setBitmap(map, MapView.updateMapID.RUNNING)
         }
+        binding.rosMap.isShowWall = false
 
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(RosData.MAP)
-        intentFilter.addAction(RosData.TF)
-        intentFilter.addAction(RosData.TOAST)
-        localReceiver = LocalReceiver()
-        localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
-        localBroadcastManager!!.registerReceiver(localReceiver!!, intentFilter)
 
         waitDialog = WaitDialog.Builder(requireContext())
             .setLoadingText(getString(R.string.loading))
             .setCancelText(resources.getString(R.string.cancel))
             .build()
-        val bundle = arguments
-        if (bundle != null) {
-            val state = bundle.getInt("state")
-            if (state == 1) {
-                waitDialog!!.show()
-            }
-        }
+//        val bundle = arguments
+//        if (bundle != null) {
+//            val state = bundle.getInt("state")
+//            if (state == 1) {
+//                waitDialog!!.show()
+//            }
+//        }
     }
 
     private fun initView() {
 
         //点击取消采集地图
-        //点击取消采集地图
         binding.tvExitMap.setOnClickListener { v ->
-            stateMachineRequest!!.map_control = 5
-            RosTopic.publishStateMachineRequest(stateMachineRequest)
-            waitDialog!!.show()
+            waitDialog?.show()
+            CoroutineScope(Dispatchers.IO).launch {
+                var cmd = MapCreateCmd().apply {
+                    func_type = 2
+                    map_name = ""
+                    map_path = ""
+                }
+
+                val mapCreateRequest = MapCreateRequest().apply {
+                    this.cmd = cmd
+                }
+
+                try {
+                    rosServiceCaller?.let { caller ->
+                        caller.callGetMapCreateService(mapCreateRequest) { response: src.com.jilk.ros.message.custom.request.SimplerResponse ->
+                            CoroutineScope(Dispatchers.Main).launch {
+                                Toaster.showShort(response.ret)
+                                if (response.ret) {
+                                    waitDialog?.dismiss()
+                                    back(view)
+                                } else {
+                                    waitDialog?.dismiss()
+                                    toast(R.string.noNormal)
+                                }
+                            }
+                            null
+                        }
+                    } ?: run {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            waitDialog?.dismiss()
+                            Toaster.showShort(getString(R.string.ros_connect_fail))
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        waitDialog?.dismiss()
+                        toast(R.string.ros_connect_fail)
+                    }
+                }
+            }
         }
-        //点击保存地图
+
         //点击保存地图
         binding.tvSaveMap.setOnClickListener { v ->
             //在API29及之后是不需要申请的，默认是允许的
@@ -149,130 +174,100 @@ class CollectionFragment : Fragment() {
 
     }
 
-    inner class LocalReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.action) {
-                RosData.TF -> plotRoute(RosData.BaseLink.x, RosData.BaseLink.y)
-                RosData.WATCH -> plotMap()
-                RosData.TOAST -> {
-                    val hint = intent.getStringExtra("Hint")
-                    Toaster.showShort(hint)
-                }
-
-                else -> {}
-            }
-        }
-    }
-
-    fun plotRoute(x: Int, y: Int) {
-        val tX = RosData.MapData.poseX + x
-        val tY = RosData.MapData.poseY + y
-        binding.rosMap.setRobotPosition(
-            tX.toFloat(),
-            (RosData.map.info.height - tY).toFloat(), RosData.BaseLink.yaw * 100 - 120, true
-        )
-    }
-
-    fun plotMap() {
-        Log.d("CeshiTAG", "look x=" + RosData.MapData.poseX + "  y=" + RosData.MapData.poseY)
-        val pgm = MyPGM()
-        val pix: IntArray = pgm.readData(
-            RosData.map.info.width,
-            RosData.map.info.height,
-            5,
-            RosData.map.data,
-            RosData.MapData.poseX,
-            RosData.MapData.poseY
-        ) //P5-Gray image
-        bitmap = Bitmap.createBitmap(
-            RosData.map.info.width,
-            RosData.map.info.height,
-            Bitmap.Config.ARGB_8888
-        )
-        bitmap?.setPixels(
-            pix,
-            0,
-            RosData.map.info.width,
-            0,
-            0,
-            RosData.map.info.width,
-            RosData.map.info.height
-        )
-        val invert = Matrix()
-        invert.setScale(1f, -1f) //镜像翻转以与真实地图对应
-        val rosBitmap =
-            Bitmap.createBitmap(
-                bitmap!!,
-                0,
-                0,
-                bitmap?.width ?: 0,
-                bitmap?.height ?: 0,
-                invert,
-                true
-            )
-        binding.rosMap.setBitmap(rosBitmap, MapView.updateMapID.RUNNING)
-    }
 
     private fun showInputDialog() {
         inputDialog = InputDialog.Builder(requireContext())
             .setTitle(getString(R.string.please_input_map_name))
             .setCancelText(getString(R.string.cancel))
             .setConfirmText(getString(R.string.confirm))
-            .setOnCancelClick { v: View? ->
-                stateMachineRequest!!.map_control = 5
-                RosTopic.publishStateMachineRequest(stateMachineRequest)
-                waitDialog!!.show()
-            }
+            .setOnCancelClick { }
             .setOnConfirmClick(object : InputDialogListener {
-                override fun onConfirmClicked(inputText: String) {
+                override fun onConfirmClicked(inputText: String,password:String) {
                     if (TextUtils.isEmpty(inputText)) {
                         Toaster.showShort(getString(R.string.please_input_map_name))
                     } else {
-                        val MD5 = BitmapUtils.saveImage(
-                            inputText,
-                            RosData.dataBaseMaxMapID + 1,
-                            binding.rosMap.mBitmap
-                        )
-                        if (MD5 == "") {
-                            return
-                        }
-                        val requestMapControlParameter =
-                            RequestMapControlParameter()
-                        requestMapControlParameter.map_id = inputText
-                        RosTopic.publishControlParameterTopic(requestMapControlParameter)
-                        DBInsertMap(inputText, MD5)
-                        EventBus.getDefault()
-                            .post(
-                                ControlMapEvent(
-                                    "addMap",
-                                    inputText,
-                                    RosData.dataBaseMaxMapID + 1
-                                )
-                            )
-                        stateMachineRequest!!.map_control = 4
-                        RosTopic.publishStateMachineRequest(stateMachineRequest)
-                        MapView.scanning = false
-                        inputDialog!!.dismiss()
+                        handleConfirmClick(inputText)
                     }
                 }
             })
             .build()
-        inputDialog!!.show()
+
+        inputDialog?.show()
     }
+
+
+
+    private fun handleConfirmClick(inputText: String) {
+        // 保存图片并获取MD5
+        val md5 = BitmapUtils.saveImage(
+            activity,
+            inputText,
+            RosData.dataBaseMaxMapID + 1,
+            binding.rosMap.mBitmap
+        )
+        if (md5.isEmpty()) {
+            return
+        }
+
+        // 插入数据库
+        DBInsertMap(inputText, md5)
+        EventBus.getDefault().post(
+            ControlMapEvent(
+                "addMap",
+                inputText,
+                RosData.dataBaseMaxMapID + 1
+            )
+        )
+
+        // 创建 MapCreateCmd 对象并赋值
+        val cmd = MapCreateCmd().apply {
+            func_type = 1
+            map_name = inputText
+            map_path = "x"
+        }
+
+        // 创建 MapCreateRequest 对象并赋值
+        val mapCreateRequest = MapCreateRequest().apply {
+            this.cmd = cmd
+        }
+
+        try {
+            // 调用服务
+            rosServiceCaller?.let { caller ->
+                caller.callGetMapCreateService(mapCreateRequest) { response: src.com.jilk.ros.message.custom.request.SimplerResponse ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        toast(R.string.save_success)
+                        if (response.ret) {
+                            back(view)
+                        }
+                    }
+                    null
+                }
+            } ?: run {
+                Toaster.showShort(getString(R.string.ros_connect_fail))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            // 结束处理
+            MapView.scanning = false
+            inputDialog?.dismiss()
+        }
+    }
+
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: PublishEvent) {
-        if ("/watch/carto_map" == event.getMessage()) {
-            if (RosData.rosBitmap != null) {
-                if (MapView.scanning) {
-                    binding.rosMap.setBitmap(RosData.rosBitmap, MapView.updateMapID.SCANNING)
-                } else {
-                    binding.rosMap.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING)
-                }
+        if (RosData.rosBitmap != null) {
+            if (MapView.scanning) {
+                binding.rosMap.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING)
             } else {
-                val map = BitmapFactory.decodeResource(resources, R.drawable.daimon_map)
-                binding.rosMap.setBitmap(map, MapView.updateMapID.RUNNING)
+                binding.rosMap.setBitmap(RosData.rosBitmap, MapView.updateMapID.RUNNING)
             }
+        } else {
+            val map = BitmapFactory.decodeResource(resources, R.drawable.daimon_map)
+            binding.rosMap.setBitmap(map, MapView.updateMapID.RUNNING)
         }
     }
 
@@ -286,19 +281,22 @@ class CollectionFragment : Fragment() {
             }
 
             0x04 -> {
-                Toaster.showShort(getString(R.string.save_success))
+                toast(R.string.save_success)
+                back(this.view)
             }
 
-            0x05 -> {}
-            0x06 -> {}
-            0x07 -> {}
-            0x08 -> {}
+            0x05,
+            0x06,
+            0x07,
+            0x08 -> {
+//                back(this.view)
+            }
+
             0x09 -> {}
             else -> {
 
             }
         }
-        waitDialog!!.dismiss()
         Log.d("CeshiTAG", "onEventReply: " + event.stateMachineReply.map_control)
     }
 
@@ -313,6 +311,7 @@ class CollectionFragment : Fragment() {
         values.put("md5", md5)
         RCApplication.db.insert("map", null, values)
     }
+
 
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -336,7 +335,6 @@ class CollectionFragment : Fragment() {
 
     override fun onDestroy() {
         binding.rosMap.isSetGoal = false
-        this.localBroadcastManager?.unregisterReceiver(localReceiver!!)
         super.onDestroy()
     }
 }

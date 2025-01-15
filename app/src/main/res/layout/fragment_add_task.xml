@@ -5,125 +5,125 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.qmuiteam.qmui.layout.QMUILinearLayout
-        android:id="@+id/return_ll"
-        android:layout_marginTop="@dimen/return_margin_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <com.qmuiteam.qmui.layout.QMUILinearLayout-->
+<!--        android:id="@+id/return_ll"-->
+<!--        android:layout_marginTop="@dimen/return_margin_top"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/return_arrows_width"
-            android:layout_height="@dimen/return_arrows_height"
-            android:layout_marginLeft="100dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/choose_task_point_left" />
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:layout_width="@dimen/return_arrows_width"-->
+<!--            android:layout_height="@dimen/return_arrows_height"-->
+<!--            android:layout_marginLeft="100dp"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@mipmap/choose_task_point_left" />-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/return_arrow_text_margin"
-            android:text="@string/time_task"
-            style="@style/WhiteTextTheme.28"/>
-    </com.qmuiteam.qmui.layout.QMUILinearLayout>
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="@dimen/return_arrow_text_margin"-->
+<!--            android:text="@string/time_task"-->
+<!--            style="@style/WhiteTextTheme.28"/>-->
+<!--    </com.qmuiteam.qmui.layout.QMUILinearLayout>-->
 
-    <com.qmuiteam.qmui.layout.QMUILinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:weightSum="7"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/qlv_task"
-        app:layout_constraintStart_toStartOf="@+id/qlv_task"
-        app:layout_constraintTop_toBottomOf="@+id/return_ll"
-        app:layout_constraintVertical_bias="0.0">
+<!--    <com.qmuiteam.qmui.layout.QMUILinearLayout-->
+<!--        android:id="@+id/linearLayout2"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:gravity="center"-->
+<!--        android:weightSum="7"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/qlv_task"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/qlv_task"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/return_ll"-->
+<!--        app:layout_constraintVertical_bias="0.0">-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/task_name"
-            style="@style/GrayTextTheme.20"/>
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/task_name"-->
+<!--            style="@style/GrayTextTheme.20"/>-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/task_id"
-            style="@style/GrayTextTheme.20" />
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/task_id"-->
+<!--            style="@style/GrayTextTheme.20" />-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/times"
-            style="@style/GrayTextTheme.20" />
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/times"-->
+<!--            style="@style/GrayTextTheme.20" />-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/date"
-            style="@style/GrayTextTheme.20" />
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/date"-->
+<!--            style="@style/GrayTextTheme.20" />-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/loop_num"
-            style="@style/GrayTextTheme.20" />
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/loop_num"-->
+<!--            style="@style/GrayTextTheme.20" />-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/model"
-            style="@style/GrayTextTheme.20" />
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/model"-->
+<!--            style="@style/GrayTextTheme.20" />-->
 
-        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/delete_task"
-            style="@style/GrayTextTheme.20" />
-    </com.qmuiteam.qmui.layout.QMUILinearLayout>
+<!--        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/delete_task"-->
+<!--            style="@style/GrayTextTheme.20" />-->
+<!--    </com.qmuiteam.qmui.layout.QMUILinearLayout>-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/qlv_task"
-        android:layout_width="1000dp"
-        android:layout_height="450dp"
-        android:background="@drawable/tasks_report_text_shape"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.1" />
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/qlv_task"-->
+<!--        android:layout_width="1000dp"-->
+<!--        android:layout_height="450dp"-->
+<!--        android:background="@drawable/tasks_report_text_shape"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"-->
+<!--        app:layout_constraintVertical_bias="0.1" />-->
 
-    <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
-        android:id="@+id/new_time_task_bt"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/button_background_selector"
-        android:gravity="center"
-        android:text="@string/add_time_task"
-        style="@style/WhiteTextTheme.24"
-        app:layout_constraintEnd_toEndOf="@+id/qlv_task"
-        app:layout_constraintTop_toBottomOf="@+id/qlv_task" />
+<!--    <com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+<!--        android:id="@+id/new_time_task_bt"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:background="@drawable/button_background_selector"-->
+<!--        android:gravity="center"-->
+<!--        android:text="@string/add_time_task"-->
+<!--        style="@style/WhiteTextTheme.24"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/qlv_task"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/qlv_task" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,7 +28,9 @@ class InputDialog(
     private var cancelable: Boolean = false,
     private val regex: String?,
     private val maxLength: Int,
-    private var editShow: Boolean = true
+    private var editShow: Boolean = true,
+    private var editPasswordShow: Boolean = false,
+    private var editText: String?,
 ) : Dialog(context) {
     private lateinit var binding: DialogInputBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +51,7 @@ class InputDialog(
 
 
         binding.tvTitle.text = title
+        binding.editInput.setText(editText)
         binding.tvContent.text = content
         if (null != cancelText) {
             binding.cancelButton.dialogButtonCancel.text = cancelText
@@ -65,13 +68,16 @@ class InputDialog(
 
         binding.cancelButton.dialogButtonConfirm.setOnClickListener {
             hideSoftKeyboard()
-            onConfirmClick?.onConfirmClicked(binding.editInput.text.toString())
-
+            onConfirmClick?.onConfirmClicked(
+                binding.editInput.text.toString(),
+                binding.editInputPassword.text.toString()
+            )
         }
         val filters = arrayOf<InputFilter>(LengthFilter(maxLength))
         binding.editInput.filters = filters
         setCanceledOnTouchOutside(cancelable)
         binding.editInput.isVisible = editShow
+        binding.editInputPassword.isVisible = editPasswordShow
     }
 
     class Builder(private val context: Context) {
@@ -85,7 +91,8 @@ class InputDialog(
         private var regex: String? = null
         private var maxLength: Int = 15
         private var editShow: Boolean = true
-
+        private var editPasswordShow: Boolean = false
+        private var editText:String? = null
         fun setTitle(title: String?): Builder {
             this.title = title
             return this
@@ -93,6 +100,11 @@ class InputDialog(
 
         fun setContent(content: String?): Builder {
             this.content = content
+            return this
+        }
+
+        fun setEditText(editText: String?):Builder{
+            this.editText = editText
             return this
         }
 
@@ -136,6 +148,11 @@ class InputDialog(
             return this
         }
 
+        fun setEditPasswordShow(editPasswordShow: Boolean): Builder {
+            this.editPasswordShow = editPasswordShow
+            return this
+        }
+
         fun build(): InputDialog {
             return InputDialog(
                 context,
@@ -148,7 +165,9 @@ class InputDialog(
                 cancelable,
                 regex,
                 maxLength,
-                editShow
+                editShow,
+                editPasswordShow,
+                editText
             )
         }
 
@@ -156,7 +175,7 @@ class InputDialog(
 
 
     interface InputDialogListener {
-        fun onConfirmClicked(inputText: String)
+        fun onConfirmClicked(inputText: String, password: String)
     }
 
     private fun showSoftKeyboard() {

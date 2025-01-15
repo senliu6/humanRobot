@@ -256,7 +256,7 @@
             android:text="365nm LED"
             style="@style/WhiteTextTheme.20" />
 
-        <com.shciri.rosapp.ui.myview.DmSwitchView
+        <com.shciri.rosapp.ui.view.DmSwitchView
             android:id="@+id/ornamental_led_sv"
             android:layout_width="169dp"
             android:layout_height="74dp" />
@@ -270,7 +270,7 @@
             android:text="265nm LED"
             style="@style/WhiteTextTheme.20" />
 
-        <com.shciri.rosapp.ui.myview.DmSwitchView
+        <com.shciri.rosapp.ui.view.DmSwitchView
             android:id="@+id/uvc_led_sv"
             android:layout_width="169dp"
             android:layout_height="74dp"
@@ -287,7 +287,7 @@
         app:layout_constraintStart_toEndOf="@+id/switchLayout"
         app:layout_constraintTop_toBottomOf="@+id/seekbar_fan_speed">
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/co2_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
@@ -296,7 +296,7 @@
             app:titleText="CO2"
             app:unitText="ppm" />
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/TVOC_status_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
@@ -305,7 +305,7 @@
             app:titleText="TVOC"
             app:unitText="ug/m³" />
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/PM2.5_status_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
@@ -314,7 +314,7 @@
             app:titleText="PM2.5"
             app:unitText="ug/m³" />
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/T_status_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
@@ -322,7 +322,7 @@
             app:titleText=""
             app:unitText="℃" />
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/humidity_status_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
@@ -332,7 +332,7 @@
             app:titleText=""
             app:unitText="%" />
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/PM10_status_view"
             android:layout_width="@dimen/air_status_view_width"
             android:layout_height="@dimen/air_status_view_height"
@@ -342,7 +342,7 @@
             app:titleText="PM10"
             app:unitText="ug/m³" />
 
-        <com.shciri.rosapp.ui.myview.AirStatusView
+        <com.shciri.rosapp.ui.view.AirStatusView
             android:id="@+id/formaldehyde_status_view"
             android:layout_width="110dp"
             android:layout_height="400dp"

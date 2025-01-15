@@ -1,19 +1,20 @@
 package com.shciri.rosapp.dmros.tool;
 
+import static androidx.core.content.ContextCompat.*;
+
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Picture;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
+import androidx.core.app.ActivityCompat;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class BitmapUtils {
     /**
@@ -22,24 +23,29 @@ public class BitmapUtils {
      * @param bitmap 要转化的Bitmap
      * @return MD5
      */
-    public static String saveImage(String name, int mapID, Bitmap bitmap){
-        String root = Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath();
+    public static String saveImage(Context context, String name, int mapID, Bitmap bitmap) {
+        if (checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            return "";
+        }
+
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         String dirName = "RobotLocalMap";
-        File appDir = new File(root , dirName);
+        File appDir = new File(root, dirName);
         if (!appDir.exists()) {
-            if(!appDir.mkdirs()) {
+            if (!appDir.mkdirs()) {
                 Log.d("mkdir fail!", "Save Path=" + appDir.getAbsolutePath());
                 return "";
             }
         }
 
-        String fileName = name+"_"+Integer.toString(mapID)+".png";
+        String fileName = name + "_" + mapID + ".png";
 
         try {
             //获取文件
             File saveFile = new File(appDir, fileName);
-            FileOutputStream fos = new FileOutputStream(saveFile);;
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,fos);
+            FileOutputStream fos = new FileOutputStream(saveFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
             return MD5Utils.getFileMD5String(saveFile);
@@ -55,16 +61,21 @@ public class BitmapUtils {
      * @param mapID 要删除的mapID
      * @return 单个文件删除成功返回true，否则返回false
      */
-    public static boolean deleteMap(String name, int mapID) {
-        String fileName = name+"_"+Integer.toString(mapID)+".png";
-        String root = Environment.getExternalStoragePublicDirectory("Pictures").getAbsolutePath();
+    public static boolean deleteMap(Context context, String name, int mapID) {
+        if (checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            return false;
+        }
+
+        String fileName = name + "_1" + ".png";
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         String dirName = "RobotLocalMap";
-        String filePath$Name = root+"/"+dirName+"/"+fileName;
+        String filePath$Name = root + "/" + dirName + "/" + fileName;
         File file = new File(filePath$Name);
         // 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
         if (file.exists() && file.isFile()) {
             if (file.delete()) {
-                Log.w("deleteMap", "delete map " + filePath$Name + "success!");
+                Log.w("deleteMap", "delete map " + filePath$Name + " success!");
                 return true;
             } else {
                 Log.w("deleteMap", "delete single fail!");
@@ -75,5 +86,5 @@ public class BitmapUtils {
             return false;
         }
     }
-
 }
+

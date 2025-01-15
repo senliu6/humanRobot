@@ -1,7 +1,7 @@
 package com.shciri.rosapp.ui.set;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.hjq.toast.Toaster;
@@ -27,15 +28,13 @@ import com.shciri.rosapp.dmros.data.LanguageType;
 import com.shciri.rosapp.dmros.data.Settings;
 import com.shciri.rosapp.dmros.tool.VersionUpdateManager;
 import com.shciri.rosapp.ui.dialog.BaseAttrDialog;
+import com.shciri.rosapp.ui.dialog.InputDialog;
 import com.shciri.rosapp.ui.dialog.TestDialog;
 import com.shciri.rosapp.utils.LanguageUtil;
 import com.shciri.rosapp.utils.SharedPreferencesUtil;
 
-import org.apache.log4j.chainsaw.Main;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import src.com.jilk.ros.message.StateMachineRequest;
 
@@ -45,6 +44,7 @@ public class SystemSetFragment extends BaseFragment {
     private ListView listView;
     private SystemSetAdapter systemSetAdapter;
     private VersionUpdateManager versionUpdateManager;
+
 
     @Nullable
     @Override
@@ -83,68 +83,46 @@ public class SystemSetFragment extends BaseFragment {
         });
         versionUpdateManager.queryAPKInfo();
         assert getContext() != null;
+
+
         systemSetListList = new ArrayList<>();
-        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.clean_task)));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.wifi_connect)));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.open_file)));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.update)));
-        systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.revert_date)));
         systemSetListList.add(new SystemSetAdapter.SystemSetList(getString(R.string.set_language)));
         systemSetAdapter = new SystemSetAdapter(getContext(), systemSetListList);
         listView = view.findViewById(R.id.system_set_lv);
         listView.setAdapter(systemSetAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        deleteTaskHistoryAll();
-                        break;
-                    case 1:
-                        //startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)); //直接进入手机中的wifi网络设置界面
-                        //注意是这个：WifiManager.ACTION_PICK_WIFI_NETWORK
-                        Intent intent = new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK);
-                        intent.putExtra("extra_prefs_show_button_bar", true);
-                        intent.putExtra("extra_prefs_set_back_text", "返回APP");
-                        startActivityForResult(intent, 1);
-                        break;
-                    case 2:
-                        openFileManager();
-                        break;
-                    case 3:
-                        versionUpdateManager.checkUpdateVersion();
-                        break;
-                    case 4:
-                        requireContext().deleteDatabase("test");
-                        SharedPreferencesUtil.Companion.clearAllData(requireContext());
-                        StateMachineRequest request = new StateMachineRequest();
-                        request.map_control = 7;
-                        RosTopic.publishStateMachineRequest(request);
-                        Intent homeIntent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(homeIntent);
-                        requireActivity().finish();
-                        break;
-                    case 5://多语言设置
-                        String language = SharedPreferencesUtil.Companion.getValue(requireContext(), Settings.LANGUAGE, LanguageType.CHINESE.getLanguage(), String.class);
-                        BaseAttrDialog testDialog = new TestDialog.Builder(getActivity())
-                                .setLanguage(language)
-                                .setGravity(Gravity.CENTER)
-                                .setListener(language1 -> {
-                                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                        LanguageUtil.INSTANCE.changeAppLanguage(requireActivity().getApplicationContext(), language1);
-                                    }
-                                    SharedPreferencesUtil.Companion.saveValue(requireActivity().getApplicationContext(), Settings.LANGUAGE, language1);
-                                    Intent intent1 = new Intent(getActivity(), MainActivity.class);
-                                    intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    startActivity(intent1);
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            switch (position) {
+                case 0://多语言设置
+                    String language = SharedPreferencesUtil.Companion.getValue(requireContext(), Settings.LANGUAGE, LanguageType.CHINESE.getLanguage(), String.class);
+                    BaseAttrDialog testDialog = new TestDialog.Builder(getActivity())
+                            .setLanguage(language)
+                            .setGravity(Gravity.CENTER)
+                            .setListener(language1 -> {
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                    LanguageUtil.INSTANCE.changeAppLanguage(requireActivity().getApplicationContext(), language1);
+                                }
+                                SharedPreferencesUtil.Companion.saveValue(requireActivity().getApplicationContext(), Settings.LANGUAGE, language1);
+                                Intent intent1 = new Intent(getActivity(), MainActivity.class);
+                                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent1);
 
-                                }).show();
-                        break;
-                    default:
-                }
+                            }).show();
+                    break;
+                default:
             }
         });
     }
+
+    private ActivityResultLauncher<Intent> startForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // 处理返回结果
+                    Intent data = result.getData();
+                    // 处理Intent数据
+                }
+            });
+
 
     // 打开文件管理器选择文件
     private void openFileManager() {

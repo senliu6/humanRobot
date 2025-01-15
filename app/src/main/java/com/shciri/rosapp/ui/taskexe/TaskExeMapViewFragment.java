@@ -17,7 +17,7 @@ import com.shciri.rosapp.databinding.FragmentTaskExeMapViewBinding;
 import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.tool.PublishEvent;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
-import com.shciri.rosapp.ui.myview.MapView;
+import com.shciri.rosapp.ui.view.MapView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,11 +58,6 @@ public class TaskExeMapViewFragment extends Fragment {
             mapView.setBitmap(map, MapView.updateMapID.RUNNING);
         }
 
-        if (!mapView.isShowCoveragePath && RosData.coveragePath != null) {
-            for (PoseStamped point : RosData.coveragePath.poses) {
-                plotPath((int) (point.pose.position.x / 0.05f), (int) (point.pose.position.y / 0.05f));
-            }
-        }
 
         TextView taskName = view.findViewById(R.id.task_exe_name);
         taskName.setText(ManageTaskDB.taskLists.get(ManageTaskDB.currentTaskIndex).taskName);
@@ -107,8 +102,6 @@ public class TaskExeMapViewFragment extends Fragment {
     private void plotPath(int x, int y) {
         int tX = RosData.MapData.poseX + x;
         int tY = RosData.MapData.poseY + y;
-
-        mapView.setCoveragePath(tX, RosData.map.info.height - tY, true);
     }
 
     private void plotRoute(int x, int y) {

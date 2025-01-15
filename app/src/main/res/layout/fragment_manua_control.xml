@@ -3,59 +3,164 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightsteelblue">
+    android:layout_marginTop="@dimen/return_margin_top">
 
-    <com.shciri.rosapp.ui.myview.MapView
+    <com.shciri.rosapp.ui.view.MapView
         android:id="@+id/ros_map"
-        android:layout_width="846dp"
-        android:layout_height="750dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.shciri.rosapp.ui.myview.MyControllerView
+    <com.hjq.shape.layout.ShapeLinearLayout
+        android:id="@+id/return_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radius="50dp"
+        app:shape_strokeColor="@color/black"
+        app:shape_strokeSize="1dp">
+
+        <ImageView
+            android:layout_width="@dimen/return_arrows_width"
+            android:layout_height="@dimen/return_arrows_height"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/arrow_left_d" />
+
+        <TextView
+            style="@style/BlackTextTheme.30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/return_arrow_text_margin"
+            android:text="@string/map_manager" />
+    </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    <com.shciri.rosapp.ui.view.MyControllerView
         android:id="@+id/controller_view"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginStart="26dp"
         android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone"/>
 
-    <LinearLayout
-        android:id="@+id/linearHandSwitch"
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="20dp"
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnSave"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="30dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnQuit"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnQuit"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="30dp"
+        android:text="@string/quit"
+        app:layout_constraintBottom_toBottomOf="@id/ros_map"
+        app:layout_constraintStart_toEndOf="@id/btnSave"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btnBack"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="30dp"
+        android:text="@string/landing"
+        app:layout_constraintEnd_toStartOf="@id/btnSave"
+        app:layout_constraintTop_toTopOf="@id/btnSave"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background"
+        app:shape_solidPressedColor="@color/button_select_start" />
+
+    <com.hjq.shape.view.ShapeTextView
+        android:id="@+id/startVirtualWallTv"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:padding="30dp"
+        android:text="@string/start_v_wall"
+        app:layout_constraintBottom_toTopOf="@id/cleanVirtualWallTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background" />
+
+    <com.hjq.shape.view.ShapeTextView
+        android:id="@+id/cleanVirtualWallTv"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:padding="30dp"
+        android:text="@string/clear_v_wall"
+        app:layout_constraintBottom_toTopOf="@+id/btnSave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background" />
+    <com.hjq.shape.view.ShapeTextView
+        android:id="@+id/add_path_bt"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/button_background_pressed"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:gravity="center"
+        android:padding="30dp"
+        android:paddingVertical="15dp"
+        android:text="@string/add_path"
+        app:layout_constraintBottom_toTopOf="@id/btnSave"
+        app:layout_constraintStart_toStartOf="@id/ros_map"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background" />
 
-        <TextView
-            android:id="@+id/tvHand"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingVertical="5dp"
-            android:text="@string/hand"
-            style="@style/WhiteTextTheme.26" />
+    <com.hjq.shape.view.ShapeTextView
+        android:id="@+id/addChargePoi"
+        style="@style/WhiteTextTheme.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:padding="30dp"
+        app:shape_radius="50dp"
+        app:shape_solidColor="@color/background"
+        android:gravity="center"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="15dp"
+        android:text="@string/add_charge_poi"
+        app:layout_constraintBottom_toTopOf="@id/add_path_bt"
+        app:layout_constraintStart_toStartOf="@id/add_path_bt" />
 
-        <TextView
-            android:id="@+id/tvAuto"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingVertical="5dp"
-            android:text="@string/auto"
-            style="@style/WhiteTextTheme.26" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

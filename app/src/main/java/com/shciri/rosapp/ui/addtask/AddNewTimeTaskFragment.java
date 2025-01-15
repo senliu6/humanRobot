@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,13 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.hjq.toast.Toaster;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.shciri.rosapp.R;
 import com.shciri.rosapp.base.BaseFragment;
 import com.shciri.rosapp.databinding.FragmentAddNewTimeTaskBinding;
-import com.shciri.rosapp.dmros.data.RosData;
 import com.shciri.rosapp.dmros.data.WeekString;
-import com.shciri.rosapp.mydata.DBUtils;
 import com.shciri.rosapp.server.AlarmService;
 import com.shciri.rosapp.ui.control.ManageTaskDB;
 
@@ -148,39 +143,39 @@ public class AddNewTimeTaskFragment extends BaseFragment {
     }
 
     private void DialogBuilder(View view) {
-        final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(getContext());
-        final String items[] = new String[]{getString(R.string.air), getString(R.string.disinfection_air)};
-        builder.setTitle(getString(R.string.disinfection_air))
-                .addItems(items, (dialog, which) -> {
-
-                }).setCheckedItems(new int[]{0})
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    int keyID = DBUtils.getInstance().DBInsertTimeTask(
-                            binding.addOriginTaskMapSpinner.getSelectedItem().toString(),
-                            ManageTaskDB.taskLists.get(ManageTaskDB.taskNameList.indexOf(binding.addOriginTaskMapSpinner.getSelectedItem().toString())).ID,
-                            String.format("%02d", hourStart) + ":" + String.format("%02d", minStart),
-                            binding.addTimeTaskDateSpinner.getSelectedItem().toString(),
-                            RosData.currentMapID,
-                            binding.addTimeTaskLoopSpinner.getSelectedItem().toString(),
-                            binding.addTimeTaskModeSpinner.getSelectedItem().toString());
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.HOUR_OF_DAY, hourStart);
-                    calendar.set(Calendar.MINUTE, minStart);
-                    calendar.set(Calendar.SECOND, 0);
-//                        AlarmManagerUtils.getInstance(null).createPeriodAlarmManager(calendar, keyID, builder.getCheckedItemRecord().get(0), builder.getCheckedItemRecord().get(1));
-                    Log.d("Alarm", "fan_switch = " + builder.getCheckedItemRecord().get(0) + "   led_switch = " + builder.getCheckedItemRecord().get(1));
-
-                    alarmIntent.putExtra("taskId", String.valueOf(keyID));
-                    alarmIntent.putExtra("alarmTime", dateFormat.format(calendar.getTime()));
-                    alarmIntent.putExtra("week", getWeekSet(binding.addTimeTaskDateSpinner.getSelectedItemPosition()));
-                    alarmIntent.putExtra("loopNum", Short.valueOf(binding.addTimeTaskLoopSpinner.getSelectedItem().toString()));
-                    requireActivity().startService(alarmIntent);
-                    dialog.dismiss();
-                    Navigation.findNavController(view).navigateUp();
-                })
-                .show();
+//        final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(getContext());
+//        final String items[] = new String[]{getString(R.string.air), getString(R.string.disinfection_air)};
+//        builder.setTitle(getString(R.string.disinfection_air))
+//                .addItems(items, (dialog, which) -> {
+//
+//                }).setCheckedItems(new int[]{0})
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    int keyID = DBUtils.getInstance().DBInsertTimeTask(
+//                            binding.addOriginTaskMapSpinner.getSelectedItem().toString(),
+//                            ManageTaskDB.taskLists.get(ManageTaskDB.taskNameList.indexOf(binding.addOriginTaskMapSpinner.getSelectedItem().toString())).ID,
+//                            String.format("%02d", hourStart) + ":" + String.format("%02d", minStart),
+//                            binding.addTimeTaskDateSpinner.getSelectedItem().toString(),
+//                            RosData.currentMapID,
+//                            binding.addTimeTaskLoopSpinner.getSelectedItem().toString(),
+//                            binding.addTimeTaskModeSpinner.getSelectedItem().toString());
+//
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.set(Calendar.HOUR_OF_DAY, hourStart);
+//                    calendar.set(Calendar.MINUTE, minStart);
+//                    calendar.set(Calendar.SECOND, 0);
+////                        AlarmManagerUtils.getInstance(null).createPeriodAlarmManager(calendar, keyID, builder.getCheckedItemRecord().get(0), builder.getCheckedItemRecord().get(1));
+//                    Log.d("Alarm", "fan_switch = " + builder.getCheckedItemRecord().get(0) + "   led_switch = " + builder.getCheckedItemRecord().get(1));
+//
+//                    alarmIntent.putExtra("taskId", String.valueOf(keyID));
+//                    alarmIntent.putExtra("alarmTime", dateFormat.format(calendar.getTime()));
+//                    alarmIntent.putExtra("week", getWeekSet(binding.addTimeTaskDateSpinner.getSelectedItemPosition()));
+//                    alarmIntent.putExtra("loopNum", Short.valueOf(binding.addTimeTaskLoopSpinner.getSelectedItem().toString()));
+//                    requireActivity().startService(alarmIntent);
+//                    dialog.dismiss();
+//                    Navigation.findNavController(view).navigateUp();
+//                })
+//                .show();
     }
 
     private String getWeekSet(int weekID) {

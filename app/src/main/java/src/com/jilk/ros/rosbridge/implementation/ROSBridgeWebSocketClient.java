@@ -19,6 +19,8 @@
  */
 package src.com.jilk.ros.rosbridge.implementation;
 
+import android.util.Log;
+
 import com.hjq.toast.Toaster;
 import com.shciri.rosapp.R;
 

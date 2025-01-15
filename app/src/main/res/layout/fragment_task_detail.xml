@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@mipmap/performmap_zuokuang4_21" />
 
-    <com.shciri.rosapp.ui.myview.MapView
+    <com.shciri.rosapp.ui.view.MapView
         android:id="@+id/task_detail_map_view"
         android:layout_width="600dp"
         android:layout_height="600dp"

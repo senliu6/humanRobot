@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/big_background"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <com.shciri.rosapp.ui.myview.StatusBarView
+    <com.shciri.rosapp.ui.view.StatusBarView
         android:id="@+id/statusBar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

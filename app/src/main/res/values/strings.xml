@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RosApp</string>
+    <string name="app_name">HumanApp</string>
     <string name="business_btn">紫外消杀灯</string>
     <string name="switch_off">OFF</string>
     <string name="switch_on">ON</string>
@@ -195,6 +195,81 @@
     <string name="select_language">选择语言:</string>
     <string name="chinese">中文</string>
     <string name="traditional">繁体</string>
-    <style name="turn_on_simultaneously">同时开启</style>
+    <string name="back">返回</string>
+
+    <string name="one_reatsrt">一键重启</string>
+    <string name="please_input_wifi">请输入WIFI名称和密码</string>
+
+    <string name="turn_on_simultaneously">同时开启</string>
+    <string name="control_timeout">操作超时</string>
+    <string name="control_success">操作完成</string>
+    <string name="hand_control">手掌控制</string>
+    <string name="refresh">刷新</string>
+    <string name="send">发送</string>
+    <string name="extend_list_control">展开动作列表</string>
+    <string name="enlarge">放大</string>
+    <string name="control_list">操作列表</string>
+    <string name="intensity">力度</string>
+    <string name="speed">速度</string>
+    <string name="angle">角度</string>
+    <string name="please_input_name">请输入名称</string>
+    <string name="please_input_inteeval">请输入间隔</string>
+    <string name="refresh_image">刷新图像</string>
+
+    <string name="narrow">缩小</string>
+
+    <string name="position_mode">定位模式</string>
+    <string name="servo_mode">伺服模式</string>
+    <string name="velocity_mode">速度模式</string>
+    <string name="force_control_mode">力控模式</string>
+    <string name="pinky">小拇指</string>
+    <string name="ring_finger">无名指</string>
+    <string name="middle_finger">中指</string>
+    <string name="index_finger">食指</string>
+    <string name="thumb">大拇指</string>
+    <string name="thumb_bend">大拇指弯曲</string>
+    <string name="thumb_rotate">大拇指旋转</string>
+
+    <string name="remote_mode">遥控模式</string>
+    <string name="recording_actions">录制动作</string>
+
+    <string name="clear_v_wall">清空虚拟墙</string>
+    <string name="add_charge_poi">添加充电点</string>
+    <string name="create_map_fail">创建地图失败</string>
+    <string name="no_contral_offline">离线模式下无法操作该功能</string>
+    <string name="please_input_pathname">请输入路径名</string>
+    <string name="path">路径</string>
+    <string name="task_status">任务状态: %1$s</string>
+    <string name="map_edit">地图编辑</string>
+    <string name="now_location">当前位置: %1$s</string>
+    <string name="go_charge">去充电</string>
+    <string name="exit_charge">退出充电</string>
+    <string name="execute">执行</string>
+    <string name="end">结束</string>
+    <string name="please_check_task">请检查路径和次数</string>
+    <string name="mission_sucess">发起任务成功</string>
+    <string name="mission_fail">发起任务失败</string>
+    <string name="now_speed">当前速度: %1$s</string>
+    <string name="point_nav">定点导航</string>
+    <string name="please_click_map">请点击地图选择前往点</string>
+
+    <string name="now_map">当前地图</string>
+    <string name="switchs">切换</string>
+    <string name="current_map_cannot_delete">当前地图不能删除</string>
+    <string name="please_input_new_map">请输入新的地图名</string>
+
+    <string name="idle">空闲</string>
+    <string name="navigation">导航</string>
+    <string name="charging">充电</string>
+
+    <string name="please_input_name_or_data">请输入名称或添加数据</string>
+
+
+    <string-array name="mode_array">
+        <item>定位模式</item>
+        <item>伺服模式</item>
+        <item>速度模式</item>
+        <item>力控模式</item>
+    </string-array>
 
 </resources>

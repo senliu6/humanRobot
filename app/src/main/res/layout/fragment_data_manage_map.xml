@@ -46,15 +46,15 @@
         app:layout_optimizationLevel="chains"
         app:srcCompat="@mipmap/performmap_zuokuang4_21" />
 
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:id="@+id/map_manage_swipeList"
-        android:layout_width="443dp"
-        android:layout_height="450dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/mapView"
-        app:layout_constraintVertical_bias="0.625" />
+<!--    <com.baoyz.swipemenulistview.SwipeMenuListView-->
+<!--        android:id="@+id/map_manage_swipeList"-->
+<!--        android:layout_width="443dp"-->
+<!--        android:layout_height="450dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/imageView3"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/imageView3"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/imageView3"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/mapView"-->
+<!--        app:layout_constraintVertical_bias="0.625" />-->
 
     <TextView
         android:id="@+id/scan_new_map"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3" />
 
-    <com.shciri.rosapp.ui.myview.MapView
+    <com.shciri.rosapp.ui.view.MapView
         android:id="@+id/mapView"
         android:layout_width="648dp"
         android:layout_height="595dp"
